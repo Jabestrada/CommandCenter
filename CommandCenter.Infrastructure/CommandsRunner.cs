@@ -6,7 +6,9 @@ namespace CommandCenter.Infrastructure {
     public class CommandsRunner : BaseCommand {
         public readonly List<CommandReport> Reports;
 
-        protected Stack<BaseCommand> InvokedCommands = new Stack<BaseCommand>();
+        protected Stack<BaseCommand> InvokedCommandsStackForUndo = new Stack<BaseCommand>();
+        protected Stack<BaseCommand> InvokedCommandsStackForCleanup = new Stack<BaseCommand>();
+
         protected List<BaseCommand> Commands = new List<BaseCommand>();
 
         public CommandsRunner(List<BaseCommand> commands) {
@@ -26,10 +28,7 @@ namespace CommandCenter.Infrastructure {
             return !HasError;
         }
 
-        private void runCleanup() {
-            // Work on InvokedCommandsStack or InvokedCommandsQueue
-            throw new NotImplementedException();
-        }
+
 
         #region Non-public methods
         private void registerCommands() {
@@ -47,7 +46,8 @@ namespace CommandCenter.Infrastructure {
         }
         private void runCommands() {
             foreach (var command in Commands) {
-                InvokedCommands.Push(command);
+                InvokedCommandsStackForUndo.Push(command);
+                InvokedCommandsStackForCleanup.Push(command);
                 try {
                     command.Do();
                 }
@@ -60,12 +60,24 @@ namespace CommandCenter.Infrastructure {
         }
         private void undoCommandsIfNeeded() {
             if (!HasError) return;
-            // TODO: Copy InvokedCommands to a Queue for cleanup purposes.
-            while (InvokedCommands.Any()) {
-                var invokedCommand = InvokedCommands.Pop();
+
+            while (InvokedCommandsStackForUndo.Any()) {
+                var invokedCommand = InvokedCommandsStackForUndo.Pop();
                 if (!commandIsUndoable(invokedCommand)) continue;
 
                 undoCommand(invokedCommand);
+            }
+        }
+
+        private void runCleanup() {
+            while (InvokedCommandsStackForCleanup.Any()) { 
+                var invokedCommand = InvokedCommandsStackForCleanup.Pop();
+                try {
+                    invokedCommand.Cleanup();
+                }
+                catch (Exception exc) {
+                    reportCommand(invokedCommand, ReportType.DoneCleanupWithFailure, exc.Message);
+                }
             }
         }
 
@@ -100,7 +112,8 @@ namespace CommandCenter.Infrastructure {
 
         private void resetState() {
             Reports.Clear();
-            InvokedCommands.Clear();
+            InvokedCommandsStackForUndo.Clear();
+            InvokedCommandsStackForCleanup.Clear();
         }
 
         private bool didCommandSucceed(BaseCommand command) {

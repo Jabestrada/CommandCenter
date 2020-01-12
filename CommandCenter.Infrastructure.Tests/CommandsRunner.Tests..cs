@@ -1,4 +1,5 @@
 using CommandCenter.Infrastructure.Tests.MockCommands;
+using CommandCenter.InfrastructureTests.MockCommands;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
@@ -66,8 +67,6 @@ namespace CommandCenter.Infrastructure.Tests {
             Assert.IsTrue(result);
             Assert.IsTrue(!runner.Reports.Any(r => isUndoReport(r.ReportType)));
         }
-
-
 
         [TestMethod]
         public void itShouldDiscontinueWhenCommandFails() {
@@ -220,36 +219,100 @@ namespace CommandCenter.Infrastructure.Tests {
         }
 
         [TestMethod]
-        public void itShouldCallCleanupOfInvokedCommandsOnFailure() {
-            throw new NotImplementedException();
-        }
-
-        [TestMethod]
         public void itShouldCallCleanupOfInvokedCommandsOnSuccess() {
-            var successfulCmd = new MockSucceedingCommand();
+            var command1 = new MockCommandWithCleanup();
             var commands = new List<BaseCommand>();
-            commands.Add(successfulCmd);
+            commands.Add(command1);
             var runner = new CommandsRunner(commands);
 
             var result = runner.Run();
 
             Assert.IsTrue(result);
-            Assert.AreEqual(result, !runner.HasError);
+            Assert.IsTrue(runner.Reports.Any(r => isCleanupReport(r.ReportType) && r.Reporter.Id == command1.Id));
         }
 
         [TestMethod]
-        public void itShouldCallCleanupInOrderFILO() {
-            throw new NotImplementedException();
+        public void itShouldCallCleanupOfInvokedCommandsOnFailure() {
+            var commands = new List<BaseCommand>();
+            var command1 = new MockCommandWithCleanup();
+            commands.Add(command1);
+            var command2 = new MockFailingCommand();
+            commands.Add(command2);
+
+            var runner = new CommandsRunner(commands);
+            var result = runner.Run();
+
+            Assert.IsFalse(result);
+            Assert.IsTrue(runner.Reports.Any(r => isCleanupReport(r.ReportType) && r.Reporter.Id == command1.Id));
+        }
+
+        [TestMethod]
+        public void itShouldCallCleanupOfInvokedCommandsOnly() {
+            var commands = new List<BaseCommand>();
+            var command1 = new MockCommandWithCleanup();
+            commands.Add(command1);
+            var command2 = new MockFailingCommand();
+            commands.Add(command2);
+            var command3 = new MockCommandWithCleanup();
+            commands.Add(command3);
+
+            var runner = new CommandsRunner(commands);
+            var result = runner.Run();
+
+            Assert.IsFalse(result);
+            Assert.IsTrue(runner.Reports.Any(r => isCleanupReport(r.ReportType) && r.Reporter.Id == command1.Id));
+            Assert.IsFalse(runner.Reports.Any(r => isCleanupReport(r.ReportType) && r.Reporter.Id == command3.Id));
+        }
+
+        [TestMethod]
+        public void itShouldCallCleanupOnFILOBasis() {
+           var commands = new List<BaseCommand>();
+            var command1 = new MockCommandWithCleanup();
+            commands.Add(command1);
+
+            var command2 = new MockCommandWithCleanup();
+            commands.Add(command2);
+
+            var failingCmd = new MockFailingCommand();
+            commands.Add(failingCmd);
+
+            var runner = new CommandsRunner(commands);
+            var result = runner.Run();
+
+            Assert.IsFalse(result);
+            var firstCommandCleanupReport = runner.Reports.First(r => isCleanupReport(r.ReportType) &&
+                                                                   r.Reporter.Id == command1.Id);
+            var latestCleanupReportTimestamp = runner.Reports.Max(r => r.ReportedOn);
+            var earliestCleanupReport = runner.Reports.Where(r => isCleanupReport(r.ReportType))
+                                                 .OrderBy(r => r.ReportedOn)
+                                                 .First();
+
+            Assert.IsTrue(firstCommandCleanupReport.ReportedOn > earliestCleanupReport.ReportedOn);
+            Assert.AreEqual(firstCommandCleanupReport.ReportedOn, latestCleanupReportTimestamp);
         }
 
         [TestMethod]
         public void itShouldHandleExceptionsDuringCleanupButNotAffectOverallOutcome() {
-            throw new NotImplementedException();
+            var commands = new List<BaseCommand>();
+            var command1 = new MockCommandWithCleanup();
+            commands.Add(command1);
+
+            var command2 = new MockCommandWithCleanupThrowingException();
+            commands.Add(command2);
+
+            var runner = new CommandsRunner(commands);
+            var result = runner.Run();
+
+            Assert.IsTrue(result);
         }
 
         #region Helper methods
         private bool isUndoReport(ReportType reportType) {
             return reportType == ReportType.UndoneTaskWithSuccess || reportType == ReportType.UndoneTaskWithFailure;
+        }
+
+        private bool isCleanupReport(ReportType reportType) {
+            return reportType == ReportType.DoneCleanupWithFailure || reportType == ReportType.DoneCleanupWithSuccess;
         }
         #endregion
     }

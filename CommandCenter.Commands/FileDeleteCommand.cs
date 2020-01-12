@@ -16,12 +16,7 @@ namespace CommandCenter.Commands {
         public override bool IsUndoable => true;
 
         public override void Cleanup() {
-            try {
-                if (File.Exists(_backupFileName)) File.Delete(_backupFileName);
-            }
-            catch { 
-                // Just swallow exception.
-            }
+            if (File.Exists(_backupFileName)) File.Delete(_backupFileName);
         }
 
         public override void Do() {
@@ -37,7 +32,7 @@ namespace CommandCenter.Commands {
                 File.Copy(_sourceFileName, _backupFileName);
                 SendReport($"Created backup of file {_sourceFileName} to {_backupFileName}", ReportType.Progress);
             }
-            catch (Exception exc) { 
+            catch (Exception exc) {
                 SendReport($"File delete aborted because attempt to backup file {_sourceFileName} to {_backupFileName} failed: {exc.Message}", ReportType.DoneTaskWithFailure);
                 return;
             }
@@ -48,7 +43,7 @@ namespace CommandCenter.Commands {
                 SendReport($"Deleted file {_sourceFileName}", ReportType.DoneTaskWithSuccess);
                 _didDeleteSucceed = true;
             }
-            catch (Exception exc) { 
+            catch (Exception exc) {
                 SendReport($"Failed to delete {_sourceFileName}: {exc.Message}", ReportType.DoneTaskWithFailure);
             }
         }

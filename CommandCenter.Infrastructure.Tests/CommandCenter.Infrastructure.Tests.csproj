@@ -54,6 +54,7 @@
     <Compile Include="CommandsConfigurationXmlSource.Tests.cs" />
     <Compile Include="CommandsRunner.Tests..cs" />
     <Compile Include="MockCommands\MockCommandWithCleanup.cs" />
+    <Compile Include="MockCommands\MockCommandWithCleanupThrowingException.cs" />
     <Compile Include="MockCommands\MockCommandWithNonDefaultConstructor.cs" />
     <Compile Include="MockCommands\MockDoAndUndoThrowingExceptionCommand.cs" />
     <Compile Include="MockCommands\MockFailingCommand.cs" />
