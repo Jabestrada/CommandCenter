@@ -43,8 +43,8 @@
   <ItemGroup>
     <Compile Include="CommandLineProcess.cs" />
     <Compile Include="FileDeleteCommand.cs" />
-    <Compile Include="FileSystem\FileSystemCommand.cs" />
-    <Compile Include="FileSystem\IFileSystemCommand.cs" />
+    <Compile Include="FileSystem\FileSystemCommands.cs" />
+    <Compile Include="FileSystem\IFileSystemCommandsStrategy.cs" />
     <Compile Include="MsBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

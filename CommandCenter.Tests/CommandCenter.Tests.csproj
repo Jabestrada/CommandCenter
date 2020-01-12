@@ -50,6 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommandCenter.Commands.Tests\FileDeleteCommand.Tests.cs" />
     <Compile Include="CommandCenter.Infrastructure.Tests\CommandsBuilder.Tests.cs" />
     <Compile Include="CommandCenter.Infrastructure.Tests\CommandsConfigurationXmlSource.Tests.cs" />
     <Compile Include="CommandCenter.Infrastructure.Tests\CommandsRunner.Tests..cs" />
@@ -58,6 +59,7 @@
     <Compile Include="MockCommands\MockCommandWithNonDefaultConstructor.cs" />
     <Compile Include="MockCommands\MockDoAndUndoThrowingExceptionCommand.cs" />
     <Compile Include="MockCommands\MockFailingCommand.cs" />
+    <Compile Include="MockCommands\FileSystemCommand\MockFileSystemCommand.cs" />
     <Compile Include="MockCommands\MockIsUndoableThrowingExceptionCommand.cs" />
     <Compile Include="MockCommands\MockNonUndoableCommand.cs" />
     <Compile Include="MockCommands\MockSucceedingCommand.cs" />
@@ -78,6 +80,9 @@
       <Project>{6a22c313-8995-4e5b-9c97-16fb1fdd7989}</Project>
       <Name>CommandCenter.Infrastructure</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Extensions\" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

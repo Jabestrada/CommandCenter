@@ -1,7 +1,7 @@
 ﻿using System.IO;
 
 namespace CommandCenter.Commands.FileSystem {
-    public class FileSystemCommand : IFileSystemCommand {
+    public class FileSystemCommands : IFileSystemCommandsStrategy {
         public void FileCopy(string source, string destination) {
             File.Copy(source, destination);
         }
