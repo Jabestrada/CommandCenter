@@ -58,10 +58,6 @@
       <Project>{9f994604-e805-4232-920d-ec7e0aeb629c}</Project>
       <Name>CommandCenter.Commands</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CommandCenter.Infrastructure.Tests\CommandCenter.Infrastructure.Tests.csproj">
-      <Project>{b1dfbfc3-63c3-4f53-aa0d-ab1a3ad775b9}</Project>
-      <Name>CommandCenter.Infrastructure.Tests</Name>
-    </ProjectReference>
     <ProjectReference Include="..\CommandCenter.Infrastructure\CommandCenter.Infrastructure.csproj">
       <Project>{6a22c313-8995-4e5b-9c97-16fb1fdd7989}</Project>
       <Name>CommandCenter.Infrastructure</Name>

@@ -1,6 +1,7 @@
-﻿using System;
+﻿using CommandCenter.Infrastructure;
+using System;
 
-namespace CommandCenter.Infrastructure.Tests.MockCommands {
+namespace CommandCenter.Tests.MockCommands {
     public class MockIsUndoableThrowingExceptionCommand : BaseCommand {
         public override bool IsUndoable => throw new NotImplementedException();
 

@@ -1,7 +1,7 @@
 ﻿using CommandCenter.Infrastructure;
 using System;
 
-namespace CommandCenter.InfrastructureTests.MockCommands {
+namespace CommandCenter.Tests.MockCommands {
     public class MockCommandWithCleanupThrowingException : BaseCommand {
         public override bool IsUndoable => true;
 

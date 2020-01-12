@@ -1,4 +1,6 @@
-﻿namespace CommandCenter.Infrastructure.Tests.MockCommands {
+﻿using CommandCenter.Infrastructure;
+
+namespace CommandCenter.Tests.MockCommands {
     public class MockSucceedingCommand : BaseCommand {
         public override bool IsUndoable => true;
 

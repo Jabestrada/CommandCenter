@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using CommandCenter.Infrastructure;
 
-namespace CommandCenter.Infrastructure.Tests.MockCommands {
+namespace CommandCenter.Tests.MockCommands {
     public class MockFailingCommand : BaseCommand {
         public override bool IsUndoable => true;
 

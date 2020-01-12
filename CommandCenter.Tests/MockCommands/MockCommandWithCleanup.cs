@@ -1,7 +1,7 @@
 ﻿using CommandCenter.Infrastructure;
 using System.Threading;
 
-namespace CommandCenter.InfrastructureTests.MockCommands {
+namespace CommandCenter.Tests.MockCommands {
     public class MockCommandWithCleanup : BaseCommand {
         public override bool IsUndoable => true;
 

@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using CommandCenter.Infrastructure;
+using System;
 
-namespace CommandCenter.Infrastructure.Tests.MockCommands {
+namespace CommandCenter.Tests.MockCommands {
     public class MockCommandWithNonDefaultConstructor : BaseCommand {
         private readonly string _dummyArgs;
         public MockCommandWithNonDefaultConstructor(string dummyArgs) {

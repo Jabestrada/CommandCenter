@@ -16,7 +16,7 @@ namespace CommandCenter.UI.CmdLine {
             catch (Exception exc) {
                 Console.WriteLine($"Commands FAILED with unhandled exception: {exc.Message}");
             }
-            Console.WriteLine("Press any key to exit");
+            Console.WriteLine("Press Enter key to exit...");
             Console.ReadLine();
         }
 

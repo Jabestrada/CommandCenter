@@ -1,10 +1,6 @@
 ﻿using CommandCenter.Infrastructure;
 using CommandCenter.Infrastructure.Configuration;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
 
 namespace CommandCenter.UI.CmdLine {

@@ -8,8 +8,8 @@
     <ProjectGuid>{B1DFBFC3-63C3-4F53-AA0D-AB1A3AD775B9}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CommandCenter.InfrastructureTests</RootNamespace>
-    <AssemblyName>CommandCenter.Infrastructure.Tests</AssemblyName>
+    <RootNamespace>CommandCenter.Tests</RootNamespace>
+    <AssemblyName>CommandCenter.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>

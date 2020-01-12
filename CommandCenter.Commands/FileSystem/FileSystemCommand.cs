@@ -1,0 +1,21 @@
+﻿using System.IO;
+
+namespace CommandCenter.Commands.FileSystem {
+    public class FileSystemCommand : IFileSystemCommand {
+        public void FileCopy(string source, string destination) {
+            File.Copy(source, destination);
+        }
+
+        public void FileDelete(string filename) {
+            File.Delete(filename);
+        }
+
+        public bool FileExists(string filename) {
+            return File.Exists(filename);
+        }
+
+        public void FileMove(string sourceFilename, string destinationFilename) {
+            File.Move(sourceFilename, sourceFilename);
+        }
+    }
+}

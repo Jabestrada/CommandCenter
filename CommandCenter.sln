@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommandCenter.Commands", "C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommandCenter.UI.CmdLine", "CommandCenter.UI.Console\CommandCenter.UI.CmdLine.csproj", "{458D7022-F587-44F1-B019-48A38ACE3790}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommandCenter.Infrastructure.Tests", "CommandCenter.Infrastructure.Tests\CommandCenter.Infrastructure.Tests.csproj", "{B1DFBFC3-63C3-4F53-AA0D-AB1A3AD775B9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommandCenter.Tests", "CommandCenter.Tests\CommandCenter.Tests.csproj", "{B1DFBFC3-63C3-4F53-AA0D-AB1A3AD775B9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

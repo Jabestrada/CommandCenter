@@ -9,7 +9,7 @@ namespace CommandCenter.Infrastructure.Tests {
         [TestMethod]
         public void itShouldCreateCorrectlyConfiguredCommands() {
             var cmdConfiguration = new CommandConfiguration {
-                TypeActivationName = "CommandCenter.Infrastructure.Tests, CommandCenter.Infrastructure.Tests.MockCommands.MockSucceedingCommand"
+                TypeActivationName = "CommandCenter.Tests, CommandCenter.Tests.MockCommands.MockSucceedingCommand"
             };
             var cmdConfigurations = new List<CommandConfiguration>();
             cmdConfigurations.Add(cmdConfiguration);
@@ -28,7 +28,7 @@ namespace CommandCenter.Infrastructure.Tests {
         [TestMethod]
         public void itShouldCreateCommandsWithNonDefaultConstructor() {
             var cmdConfiguration = new CommandConfiguration {
-                TypeActivationName = "CommandCenter.Infrastructure.Tests, CommandCenter.Infrastructure.Tests.MockCommands.MockCommandWithNonDefaultConstructor"
+                TypeActivationName = "CommandCenter.Tests, CommandCenter.Tests.MockCommands.MockCommandWithNonDefaultConstructor"
             };
             cmdConfiguration.ConstructorArgs.Add("arg1", "dummy constructorArg value 1");
 
@@ -45,7 +45,7 @@ namespace CommandCenter.Infrastructure.Tests {
         [ExpectedException(typeof(TypeLoadFailedException))]
         public void itShouldRaiseExceptionWhenConstructorArgsAreWrong() {
             var cmdConfiguration = new CommandConfiguration {
-                TypeActivationName = "CommandCenter.Infrastructure.Tests, CommandCenter.Infrastructure.Tests.MockCommands.MockCommandWithNonDefaultConstructor"
+                TypeActivationName = "CommandCenter.Tests, CommandCenter.Tests.MockCommands.MockCommandWithNonDefaultConstructor"
             };
             var cmdConfigurations = new List<CommandConfiguration>();
             cmdConfigurations.Add(cmdConfiguration);
@@ -71,7 +71,7 @@ namespace CommandCenter.Infrastructure.Tests {
         [TestMethod]
         [ExpectedException(typeof(TypeLoadFailedException))]
         public void itShouldRaiseExceptionWhenTypeLoadingFails() {
-            var nonExistingTypeName = "CommandCenter.Infrastructure.Tests, NoSuchType";
+            var nonExistingTypeName = "CommandCenter.Tests, NoSuchType";
             var cmdConfiguration = new CommandConfiguration {
                 TypeActivationName = nonExistingTypeName
             };

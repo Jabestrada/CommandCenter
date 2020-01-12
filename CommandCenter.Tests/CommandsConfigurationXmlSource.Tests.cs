@@ -11,7 +11,7 @@ namespace CommandCenter.Infrastructure.Tests {
             var xmlConfig = @"
                 <commands>
                     <command>
-                        <typeName>CommandCenter.Infrastructure.Tests, CommandCenter.Infrastructure.Tests.MockCommands.MockCommandWithNonDefaultConstructor</typeName>
+                        <typeName>CommandCenter.Tests, CommandCenter.Tests.MockCommands.MockCommandWithNonDefaultConstructor</typeName>
                         <ctorArgs>
                             <ctorArg name='dummyName' value='dummyValue' />
                         </ctorArgs>

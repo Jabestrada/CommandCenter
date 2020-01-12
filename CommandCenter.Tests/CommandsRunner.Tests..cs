@@ -1,7 +1,5 @@
-using CommandCenter.Infrastructure.Tests.MockCommands;
-using CommandCenter.InfrastructureTests.MockCommands;
+using CommandCenter.Tests.MockCommands;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 

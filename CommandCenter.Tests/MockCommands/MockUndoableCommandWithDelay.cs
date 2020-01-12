@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using CommandCenter.Infrastructure;
 using System.Threading;
 
-namespace CommandCenter.Infrastructure.Tests.MockCommands {
+namespace CommandCenter.Tests.MockCommands {
     public class MockUndoableCommandWithUndoDelay : BaseCommand {
         public override bool IsUndoable => true;
 

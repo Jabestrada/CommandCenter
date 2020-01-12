@@ -1,4 +1,5 @@
-﻿using CommandCenter.Infrastructure;
+﻿using CommandCenter.Commands.FileSystem;
+using CommandCenter.Infrastructure;
 using System;
 using System.IO;
 
@@ -7,8 +8,14 @@ namespace CommandCenter.Commands {
         private readonly string _sourceFileName;
         private readonly string _backupDir;
         private string _backupFileName;
+        private IFileSystemCommand _fileSystemCommand = new FileSystemCommand();
 
         private bool _didDeleteSucceed = false;
+
+        public FileDeleteCommand(string sourceFileName, string backupDir, IFileSystemCommand fileSystemCommand) :
+            this(sourceFileName, backupDir) {
+            _fileSystemCommand = fileSystemCommand;
+        }
         public FileDeleteCommand(string sourceFileName, string backupDir) {
             _sourceFileName = sourceFileName;
             _backupDir = backupDir;
@@ -16,11 +23,13 @@ namespace CommandCenter.Commands {
         public override bool IsUndoable => true;
 
         public override void Cleanup() {
-            if (File.Exists(_backupFileName)) File.Delete(_backupFileName);
+            if (_fileSystemCommand.FileExists(_backupFileName)) {
+                _fileSystemCommand.FileDelete(_backupFileName);
+            }
         }
 
         public override void Do() {
-            if (!File.Exists(_sourceFileName)) {
+            if (!_fileSystemCommand.FileExists(_sourceFileName)) {
                 SendReport($"Did not delete {_sourceFileName} because it doesn't exist", ReportType.DoneTaskWithSuccess);
                 return;
             }
@@ -29,7 +38,7 @@ namespace CommandCenter.Commands {
             _backupFileName = Path.Combine(_backupDir, $"{fileNameOnly}.backup.{Id}");
 
             try {
-                File.Copy(_sourceFileName, _backupFileName);
+                _fileSystemCommand.FileCopy(_sourceFileName, _backupFileName);
                 SendReport($"Created backup of file {_sourceFileName} to {_backupFileName}", ReportType.Progress);
             }
             catch (Exception exc) {
@@ -39,7 +48,7 @@ namespace CommandCenter.Commands {
 
             try {
                 SendReport($"Deleting file {_sourceFileName}...", ReportType.Progress);
-                File.Delete(_sourceFileName);
+                _fileSystemCommand.FileDelete(_sourceFileName);
                 SendReport($"Deleted file {_sourceFileName}", ReportType.DoneTaskWithSuccess);
                 _didDeleteSucceed = true;
             }
@@ -50,7 +59,7 @@ namespace CommandCenter.Commands {
 
         public override void Undo() {
             if (_didDeleteSucceed) {
-                File.Move(_backupFileName, _sourceFileName);
+                _fileSystemCommand.FileMove(_backupFileName, _sourceFileName);
             }
         }
     }
