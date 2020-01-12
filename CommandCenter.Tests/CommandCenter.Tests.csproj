@@ -50,9 +50,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CommandsBuilder.Tests.cs" />
-    <Compile Include="CommandsConfigurationXmlSource.Tests.cs" />
-    <Compile Include="CommandsRunner.Tests..cs" />
+    <Compile Include="CommandCenter.Infrastructure.Tests\CommandsBuilder.Tests.cs" />
+    <Compile Include="CommandCenter.Infrastructure.Tests\CommandsConfigurationXmlSource.Tests.cs" />
+    <Compile Include="CommandCenter.Infrastructure.Tests\CommandsRunner.Tests..cs" />
     <Compile Include="MockCommands\MockCommandWithCleanup.cs" />
     <Compile Include="MockCommands\MockCommandWithCleanupThrowingException.cs" />
     <Compile Include="MockCommands\MockCommandWithNonDefaultConstructor.cs" />

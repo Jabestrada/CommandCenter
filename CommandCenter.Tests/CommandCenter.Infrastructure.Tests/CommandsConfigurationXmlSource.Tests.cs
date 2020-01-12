@@ -1,6 +1,5 @@
 ﻿using CommandCenter.Infrastructure.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 using System.Xml;
 
 namespace CommandCenter.Infrastructure.Tests {
