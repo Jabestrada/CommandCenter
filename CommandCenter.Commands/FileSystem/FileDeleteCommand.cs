@@ -3,7 +3,7 @@ using CommandCenter.Infrastructure;
 using System;
 using System.IO;
 
-namespace CommandCenter.Commands {
+namespace CommandCenter.Commands.FileSystem {
     public class FileDeleteCommand : BaseCommand {
         private readonly string _sourceFileName;
         private readonly string _backupDir;
@@ -24,20 +24,17 @@ namespace CommandCenter.Commands {
         public override bool IsUndoable => true;
 
         public override void Do() {
-            if (!fileSourceFileExists() || !backupSucceeded()) return;
+            if (!fileSourceFileExists() || !createBackup()) return;
 
             deleteFile();
         }
 
         public override void Undo() {
-            if (_didDeleteSucceed) {
-                _fileSystemCommand.FileMove(_backupFilename, _sourceFileName);
-            }
+            doUndo();
         }
+
         public override void Cleanup() {
-            if (_fileSystemCommand.FileExists(_backupFilename)) {
-                _fileSystemCommand.FileDelete(_backupFilename);
-            }
+            doCleanup();
         }
 
         #region private methods
@@ -54,7 +51,31 @@ namespace CommandCenter.Commands {
             }
         }
 
-        private bool backupSucceeded() {
+        private void doUndo() {
+            if (_didDeleteSucceed) {
+                try {
+                    _fileSystemCommand.FileMove(_backupFilename, _sourceFileName);
+                    SendReport($"File {_sourceFileName} restored from backup {_backupFilename}", ReportType.UndoneTaskWithSuccess);
+                }
+                catch (Exception exc) {
+                    SendReport($"Failed to restore file {_sourceFileName} from backup {_backupFilename}. {exc.Message}", ReportType.UndoneTaskWithFailure);
+                }
+            }
+        }
+
+        private void doCleanup() {
+            if (!_fileSystemCommand.FileExists(_backupFilename)) return;
+
+            try {
+                _fileSystemCommand.FileDelete(_backupFilename);
+                SendReport($"Deleted backup file {_backupFilename}", ReportType.DoneCleanupWithSuccess);
+            }
+            catch (Exception exc) { 
+                SendReport($"Failed to delete backup file {_backupFilename}", ReportType.DoneCleanupWithFailure);
+            }
+        }
+
+        private bool createBackup() {
             var fileNameOnly = Path.GetFileName(_sourceFileName);
             _backupFilename = Path.Combine(_backupDir, $"{fileNameOnly}.backup.{Id}");
             try {
@@ -71,7 +92,7 @@ namespace CommandCenter.Commands {
 
         private bool fileSourceFileExists() {
             if (!_fileSystemCommand.FileExists(_sourceFileName)) {
-                SendReport($"Did not delete {_sourceFileName} because it doesn't exist", ReportType.DoneTaskWithSuccess);
+                SendReport($"Cannot delete {_sourceFileName} because it doesn't exist", ReportType.DoneTaskWithSuccess);
                 return false;
             }
             return true;
