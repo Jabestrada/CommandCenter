@@ -26,7 +26,7 @@ namespace CommandCenter.Infrastructure {
         #endregion
 
         public readonly string Id;
-
+        public bool DidCommandSucceed { get; protected set; }
         public BaseCommand() {
             Id = Guid.NewGuid().ToString();
         }

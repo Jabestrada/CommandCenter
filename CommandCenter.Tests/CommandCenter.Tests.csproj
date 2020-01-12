@@ -69,6 +69,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommandCenter.Commands.Tests\FileCopyCommand.Tests.cs" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

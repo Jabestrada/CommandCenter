@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommandLineProcess.cs" />
+    <Compile Include="FileSystem\BaseFileCommand.cs" />
     <Compile Include="FileSystem\FileCopyCommand.cs" />
     <Compile Include="FileSystem\FileDeleteCommand.cs" />
     <Compile Include="FileSystem\FileSystemCommands.cs" />

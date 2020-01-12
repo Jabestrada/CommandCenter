@@ -1,28 +1,20 @@
-﻿using CommandCenter.Commands.FileSystem;
-using CommandCenter.Infrastructure;
+﻿using CommandCenter.Infrastructure;
 using System;
 using System.IO;
 
 namespace CommandCenter.Commands.FileSystem {
-    public class FileDeleteCommand : BaseCommand {
-        private readonly string _sourceFileName;
-        private readonly string _backupDir;
-        private string _backupFilename;
-        private IFileSystemCommandsStrategy _fileSystemCommand = new FileSystemCommands();
-        private bool _didDeleteSucceed = false;
+    public class FileDeleteCommand : BaseFileCommand {
 
-        public string BackupFilename => _backupFilename;
-
-        public FileDeleteCommand(string sourceFileName, string backupDir, IFileSystemCommandsStrategy fileSystemCommand) :
+        public FileDeleteCommand(string sourceFileName, string backupDir, IFileSystemCommandsStrategy fileSystemCommands) :
             this(sourceFileName, backupDir) {
-            _fileSystemCommand = fileSystemCommand;
+            FileSystemCommands = fileSystemCommands;
         }
         public FileDeleteCommand(string sourceFileName, string backupDir) {
-            _sourceFileName = sourceFileName;
-            _backupDir = backupDir;
+            SourceFilename = sourceFileName;
+            BackupFolder = backupDir;
         }
-        public override bool IsUndoable => true;
 
+        public override bool IsUndoable => true;
         public override void Do() {
             if (!fileSourceFileExists() || !createBackup()) return;
 
@@ -40,59 +32,59 @@ namespace CommandCenter.Commands.FileSystem {
         #region private methods
         private void deleteFile() {
             try {
-                SendReport($"Deleting file {_sourceFileName}...", ReportType.Progress);
-                _fileSystemCommand.FileDelete(_sourceFileName);
-                SendReport($"Deleted file {_sourceFileName}", ReportType.DoneTaskWithSuccess);
-                _didDeleteSucceed = true;
+                SendReport($"Deleting file {SourceFilename}...", ReportType.Progress);
+                FileDelete(SourceFilename);
+                SendReport($"Deleted file {SourceFilename}", ReportType.DoneTaskWithSuccess);
+                DidCommandSucceed = true;
             }
             catch (Exception exc) {
-                _didDeleteSucceed = false;
-                SendReport($"Failed to delete {_sourceFileName}: {exc.Message}", ReportType.DoneTaskWithFailure);
+                DidCommandSucceed = false;
+                SendReport($"Failed to delete {SourceFilename}: {exc.Message}", ReportType.DoneTaskWithFailure);
             }
         }
 
         private void doUndo() {
-            if (_didDeleteSucceed) {
+            if (DidCommandSucceed) {
                 try {
-                    _fileSystemCommand.FileMove(_backupFilename, _sourceFileName);
-                    SendReport($"File {_sourceFileName} restored from backup {_backupFilename}", ReportType.UndoneTaskWithSuccess);
+                    FileMove(BackupFilename, SourceFilename);
+                    SendReport($"File {SourceFilename} restored from backup {BackupFilename}", ReportType.UndoneTaskWithSuccess);
                 }
                 catch (Exception exc) {
-                    SendReport($"Failed to restore file {_sourceFileName} from backup {_backupFilename}. {exc.Message}", ReportType.UndoneTaskWithFailure);
+                    SendReport($"Failed to restore file {SourceFilename} from backup {BackupFilename}. {exc.Message}", ReportType.UndoneTaskWithFailure);
                 }
             }
         }
 
         private void doCleanup() {
-            if (!_fileSystemCommand.FileExists(_backupFilename)) return;
+            if (!FileExists(BackupFilename)) return;
 
             try {
-                _fileSystemCommand.FileDelete(_backupFilename);
-                SendReport($"Deleted backup file {_backupFilename}", ReportType.DoneCleanupWithSuccess);
+                FileDelete(BackupFilename);
+                SendReport($"Deleted backup file {BackupFilename}", ReportType.DoneCleanupWithSuccess);
             }
             catch (Exception exc) { 
-                SendReport($"Failed to delete backup file {_backupFilename}", ReportType.DoneCleanupWithFailure);
+                SendReport($"Failed to delete backup file {BackupFilename}. {exc.Message}", ReportType.DoneCleanupWithFailure);
             }
         }
 
         private bool createBackup() {
-            var fileNameOnly = Path.GetFileName(_sourceFileName);
-            _backupFilename = Path.Combine(_backupDir, $"{fileNameOnly}.backup.{Id}");
+            var fileNameOnly = Path.GetFileName(SourceFilename);
+            BackupFilename = Path.Combine(BackupFolder, $"{fileNameOnly}.backup.{Id}");
             try {
-                _fileSystemCommand.FileCopy(_sourceFileName, _backupFilename);
-                SendReport($"Created backup of file {_sourceFileName} to {_backupFilename}", ReportType.Progress);
+                FileCopy(SourceFilename, BackupFilename);
+                SendReport($"Created backup of file {SourceFilename} to {BackupFilename}", ReportType.Progress);
                 return true;
             }
             catch (Exception exc) {
-                SendReport($"File delete aborted because attempt to backup file {_sourceFileName} to {_backupFilename} failed: {exc.Message}", ReportType.DoneTaskWithFailure);
+                SendReport($"File delete aborted because attempt to backup file {SourceFilename} to {BackupFilename} failed: {exc.Message}", ReportType.DoneTaskWithFailure);
                 return false;
             }
 
         }
 
         private bool fileSourceFileExists() {
-            if (!_fileSystemCommand.FileExists(_sourceFileName)) {
-                SendReport($"Cannot delete {_sourceFileName} because it doesn't exist", ReportType.DoneTaskWithSuccess);
+            if (!FileExists(SourceFilename)) {
+                SendReport($"Cannot delete {SourceFilename} because it doesn't exist", ReportType.DoneTaskWithSuccess);
                 return false;
             }
             return true;
