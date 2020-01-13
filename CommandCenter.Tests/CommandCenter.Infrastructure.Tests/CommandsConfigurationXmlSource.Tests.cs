@@ -44,9 +44,6 @@ namespace CommandCenter.Infrastructure.Tests {
             Assert.AreEqual(1, cmdConfigs.Count);
         }
 
-
-
-
         [TestMethod]
         [ExpectedException(typeof(CommandNodeNotFoundException))]
         public void itShouldRaiseExceptionWhenCommandNodeNotFound() {
@@ -139,6 +136,29 @@ namespace CommandCenter.Infrastructure.Tests {
                             <ctorArg value='someValue'/>
                             <!-- <ctorArg value='commentedOutForTesting'/> -->
                             <anotherNonCtorArgElement />
+                        </ctorArgs>
+                    </command>
+                </commands>
+                ";
+            XmlDocument xmlDoc = new XmlDocument();
+            xmlDoc.LoadXml(xmlConfig);
+            var xmlConfigSource = new CommandsConfigurationXmlSource(xmlDoc);
+
+            var cmdConfigs = xmlConfigSource.GetCommandConfigurations();
+
+            Assert.AreEqual(1, cmdConfigs.Count);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(DuplicateCtorArgNameException))]
+        public void itShouldRaiseExceptionWhenCtorArgsHasDuplicateName() {
+            var xmlConfig = @"
+                <commands>
+                    <command>
+                        <typeName>CommandCenter.Infrastructure.Tests, CommandCenter.Infrastructure.Tests.MockCommands.MockCommandWithNonDefaultConstructor</typeName>
+                        <ctorArgs>
+                            <ctorArg name='key1' value='someValue' />
+                            <ctorArg name='key1' value='someValue' />
                         </ctorArgs>
                     </command>
                 </commands>

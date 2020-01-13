@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommandCenter.Commands.Tests\FileDeleteCommand.Tests.cs" />
+    <Compile Include="CommandCenter.Commands.Tests\Zip7CompressCommand.Tests.cs" />
     <Compile Include="CommandCenter.Infrastructure.Tests\CommandsBuilder.Tests.cs" />
     <Compile Include="CommandCenter.Infrastructure.Tests\CommandsConfigurationXmlSource.Tests.cs" />
     <Compile Include="CommandCenter.Infrastructure.Tests\CommandsRunner.Tests..cs" />

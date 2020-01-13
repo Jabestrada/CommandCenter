@@ -42,6 +42,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommandLineProcess.cs" />
+    <Compile Include="FileZip\IFileCompressionStrategy.cs" />
+    <Compile Include="FileZip\Zip7CompressCommand.cs" />
     <Compile Include="FileSystem\BaseFileCommand.cs" />
     <Compile Include="FileSystem\FileCopyCommand.cs" />
     <Compile Include="FileSystem\FileDeleteCommand.cs" />

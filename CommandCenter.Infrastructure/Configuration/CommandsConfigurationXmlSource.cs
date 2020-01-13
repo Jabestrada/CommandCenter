@@ -36,6 +36,10 @@ namespace CommandCenter.Infrastructure.Configuration {
 
                 var ctorArgNameAttribute = ctorArgNode.Attributes["name"];
                 var ctorArgName = ctorArgNameAttribute != null ? ctorArgNameAttribute.Value : Guid.NewGuid().ToString();
+
+                if (commandConfig.ConstructorArgs.ContainsKey(ctorArgName)) {
+                    throw new DuplicateCtorArgNameException(ctorArgName);
+                }
                 commandConfig.ConstructorArgs.Add(ctorArgName, ctorArgValueAttribute.Value);
             }
         }
@@ -79,6 +83,13 @@ namespace CommandCenter.Infrastructure.Configuration {
     public class CtorValueAttributeNotFoundException : ArgumentException {
         public CtorValueAttributeNotFoundException()
             : base("ctorArg value attribute not found") {
+
+        }
+    }
+
+    public class DuplicateCtorArgNameException : ArgumentException {
+        public DuplicateCtorArgNameException (string ctorArgName)
+            : base($"Duplicate ctorArg name {ctorArgName} found in configuration") {
 
         }
     }
