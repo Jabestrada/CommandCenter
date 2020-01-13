@@ -5,8 +5,6 @@ using System.Text;
 
 namespace CommandCenter.Commands.FileZip {
     public class Zip7CompressCommand : BaseCommand, IFileCompressionStrategy {
-        //public bool DidTargetZipfileExistBeforeCompression { get; protected set; }
-
         protected IFileSystemCommandsStrategy FileSystemCommandsStrategy { get; set; }
         protected IFileCompressionStrategy FileCompressionStrategy { get; set; }
 
@@ -38,6 +36,12 @@ namespace CommandCenter.Commands.FileZip {
         public override bool IsUndoable => true;
 
         public override void Do() {
+            if (FileSystemCommandsStrategy.FileExists(TargetZipfilename)) {
+                SendReport($"Did not run {ExeLocation} because output file {TargetZipfilename} already exists", ReportType.DoneTaskWithFailure);
+                DidCommandSucceed = false;
+                return;
+            }
+
             var result = FileCompressionStrategy.DoCompression(TargetZipfilename, SourcesToZip);
             DidCommandSucceed = result == 0;
             SendReport($"{ExeLocation} exit code {result}",
@@ -80,7 +84,7 @@ namespace CommandCenter.Commands.FileZip {
         }
 
         public override void Undo() {
-
+            // TODO: Implement this...
         }
         public override void Cleanup() {
             // No cleanup

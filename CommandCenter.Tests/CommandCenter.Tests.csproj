@@ -56,6 +56,7 @@
     <Compile Include="CommandCenter.Infrastructure.Tests\CommandsConfigurationXmlSource.Tests.cs" />
     <Compile Include="CommandCenter.Infrastructure.Tests\CommandsRunner.Tests..cs" />
     <Compile Include="MockCommands\FileSystemCommand\FakeFileSystem.cs" />
+    <Compile Include="MockCommands\FileZip\MockFileCompressionStrategy.cs" />
     <Compile Include="MockCommands\MockCommandWithCleanup.cs" />
     <Compile Include="MockCommands\MockCommandWithCleanupThrowingException.cs" />
     <Compile Include="MockCommands\MockCommandWithNonDefaultConstructor.cs" />
