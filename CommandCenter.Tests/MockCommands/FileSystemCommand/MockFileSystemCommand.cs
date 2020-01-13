@@ -3,6 +3,7 @@ using System;
 
 namespace CommandCenter.Tests.MockCommands {
     public class MockFileSystemCommand : IFileSystemCommandsStrategy {
+
         public Func<string, bool> FileExistsFunc { get; set; }
         public Action<string, string> FileCopyFunc { get; set; }
         public Action<string> FileDeleteFunc { get; set; }

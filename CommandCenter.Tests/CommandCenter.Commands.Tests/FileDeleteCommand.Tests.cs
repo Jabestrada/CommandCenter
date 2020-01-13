@@ -1,6 +1,7 @@
 ﻿using CommandCenter.Commands.FileSystem;
 using CommandCenter.Infrastructure;
 using CommandCenter.Tests.MockCommands;
+using CommandCenter.Tests.MockCommands.FileSystemCommand;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
@@ -13,8 +14,9 @@ namespace CommandCenter.Tests.Commands {
         [TestMethod]
         public void itShouldSucceedIfSourceFileDoesNotExist() {
             var fileSysCommand = new MockFileSystemCommand();
-            fileSysCommand.FileExistsFunc = (filename) => false;
-            var fileDeleteCommand = new FileDeleteCommand(@"c:\dummysourcefile.txt", @"c:\dummybackupdir", fileSysCommand);
+            var fakeFileSystem = new FakeFileSystem(fileSysCommand);
+            var fileToDelete = @"c:\dummysourcefile.txt";
+            var fileDeleteCommand = new FileDeleteCommand(fileToDelete, @"c:\dummybackupdir", fileSysCommand);
             var reports = new List<CommandReport>();
             fileDeleteCommand.OnReportSent += (command, args) => {
                 reports.Add(new CommandReport {
@@ -25,7 +27,7 @@ namespace CommandCenter.Tests.Commands {
             };
 
             fileDeleteCommand.Do();
-
+            Assert.IsTrue(fileDeleteCommand.DidCommandSucceed);
             Assert.IsTrue(reports.Any(r => r.ReportType == ReportType.DoneTaskWithSuccess &&
                                            r.Reporter.Id == fileDeleteCommand.Id));
         }
@@ -49,6 +51,7 @@ namespace CommandCenter.Tests.Commands {
 
             fileDeleteCommand.Do();
 
+            Assert.IsFalse(fileDeleteCommand.DidCommandSucceed);
             Assert.IsTrue(reports.Any(r => r.ReportType == ReportType.DoneTaskWithFailure &&
                                            r.Reporter.Id == fileDeleteCommand.Id));
         }
@@ -74,74 +77,39 @@ namespace CommandCenter.Tests.Commands {
             };
 
             fileDeleteCommand.Do();
-
+            Assert.IsFalse(fileDeleteCommand.DidCommandSucceed);
             Assert.IsTrue(reports.Any(r => r.ReportType == ReportType.DoneTaskWithFailure &&
                                            r.Reporter.Id == fileDeleteCommand.Id));
         }
 
         [TestMethod]
         public void itShouldDeleteBackupFileOnCleanup() {
-            var fakeFileSystem = new List<string>();
             var fileSysCommand = new MockFileSystemCommand();
-            fileSysCommand.FileExistsFunc = (filename) => true;
-            fileSysCommand.FileDeleteFunc = (filename) => {
-                var theFile = fakeFileSystem.FirstOrDefault(f => f == filename);
-                if (theFile != null) {
-                    fakeFileSystem.Remove(theFile);
-                }
-            };
+            var fakeFileSystem = new FakeFileSystem(fileSysCommand);
 
-            var fileDeleteCommand = new FileDeleteCommand(@"c:\dummysourcefile.txt", @"c:\dummybackupdir", fileSysCommand);
-            var reports = new List<CommandReport>();
-            fileDeleteCommand.OnReportSent += (command, args) => {
-                reports.Add(new CommandReport {
-                    Reporter = command,
-                    Message = args.Message,
-                    ReportType = args.ReportType
-                });
-            };
-
+            var fileToDelete = @"c:\dummysourcefile.txt";
+            fakeFileSystem.AddFile(fileToDelete);
+            var fileDeleteCommand = new FileDeleteCommand(fileToDelete, @"c:\dummybackupdir", fileSysCommand);
 
             fileDeleteCommand.Do();
             fileDeleteCommand.Cleanup();
 
-            Assert.IsFalse(fakeFileSystem.Contains(fileDeleteCommand.BackupFilename));
+            Assert.IsFalse(fakeFileSystem.FileExists(fileDeleteCommand.BackupFilename));
         }
 
         [TestMethod]
         public void itShouldRestoreBackupOnUndo() {
-            var fakeFileSystem = new List<string>();
             var fileSysCommand = new MockFileSystemCommand();
-            fileSysCommand.FileExistsFunc = (filename) => {
-                return fakeFileSystem.Contains(filename);
-            };
-            fileSysCommand.FileDeleteFunc = (filename) => {
-                fakeFileSystem.Remove(filename);
-            };
-            fileSysCommand.FileCopyFunc = (sourceFile, destinationFile) => {
-                fakeFileSystem.Add(destinationFile);
-            };
-            fileSysCommand.FileMoveFunc = (sourceFile, destinationFile) => {
-                fakeFileSystem.Remove(sourceFile);
-                fakeFileSystem.Add(destinationFile);
-            };
+            var fakeFileSystem = new FakeFileSystem(fileSysCommand);
             var fileToDelete = @"c:\dummysourcefile.txt";
-            fakeFileSystem.Add(fileToDelete);
+            fakeFileSystem.AddFile(fileToDelete);
             var fileDeleteCommand = new FileDeleteCommand(fileToDelete, @"c:\dummybackupdir", fileSysCommand);
-            var reports = new List<CommandReport>();
-            fileDeleteCommand.OnReportSent += (command, args) => {
-                reports.Add(new CommandReport {
-                    Reporter = command,
-                    Message = args.Message,
-                    ReportType = args.ReportType
-                });
-            };
 
             fileDeleteCommand.Do();
-            Assert.IsFalse(fakeFileSystem.Contains(fileToDelete));
+            Assert.IsFalse(fakeFileSystem.FileExists(fileToDelete));
 
             fileDeleteCommand.Undo();
-            Assert.IsTrue(fakeFileSystem.Contains(fileToDelete));
+            Assert.IsTrue(fakeFileSystem.FileExists(fileToDelete));
         }
     }
 }

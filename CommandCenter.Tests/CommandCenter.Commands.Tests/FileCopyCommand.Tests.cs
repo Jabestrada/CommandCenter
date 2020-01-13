@@ -1,29 +1,93 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using CommandCenter.Commands.FileSystem;
+using CommandCenter.Tests.MockCommands;
+using CommandCenter.Tests.MockCommands.FileSystemCommand;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Collections.Generic;
 
-namespace CommandCenter.Tests.CommandCenter.Commands.Tests {
+namespace CommandCenter.Tests.Commands {
     [TestClass]
     public class FileCopyCommandTests {
         [TestMethod]
-        public void itShouldCopyFileIfSuccessful() {
-            //var fakeFileSystem = new List<string>();
-            //var fileSysCommand = new MockFileSystemCommand();
-            //fileSysCommand.FileExistsFunc = (filename) => {
-            //    return fakeFileSystem.Contains(filename);
-            //};
-            //fileSysCommand.FileDeleteFunc = (filename) => {
-            //    fakeFileSystem.Remove(filename);
-            //};
-            //fileSysCommand.FileCopyFunc = (sourceFile, destinationFile) => {
-            //    fakeFileSystem.Add(destinationFile);
-            //};
-            //fileSysCommand.FileMoveFunc = (sourceFile, destinationFile) => {
-            //    fakeFileSystem.Remove(sourceFile);
-            //    fakeFileSystem.Add(destinationFile);
-            //};
-            //var fileToCopy = @"c:\dummysourcefile.txt";
-            //fakeFileSystem.Add(fileToCopy);
-            //var fileDeleteCommand = new FileCopyCommand(fileToCopy, @"c:\dummybackupdir", fileSysCommand);
+        public void itShouldHaveCopiedFileIfSuccessful() {
+            var fileSysCommand = new MockFileSystemCommand();
+            var fakeFileSystem = new FakeFileSystem(fileSysCommand);
 
+            var fileToCopy = @"c:\dummysourcefile.txt";
+            var targetFileCopy = @"c:\somefolder\dummysourcefile.doc";
+            fakeFileSystem.AddFile(fileToCopy);
+            var fileCopyCommand = new FileCopyCommand(fileToCopy, targetFileCopy, @"c:\dummybackupdir", fileSysCommand);
+
+            fileCopyCommand.Do();
+
+            Assert.IsTrue(fileCopyCommand.DidCommandSucceed);
+            Assert.IsTrue(fakeFileSystem.FileExists(targetFileCopy));
+        }
+
+        [TestMethod]
+        public void itShouldFailIfSourceFileDoesNotExist() {
+            var fileSysCommand = new MockFileSystemCommand();
+            var fakeFileSystem = new FakeFileSystem(fileSysCommand);
+            var fileToCopy = @"c:\dummysourcefile.txt";
+            var targetFileCopy = @"c:\somefolder\dummysourcefile.doc";
+            var fileCopyCommand = new FileCopyCommand(fileToCopy, targetFileCopy, @"c:\dummybackupdir", fileSysCommand);
+
+            fileCopyCommand.Do();
+
+            Assert.IsFalse(fileCopyCommand.DidCommandSucceed);
+            Assert.IsFalse(fakeFileSystem.FileExists(targetFileCopy));
+        }
+
+        [TestMethod]
+        public void itShouldDeleteCopiedFileOnUndoIfCommandSucceeded() {
+            var fileSysCommand = new MockFileSystemCommand();
+            var fakeFileSystem = new FakeFileSystem(fileSysCommand);
+            var fileToCopy = @"c:\dummysourcefile.txt";
+            var targetFileCopy = @"c:\somefolder\dummysourcefile.doc";
+            fakeFileSystem.AddFile(fileToCopy);
+            var fileCopyCommand = new FileCopyCommand(fileToCopy, targetFileCopy, @"c:\dummybackupdir", fileSysCommand);
+
+            fileCopyCommand.Do();
+
+            Assert.IsTrue(fileCopyCommand.DidCommandSucceed);
+
+            fileCopyCommand.Undo();
+
+            Assert.IsTrue(!fakeFileSystem.FileExists(targetFileCopy));
+        }
+
+        [TestMethod]
+        public void itShouldNotDeleteCopiedFileOnUndoIfCommandFailed() {
+            var fileSysCommand = new MockFileSystemCommand();
+            var fakeFileSystem = new FakeFileSystem(fileSysCommand);
+            var fileToCopy = @"c:\dummysourcefile.txt";
+            var targetFileCopy = @"c:\somefolder\dummysourcefile.doc";
+            fakeFileSystem.AddFile(fileToCopy);
+            fakeFileSystem.AddFile(targetFileCopy);
+            var fileCopyCommand = new FileCopyCommand(fileToCopy, targetFileCopy, @"c:\dummybackupdir", fileSysCommand);
+
+            fileCopyCommand.Do();
+
+            Assert.IsFalse(fileCopyCommand.DidCommandSucceed);
+
+            fileCopyCommand.Undo();
+
+            Assert.IsTrue(fakeFileSystem.FileExists(targetFileCopy));
+        }
+
+        [TestMethod]
+        public void itShouldFailIfDestinationFileAlreadyExists() {
+            var fileSysCommand = new MockFileSystemCommand();
+            var fakeFileSystem = new FakeFileSystem(fileSysCommand);
+            var fileToCopy = @"c:\dummysourcefile.txt";
+            var targetFileCopy = @"c:\somefolder\dummysourcefile.doc";
+            fakeFileSystem.AddFile(fileToCopy);
+            fakeFileSystem.AddFile(targetFileCopy);
+            var fileCopyCommand = new FileCopyCommand(fileToCopy, targetFileCopy, @"c:\dummybackupdir", fileSysCommand);
+
+            fileCopyCommand.Do();
+
+            Assert.IsFalse(fileCopyCommand.DidCommandSucceed);
         }
     }
 }

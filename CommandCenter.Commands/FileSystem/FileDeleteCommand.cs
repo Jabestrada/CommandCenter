@@ -85,6 +85,7 @@ namespace CommandCenter.Commands.FileSystem {
         private bool fileSourceFileExists() {
             if (!FileExists(SourceFilename)) {
                 SendReport($"Cannot delete {SourceFilename} because it doesn't exist", ReportType.DoneTaskWithSuccess);
+                DidCommandSucceed = true;
                 return false;
             }
             return true;

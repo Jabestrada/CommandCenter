@@ -17,15 +17,46 @@ namespace CommandCenter.Commands.FileSystem {
         public override bool IsUndoable => true;
 
         public override void Do() {
-            throw new NotImplementedException();
+            if (!sourceFileExists() || destinationFileExists()) return;
+
+            try {
+                FileCopy(SourceFilename, TargetFilename);
+                SendReport($"Copied file {SourceFilename} to {TargetFilename}", ReportType.DoneTaskWithSuccess);
+                DidCommandSucceed = true;
+            }
+            catch (Exception exc) {
+                DidCommandSucceed = false;
+            }
+        }
+
+        private bool destinationFileExists() {
+            if (FileExists(TargetFilename)) {
+                SendReport("FileCopyCommand failed because destination file {SourceFilename} already exists", ReportType.DoneTaskWithFailure);
+                DidCommandSucceed = false;
+                return true;
+            }
+            return false;
+        }
+
+        private bool sourceFileExists() {
+            if (!FileExists(SourceFilename)) {
+                SendReport("FileCopyCommand failed because source file {SourceFilename} does not exist", ReportType.DoneTaskWithFailure);
+                DidCommandSucceed = false;
+                return false;
+            }
+            return true;
         }
 
         public override void Undo() {
-            throw new NotImplementedException();
+            if (DidCommandSucceed) {
+                FileDelete(TargetFilename);
+                SendReport($"Task undone by deleting file {TargetFilename}", ReportType.DoneCleanupWithSuccess);
+                return;
+            }
         }
 
         public override void Cleanup() {
-            throw new NotImplementedException();
+            // Nothing to do for cleanup
         }
     }
 }
