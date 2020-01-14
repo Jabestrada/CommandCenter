@@ -36,11 +36,20 @@ namespace CommandCenter.Commands.FileZip {
         public override bool IsUndoable => true;
 
         public override void Do() {
+            if (!zipExeFileExists()) return;
             if (targetFileExists()) return;
             if (!allSourcesExist()) return;
 
             var result = FileCompressionStrategy.DoCompression(TargetZipfilename, SourcesToZip);
             reportResult(result);
+        }
+
+        private bool zipExeFileExists() {
+            if (!FileSystemCommandsStrategy.FileExists(ExeLocation)) {
+                SendReport($"Executable {TargetZipfilename} not found", ReportType.DoneTaskWithFailure);
+                return false;
+            }
+            return true;
         }
 
         public override void Undo() {
