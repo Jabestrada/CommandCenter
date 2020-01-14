@@ -10,7 +10,6 @@ namespace CommandCenter.Tests.Commands {
         [TestMethod]
         public void itShouldSucceedIfSourceDiretoryDoesNotExist() {
             var fileSysCommand = new MockFileSystemCommand();
-            var fakeFileSystem = new FakeFileSystem(fileSysCommand);
             var dirToDelete = @"c:\dummyDir";
             var dirDeleteCommand = new DirectoryDeleteCommand(dirToDelete, @"c:\dummybackupdir", fileSysCommand);
 

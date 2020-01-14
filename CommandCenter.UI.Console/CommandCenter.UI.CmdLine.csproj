@@ -62,6 +62,10 @@
       <Project>{6a22c313-8995-4e5b-9c97-16fb1fdd7989}</Project>
       <Name>CommandCenter.Infrastructure</Name>
     </ProjectReference>
+    <ProjectReference Include="..\CommandCenter.Tests\CommandCenter.Tests.csproj">
+      <Project>{b1dfbfc3-63c3-4f53-aa0d-ab1a3ad775b9}</Project>
+      <Name>CommandCenter.Tests</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
