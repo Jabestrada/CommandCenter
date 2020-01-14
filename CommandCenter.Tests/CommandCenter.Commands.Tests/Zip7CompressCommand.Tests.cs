@@ -122,22 +122,5 @@ namespace CommandCenter.Tests.Commands {
 
         }
 
-        [TestMethod]
-        public void itShouldFailIfZipExeIsMissing() {
-            var zipExeFile = "dummy7zip.exe";
-            var targetZipFile = @"dummytargetZip.7z";
-            var source1 = "file1.txt";
-            var zip7FileCompressionCommand = new Zip7CompressCommand(zipExeFile, targetZipFile, source1);
-            zip7FileCompressionCommand.setFileCompressionStrategy(new MockFileCompressionStrategy(0));
-            var mockFileSysCommand = new MockFileSystemCommand();
-            zip7FileCompressionCommand.setFileSystemCommandsStrategy(mockFileSysCommand);
-            var fakeFileSystem = new FakeFileSystem(mockFileSysCommand);
-            fakeFileSystem.AddFile(source1);
-
-            zip7FileCompressionCommand.Do();
-
-            Assert.IsFalse(zip7FileCompressionCommand.DidCommandSucceed);
-
-        }
     }
 }
