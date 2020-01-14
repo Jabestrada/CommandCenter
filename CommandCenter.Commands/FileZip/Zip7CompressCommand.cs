@@ -36,16 +36,18 @@ namespace CommandCenter.Commands.FileZip {
         public override bool IsUndoable => true;
 
         public override void Do() {
-            if (FileSystemCommandsStrategy.FileExists(TargetZipfilename)) {
-                SendReport($"Did not run {ExeLocation} because output file {TargetZipfilename} already exists", ReportType.DoneTaskWithFailure);
-                DidCommandSucceed = false;
-                return;
-            }
+            if (targetFileExists()) return;
+            if (!allSourcesExist()) return;
 
             var result = FileCompressionStrategy.DoCompression(TargetZipfilename, SourcesToZip);
-            DidCommandSucceed = result == 0;
-            SendReport($"{ExeLocation} exit code {result}",
-                            DidCommandSucceed ? ReportType.DoneTaskWithSuccess : ReportType.DoneTaskWithFailure);
+            reportResult(result);
+        }
+
+        public override void Undo() {
+            if (DidCommandSucceed) FileSystemCommandsStrategy.FileDelete(TargetZipfilename);
+        }
+        public override void Cleanup() {
+            // No cleanup
         }
 
         public int DoCompression(string targetZipfilename, params string[] sourcesToZip) {
@@ -54,6 +56,33 @@ namespace CommandCenter.Commands.FileZip {
             var result = runCompression(arguments, out output, out error);
             sendReportIfNeeded(arguments, output, error);
             return result;
+        }
+
+        #region private methods
+        private void reportResult(int result) {
+            DidCommandSucceed = result == 0;
+            SendReport($"{ExeLocation} exit code {result}",
+                            DidCommandSucceed ? ReportType.DoneTaskWithSuccess : ReportType.DoneTaskWithFailure);
+        }
+
+        private bool allSourcesExist() {
+            foreach (var source in SourcesToZip) {
+                if (!FileSystemCommandsStrategy.FileExists(source) && !FileSystemCommandsStrategy.DirectoryExists(source)) {
+                    SendReport($"Did not run {ExeLocation} because source file/folder {source} does not exist", ReportType.DoneTaskWithFailure);
+                    DidCommandSucceed = false;
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        private bool targetFileExists() {
+            if (FileSystemCommandsStrategy.FileExists(TargetZipfilename)) {
+                SendReport($"Did not run {ExeLocation} because output file {TargetZipfilename} already exists", ReportType.DoneTaskWithFailure);
+                DidCommandSucceed = false;
+                return true;
+            }
+            return false;
         }
 
         private void sendReportIfNeeded(string arguments, string output, string error) {
@@ -82,14 +111,6 @@ namespace CommandCenter.Commands.FileZip {
             }
             return $"a \"{TargetZipfilename}\" {escapedSourceFolders.ToString()}";
         }
-
-        public override void Undo() {
-            // TODO: Implement this...
-        }
-        public override void Cleanup() {
-            // No cleanup
-        }
-
-
+        #endregion
     }
 }
