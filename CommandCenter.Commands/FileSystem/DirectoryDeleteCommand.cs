@@ -10,7 +10,7 @@ namespace CommandCenter.Commands.FileSystem {
 
         private IFileSystemCommandsStrategy _fileSysCommand = new FileSystemCommands();
 
-        public DirectoryDeleteCommand(string dirToDelete, string backupDir, IFileSystemCommandsStrategy fileSysCommand) 
+        public DirectoryDeleteCommand(string dirToDelete, string backupDir, IFileSystemCommandsStrategy fileSysCommand)
             : this(dirToDelete, backupDir) {
             _fileSysCommand = fileSysCommand;
         }
@@ -27,7 +27,31 @@ namespace CommandCenter.Commands.FileSystem {
 
             deleteDirectory();
         }
+        public override void Undo() {
+            if (DidCommandSucceed) {
+                try {
+                    _fileSysCommand.DirectoryMove(BackedUpDirectory, SourceDirectory);
+                    SendReport($"Directory {SourceDirectory} restored from backup {BackedUpDirectory}", ReportType.UndoneTaskWithSuccess);
+                }
+                catch (Exception exc) {
+                    SendReport($"Failed to restore directory {SourceDirectory} from backup {BackedUpDirectory}. {exc.Message}", ReportType.UndoneTaskWithFailure);
+                }
+            }
+        }
 
+        public override void Cleanup() {
+            if (!_fileSysCommand.DirectoryExists(BackedUpDirectory)) return;
+
+            try {
+                _fileSysCommand.DirectoryDelete(BackedUpDirectory);
+                SendReport($"Deleted backup folder {BackedUpDirectory}", ReportType.DoneCleanupWithSuccess);
+            }
+            catch (Exception exc) {
+                SendReport($"Failed to delete backup folder {BackedUpDirectory}. {exc.Message}", ReportType.DoneCleanupWithFailure);
+            }
+        }
+
+        #region private
         private bool createBackup() {
             BackedUpDirectory = Path.Combine(BackupDirectory, $"{new DirectoryInfo(SourceDirectory).Name}.backup.{Id}");
             try {
@@ -54,29 +78,7 @@ namespace CommandCenter.Commands.FileSystem {
             }
         }
 
-        public override void Undo() {
-            if (DidCommandSucceed) {
-                try {
-                    _fileSysCommand.DirectoryMove(BackedUpDirectory, SourceDirectory);
-                    SendReport($"Directory {SourceDirectory} restored from backup {BackedUpDirectory}", ReportType.UndoneTaskWithSuccess);
-                }
-                catch (Exception exc) {
-                    SendReport($"Failed to restore directory {SourceDirectory} from backup {BackedUpDirectory}. {exc.Message}", ReportType.UndoneTaskWithFailure);
-                }
-            }
-        }
 
-        public override void Cleanup() {
-            if (!_fileSysCommand.DirectoryExists(BackedUpDirectory)) return;
-
-            try {
-                _fileSysCommand.DirectoryDelete(BackedUpDirectory);
-                SendReport($"Deleted backup folder {BackedUpDirectory}", ReportType.DoneCleanupWithSuccess);
-            }
-            catch (Exception exc) {
-                SendReport($"Failed to delete backup folder {BackedUpDirectory}. {exc.Message}", ReportType.DoneCleanupWithFailure);
-            }
-        }
 
         private bool sourceDirExists() {
             if (!_fileSysCommand.DirectoryExists(SourceDirectory)) {
@@ -86,6 +88,6 @@ namespace CommandCenter.Commands.FileSystem {
             }
             return true;
         }
-
+        #endregion
     }
 }
