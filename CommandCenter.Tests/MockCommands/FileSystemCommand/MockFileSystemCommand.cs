@@ -13,13 +13,15 @@ namespace CommandCenter.Tests.MockCommands {
         public Action<string> DirectoryDeleteFunc { get; set; }
         public Action<string, string> DirectoryCopyFunc { get; set; }
         public Action<string, string> DirectoryMoveFunc { get; set; }
+        public Action<string> DirectoryDeleteContentsOnlyFunc { get; set; }
+
 
         public void DirectoryDelete(string dirName) {
             if (DirectoryDeleteFunc != null) {
                 DirectoryDeleteFunc(dirName);
                 return;
             }
-            throw new NotImplementedException();
+            throw new NotImplementedException("MockFileSystemCommand.IFileSystemCommandsStrategy.DirectoryDelete not set");
         }
 
         public void DirectoryCopy(string sourceDirName, string destinationDirName) {
@@ -27,13 +29,15 @@ namespace CommandCenter.Tests.MockCommands {
                 DirectoryCopyFunc(sourceDirName, destinationDirName);
                 return;
             }
-            throw new NotImplementedException();
+            throw new NotImplementedException("MockFileSystemCommand.IFileSystemCommandsStrategy.DirectoryCopy not set");
         }
+
         public bool DirectoryExists(string dirName) {
             if (DirectoryExistsFunc != null) {
                 return DirectoryExistsFunc(dirName);
             }
-            throw new NotImplementedException();
+            throw new NotImplementedException("MockFileSystemCommand.IFileSystemCommandsStrategy.DirectoryExists not set");
+
         }
 
         public void FileCopy(string sourceFilename, string destinationFilename) {
@@ -41,7 +45,8 @@ namespace CommandCenter.Tests.MockCommands {
                 FileCopyFunc(sourceFilename, destinationFilename);
                 return;
             }
-            throw new NotImplementedException();
+            throw new NotImplementedException("MockFileSystemCommand.IFileSystemCommandsStrategy.FileCopy not set");
+
         }
 
         public void FileDelete(string filename) {
@@ -49,14 +54,16 @@ namespace CommandCenter.Tests.MockCommands {
                 FileDeleteFunc(filename);
                 return;
             }
-            throw new NotImplementedException();
+            throw new NotImplementedException("MockFileSystemCommand.IFileSystemCommandsStrategy.FileDelete not set");
+
         }
 
         public bool FileExists(string filename) {
             if (FileExistsFunc != null) {
                 return FileExistsFunc(filename);
             }
-            throw new NotImplementedException();
+            throw new NotImplementedException("MockFileSystemCommand.IFileSystemCommandsStrategy.FileExists not set");
+
         }
 
         public void FileMove(string sourceFilename, string destinationFilename) {
@@ -64,7 +71,8 @@ namespace CommandCenter.Tests.MockCommands {
                 FileMoveFunc(sourceFilename, destinationFilename);
                 return;
             }
-            throw new NotImplementedException();
+            throw new NotImplementedException("MockFileSystemCommand.IFileSystemCommandsStrategy.FileMove not set");
+
         }
 
         public void DirectoryMove(string sourceDir, string targetDir) {
@@ -72,7 +80,31 @@ namespace CommandCenter.Tests.MockCommands {
                 DirectoryMoveFunc(sourceDir, targetDir);
                 return;
             }
-            throw new NotImplementedException();
+            throw new NotImplementedException("MockFileSystemCommand.IFileSystemCommandsStrategy.DirectoryMove not set");
+        }
+
+        //public void DirectoryDeleteContentsOnly(string sourceDirectory) {
+        //    if (DirectoryDeleteContentsOnlyFunc != null) {
+        //        DirectoryDeleteContentsOnly(sourceDirectory);
+        //        return;
+        //    }
+        //    throw new NotImplementedException("MockFileSystemCommand.IFileSystemCommandsStrategy.DirectoryDeleteContentsOnly not set");
+        //}
+
+        //public void DirectoryDeleteContentsOnly(string sourceDirectory, Action<string, string> progressCallback) {
+        //    if (DirectoryDeleteContentsOnlyFunc != null) {
+        //        DirectoryDeleteContentsOnly(sourceDirectory, null);
+        //        return;
+        //    }
+        //    throw new NotImplementedException("MockFileSystemCommand.IFileSystemCommandsStrategy.DirectoryDeleteContentsOnly not set");
+        //}
+
+        public void DirectoryDeleteContentsOnly(string sourceDirectory, Action<string, FileSystemItemType> progressCallback) {
+            if (DirectoryDeleteContentsOnlyFunc != null) {
+                DirectoryDeleteContentsOnly(sourceDirectory, progressCallback);
+                return;
+            }
+            throw new NotImplementedException("MockFileSystemCommand.IFileSystemCommandsStrategy.DirectoryDeleteContentsOnly not set");
         }
     }
 }

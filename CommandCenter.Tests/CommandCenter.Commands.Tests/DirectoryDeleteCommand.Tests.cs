@@ -12,6 +12,7 @@ namespace CommandCenter.Tests.Commands {
             var fileSysCommand = new MockFileSystemCommand();
             var dirToDelete = @"c:\dummyDir";
             var dirDeleteCommand = new DirectoryDeleteCommand(dirToDelete, @"c:\dummybackupdir", fileSysCommand);
+            var fakeFileSystem = new FakeFileSystem(fileSysCommand);
 
             dirDeleteCommand.Do();
             Assert.IsTrue(dirDeleteCommand.DidCommandSucceed);

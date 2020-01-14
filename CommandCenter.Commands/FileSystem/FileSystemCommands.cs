@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 
 namespace CommandCenter.Commands.FileSystem {
     public class FileSystemCommands : IFileSystemCommandsStrategy {
@@ -52,9 +53,30 @@ namespace CommandCenter.Commands.FileSystem {
         public void DirectoryDelete(string dirName) {
             Directory.Delete(dirName, true);
         }
-
         public void DirectoryMove(string sourceDir, string targetDir) {
             Directory.Move(sourceDir, targetDir);
+        }
+
+        public void DirectoryDeleteContentsOnly(string sourceDirectory, Action<string, FileSystemItemType> progressCallback) {
+            DirectoryInfo sourceDir = new DirectoryInfo(sourceDirectory);
+
+            FileInfo[] files = sourceDir.GetFiles();
+            foreach (var file in files) {
+                FileDelete(file.FullName);
+                if (progressCallback != null) {
+                    progressCallback(file.FullName, FileSystemItemType.File);
+                }
+            }
+
+            DirectoryInfo[] dirs = sourceDir.GetDirectories();
+            foreach (var dir in dirs) {
+                DirectoryDelete(dir.FullName);
+                if (progressCallback != null) {
+                    progressCallback(dir.FullName, FileSystemItemType.Directory);
+                }
+            }
+
+
         }
     }
 }

@@ -39,7 +39,18 @@ namespace CommandCenter.Tests.MockCommands.FileSystemCommand {
                 _dirs.Remove(sourceDir);
                 _dirs.Add(targetDir);
             };
-
+            fileSysCommand.DirectoryDeleteContentsOnlyFunc = (sourceDir) => {
+                foreach (var file in _files) {
+                    if (file.StartsWith(sourceDir)) {
+                        _files.Remove(file);
+                    }
+                }
+                foreach (var dir in _dirs) {
+                    if (dir.StartsWith(sourceDir)) {
+                        _dirs.Remove(dir);
+                    }
+                }
+            };
         }
 
         public bool FileExists(string filename) {
