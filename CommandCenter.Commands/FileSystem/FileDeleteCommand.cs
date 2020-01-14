@@ -16,7 +16,7 @@ namespace CommandCenter.Commands.FileSystem {
 
         public override bool IsUndoable => true;
         public override void Do() {
-            if (!fileSourceFileExists() || !createBackup()) return;
+            if (!sourceFileExists() || !createBackup()) return;
 
             deleteFile();
         }
@@ -82,7 +82,7 @@ namespace CommandCenter.Commands.FileSystem {
 
         }
 
-        private bool fileSourceFileExists() {
+        private bool sourceFileExists() {
             if (!FileExists(SourceFilename)) {
                 SendReport($"Cannot delete {SourceFilename} because it doesn't exist", ReportType.DoneTaskWithSuccess);
                 DidCommandSucceed = true;

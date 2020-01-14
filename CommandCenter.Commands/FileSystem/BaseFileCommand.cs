@@ -1,9 +1,5 @@
 ﻿using CommandCenter.Infrastructure;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CommandCenter.Commands.FileSystem {
     public abstract class BaseFileCommand : BaseCommand {
@@ -12,6 +8,10 @@ namespace CommandCenter.Commands.FileSystem {
         public string BackupFolder { get; protected set; }
         public string BackupFilename { get; protected set; }
         public string SourceFilename { get; protected set; }
+
+        public BaseFileCommand() {
+            FileSystemCommands = new FileSystemCommands();
+        }
 
         public bool FileExists(string filename) {
             if (FileSystemCommands != null) {

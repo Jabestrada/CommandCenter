@@ -29,6 +29,17 @@ namespace CommandCenter.Tests.MockCommands.FileSystemCommand {
             fileSysCommand.DirectoryExistsFunc = (dirName) => {
                 return _dirs.Contains(dirName);
             };
+            fileSysCommand.DirectoryCopyFunc = (sourceDir, targetDir) => {
+                _dirs.Add(targetDir);
+            };
+            fileSysCommand.DirectoryDeleteFunc = (dir) => {
+                _dirs.Remove(dir);
+            };
+            fileSysCommand.DirectoryMoveFunc = (sourceDir, targetDir) => {
+                _dirs.Remove(sourceDir);
+                _dirs.Add(targetDir);
+            };
+
         }
 
         public bool FileExists(string filename) {
