@@ -56,6 +56,7 @@
     <Compile Include="FileSystem\IFileSystemCommandsStrategy.cs" />
     <Compile Include="FileZip\Zip7UncompressCommand.cs" />
     <Compile Include="MsBuilder.cs" />
+    <Compile Include="MsBuild\MsCleanBuildCommand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

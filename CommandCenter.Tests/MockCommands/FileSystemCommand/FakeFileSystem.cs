@@ -39,16 +39,27 @@ namespace CommandCenter.Tests.MockCommands.FileSystemCommand {
                 _dirs.Remove(sourceDir);
                 _dirs.Add(targetDir);
             };
-            fileSysCommand.DirectoryDeleteContentsOnlyFunc = (sourceDir) => {
+            fileSysCommand.DirectoryDeleteContentsOnlyFunc = (sourceDir, progresCallback) => {
+                var removeList = new List<string>();
+
                 foreach (var file in _files) {
                     if (file.StartsWith(sourceDir)) {
-                        _files.Remove(file);
+                        removeList.Add(file);
                     }
                 }
+                foreach (var item in removeList) {
+                    _files.Remove(item);
+                }
+
+                removeList = new List<string>();
                 foreach (var dir in _dirs) {
-                    if (dir.StartsWith(sourceDir)) {
-                        _dirs.Remove(dir);
+                    if (dir != sourceDir && dir.StartsWith(sourceDir)) {
+                        removeList.Add(sourceDir);
                     }
+                }
+
+                foreach (var item in removeList) {
+                    _dirs.Remove(item);
                 }
             };
         }

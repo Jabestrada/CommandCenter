@@ -13,7 +13,7 @@ namespace CommandCenter.Tests.MockCommands {
         public Action<string> DirectoryDeleteFunc { get; set; }
         public Action<string, string> DirectoryCopyFunc { get; set; }
         public Action<string, string> DirectoryMoveFunc { get; set; }
-        public Action<string> DirectoryDeleteContentsOnlyFunc { get; set; }
+        public Action<string, Action<string, FileSystemItemType>> DirectoryDeleteContentsOnlyFunc { get; set; }
 
 
         public void DirectoryDelete(string dirName) {
@@ -101,7 +101,7 @@ namespace CommandCenter.Tests.MockCommands {
 
         public void DirectoryDeleteContentsOnly(string sourceDirectory, Action<string, FileSystemItemType> progressCallback) {
             if (DirectoryDeleteContentsOnlyFunc != null) {
-                DirectoryDeleteContentsOnly(sourceDirectory, progressCallback);
+                DirectoryDeleteContentsOnlyFunc(sourceDirectory, progressCallback);
                 return;
             }
             throw new NotImplementedException("MockFileSystemCommand.IFileSystemCommandsStrategy.DirectoryDeleteContentsOnly not set");
