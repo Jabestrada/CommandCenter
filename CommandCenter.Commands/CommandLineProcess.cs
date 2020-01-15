@@ -9,7 +9,7 @@ namespace CommandCenter.Commands {
         public bool IsRunning { get; private set; }
         public int? ExitCode { get; private set; }
 
-        private Process Process;
+        private Process _process;
         private readonly object Locker = new object();
 
         public CommandLineProcess(string path, string arguments) {
@@ -22,7 +22,7 @@ namespace CommandCenter.Commands {
             lock (Locker) {
                 if (IsRunning) throw new Exception("The process is already running");
 
-                Process = new Process() {
+                _process = new Process() {
                     EnableRaisingEvents = true,
                     StartInfo = new ProcessStartInfo() {
                         FileName = Path,
@@ -34,26 +34,33 @@ namespace CommandCenter.Commands {
                     },
                 };
 
-                if (!Process.Start()) throw new Exception("Process could not be started");
-                output = Process.StandardOutput.ReadToEnd();
-                err = Process.StandardError.ReadToEnd();
-                Process.WaitForExit();
-                try { Process.Refresh(); } catch { }
-                return (ExitCode = Process.ExitCode).Value;
+                //_process.OutputDataReceived += (sender, args) => outputStreamCallback(args.Data);
+                //_process.ErrorDataReceived += (sender, args) => errorStreamCallback(args.Data);
+
+                if (!_process.Start()) throw new Exception("Process could not be started");
+                
+                //_process.BeginOutputReadLine();
+                //_process.BeginErrorReadLine();
+
+                output = _process.StandardOutput.ReadToEnd();
+                err = _process.StandardError.ReadToEnd();
+                _process.WaitForExit();
+                try { _process.Refresh(); } catch { }
+                return (ExitCode = _process.ExitCode).Value;
             }
         }
 
         public void Kill() {
             lock (Locker) {
-                try { Process?.Kill(); }
+                try { _process?.Kill(); }
                 catch { }
                 IsRunning = false;
-                Process = null;
+                _process = null;
             }
         }
 
         public void Dispose() {
-            try { Process?.Dispose(); }
+            try { _process?.Dispose(); }
             catch { }
         }
     }
