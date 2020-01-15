@@ -37,14 +37,17 @@ namespace CommandCenter.Commands.FileSystem {
         }
 
         public override void Cleanup() {
-            if (!FileSystemCommands.DirectoryExists(BackedUpDirectory)) return;
+            if (!FileSystemCommands.DirectoryExists(BackedUpDirectory)) { 
+                SendReport($"Cannot delete contents of folder {SourceDirectory} during cleanup because it does not exist", ReportType.DoneTaskWithSuccess);
+                return;
+            }
 
             try {
                 FileSystemCommands.DirectoryDelete(BackedUpDirectory);
-                SendReport($"Deleted backup folder {BackedUpDirectory}", ReportType.DoneCleanupWithSuccess);
+                SendReport($"Deleted backup folder {BackedUpDirectory} during cleanup", ReportType.DoneCleanupWithSuccess);
             }
             catch (Exception exc) {
-                SendReport($"Failed to delete backup folder {BackedUpDirectory}. {exc.Message}", ReportType.DoneCleanupWithFailure);
+                SendReport($"Failed to delete backup folder {BackedUpDirectory} during cleanup. {exc.Message}", ReportType.DoneCleanupWithFailure);
             }
         }
 

@@ -13,6 +13,7 @@ namespace CommandCenter.Commands.FileSystem {
 
         protected override void Delete() {
             try {
+                SendReport($"Deleting contents of folder {SourceDirectory} ...", ReportType.DoneTaskWithSuccess);
                 FileSystemCommands.DirectoryDeleteContentsOnly(SourceDirectory, deleteProgress);
                 DidCommandSucceed = true;
                 SendReport($"Deleted contents of folder {SourceDirectory}", ReportType.DoneTaskWithSuccess);
