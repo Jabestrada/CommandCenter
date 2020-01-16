@@ -51,7 +51,9 @@ namespace CommandCenter.Commands.MsBuild {
         }
 
         private void outputStreamReceiver(string message) {
-            SendReport($"WebPublish info => {message}", ReportType.Progress);
+            if (!string.IsNullOrWhiteSpace(message)) {
+                SendReport($"WebPublish info => {message}", ReportType.Progress);
+            }
         }
 
         private void errorStreamReceiver(string message) {

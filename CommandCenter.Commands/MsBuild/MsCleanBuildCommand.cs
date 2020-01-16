@@ -38,7 +38,9 @@ namespace CommandCenter.Commands.MsBuild {
         }
 
         private void outputStreamReceiver(string message) {
-            SendReport($"CleanAndBuild info => {message}", ReportType.Progress);
+            if (!string.IsNullOrWhiteSpace(message)) {
+                SendReport($"CleanAndBuild info => {message}", ReportType.Progress);
+            }
         }
 
         private void errorStreamReceiver(string message) {

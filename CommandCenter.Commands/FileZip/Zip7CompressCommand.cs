@@ -57,11 +57,15 @@ namespace CommandCenter.Commands.FileZip {
         }
 
         private void outputStreamReceiver(string message) {
-            SendReport($"7zip info => {message}", ReportType.Progress);
+            if (!string.IsNullOrWhiteSpace(message)) {
+                SendReport($"7zip info => {message}", ReportType.Progress);
+            }
         }
 
         private void errorStreamReceiver(string message) {
-            SendReport($"7zip ERROR => {message}", ReportType.Progress);
+            if (!string.IsNullOrWhiteSpace(message)) {
+                SendReport($"7zip ERROR => {message}", ReportType.Progress);
+            }
         }
 
         #region private methods

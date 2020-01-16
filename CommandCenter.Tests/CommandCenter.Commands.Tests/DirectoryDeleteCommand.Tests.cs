@@ -33,6 +33,7 @@ namespace CommandCenter.Tests.Commands {
             dirDeleteCommand.Do();
 
             Assert.IsFalse(dirDeleteCommand.DidCommandSucceed);
+            Assert.IsTrue(fakeFileSystem.DirectoryExists(sourceDir));
         }
 
         [TestMethod]
@@ -48,6 +49,7 @@ namespace CommandCenter.Tests.Commands {
 
             dirDeleteCommand.Do();
             Assert.IsFalse(dirDeleteCommand.DidCommandSucceed);
+            Assert.IsTrue(fakeFileSystem.DirectoryExists(sourceDir));
         }
 
         [TestMethod]
