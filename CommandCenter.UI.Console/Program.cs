@@ -6,12 +6,9 @@ namespace CommandCenter.UI.CmdLine {
         static void Main(string[] args) {
             var orchestrator = new CommandsOrchestrator("CommandCenter.config", onReportReceived);
             try {
-                if (orchestrator.Run()) {
-                    Console.WriteLine("Commands SUCCEEDED");
-                }
-                else {
-                    Console.WriteLine("Commands FAILED");
-                }
+                bool result = orchestrator.Run();
+                Console.WriteLine(Environment.NewLine);
+                Console.WriteLine("Commands " + (result ? "SUCCEEDED" : "FAILED"));
             }
             catch (Exception exc) {
                 Console.WriteLine($"Commands FAILED with unhandled exception: {exc.Message}");
