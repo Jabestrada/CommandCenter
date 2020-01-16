@@ -1,5 +1,6 @@
 ﻿using CommandCenter.Infrastructure;
 using System;
+using System.Collections.Generic;
 
 namespace CommandCenter.Commands.Svn {
     public class SvnUpdateCommand : BaseCommand {
@@ -18,14 +19,18 @@ namespace CommandCenter.Commands.Svn {
         }
 
         public override void Do() {
-            using (CommandLineProcess cmd = new CommandLineProcess(SvnCommand, " update " + DirectoryToUpdate)) {
+            var arguments = new List<string>() {
+                $"update",
+                $"\"{DirectoryToUpdate}\""
+            };
+            using (CommandLineProcess cmd = new CommandLineProcess(SvnCommand, string.Join(" ", arguments))) {
                 SendReport($"SVN update started on directory {DirectoryToUpdate}", ReportType.Progress);
 
                 int exitCode = cmd.Run(outputStreamReceiver, errorStreamReceiver);
 
                 DidCommandSucceed = exitCode == 0;
                 var result = DidCommandSucceed ? "SUCCEEDED" : "FAILED";
-                SendReport($"SvnUpdateCommand {result} with exit code {exitCode}",
+                SendReport($"SvnUpdateCommand {result} with exit code {exitCode} for directory {DirectoryToUpdate}",
                            DidCommandSucceed ? ReportType.DoneTaskWithSuccess : ReportType.DoneTaskWithFailure);
             }
         }
