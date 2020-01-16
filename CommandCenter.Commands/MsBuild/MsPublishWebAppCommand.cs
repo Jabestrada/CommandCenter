@@ -21,7 +21,7 @@ namespace CommandCenter.Commands.MsBuild {
         }
 
         public override void Do() {
-              List<string> arguments = new List<string>() {
+            List<string> arguments = new List<string>() {
                 $"/nologo",
                 $"\"{Source}\"",
                 $"/p:DeployOnBuild=true",
@@ -33,13 +33,8 @@ namespace CommandCenter.Commands.MsBuild {
             using (CommandLineProcess cmd = new CommandLineProcess(MsBuildExe, string.Join(" ", arguments))) {
                 SendReport($"MsPublishWebAppCommand started. Project: '{Source}', Configuration: {Configuration}", ReportType.Progress);
 
-                int exitCode = cmd.Run(out string processOutput, out string processError);
-                //if (!string.IsNullOrEmpty(processOutput)) {
-                //    SendReport($"Dumping output stream of MsCleanBuildCommand: {processOutput}", ReportType.Progress);
-                //}
-                if (!string.IsNullOrEmpty(processError)) {
-                    SendReport($"Dumping error stream of MsCleanBuildCommand: {processError}", ReportType.Progress);
-                }
+                int exitCode = cmd.Run(outputStreamReceiver, errorStreamReceiver);
+
                 DidCommandSucceed = exitCode == 0;
                 var result = DidCommandSucceed ? "SUCCEEDED" : "FAILED";
                 SendReport($"MsPublishWebAppCommand {result} with exit code {exitCode}",
@@ -53,6 +48,16 @@ namespace CommandCenter.Commands.MsBuild {
 
         public override void Cleanup() {
             // No-op
+        }
+
+        private void outputStreamReceiver(string message) {
+            SendReport($"WebPublish info => {message}", ReportType.Progress);
+        }
+
+        private void errorStreamReceiver(string message) {
+            if (!string.IsNullOrWhiteSpace(message)) { 
+               SendReport($"WebPublish ERROR => {message}", ReportType.Progress);
+            }
         }
     }
 }

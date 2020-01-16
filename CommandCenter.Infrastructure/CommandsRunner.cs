@@ -63,7 +63,7 @@ namespace CommandCenter.Infrastructure {
 
             while (InvokedCommandsStackForUndo.Any()) {
                 var invokedCommand = InvokedCommandsStackForUndo.Pop();
-                if (!commandIsUndoable(invokedCommand)) continue;
+                if (!isCommandUndoable(invokedCommand)) continue;
 
                 undoCommand(invokedCommand);
             }
@@ -90,7 +90,7 @@ namespace CommandCenter.Infrastructure {
             }
         }
 
-        private bool commandIsUndoable(BaseCommand invokedCommand) {
+        private bool isCommandUndoable(BaseCommand invokedCommand) {
             try {
                 return invokedCommand.IsUndoable;
             }

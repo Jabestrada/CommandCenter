@@ -52,10 +52,16 @@ namespace CommandCenter.Commands.FileZip {
 
         public int DoCompression(string targetZipfilename, params string[] sourcesToZip) {
             var arguments = buildCommandLineArguments();
-            string output, error;
-            var result = runCompression(arguments, out output, out error);
-            sendReportIfNeeded(arguments, output, error);
+            var result = runCompression(arguments, outputStreamReceiver, errorStreamReceiver);
             return result;
+        }
+
+        private void outputStreamReceiver(string message) {
+            SendReport($"7zip info => {message}", ReportType.Progress);
+        }
+
+        private void errorStreamReceiver(string message) {
+            SendReport($"7zip ERROR => {message}", ReportType.Progress);
         }
 
         #region private methods
@@ -85,19 +91,10 @@ namespace CommandCenter.Commands.FileZip {
             return false;
         }
 
-        private void sendReportIfNeeded(string arguments, string output, string error) {
-            if (output?.Length > 0) {
-                SendReport($"Dumping output stream of {ExeLocation} {arguments} => {output}", ReportType.Progress);
-            }
-            if (error?.Length > 0) {
-                SendReport($"Dumping error stream of {ExeLocation} {arguments} => {error}", ReportType.Progress);
-            }
-        }
-
-        private int runCompression(string arguments, out string output, out string error) {
+        private int runCompression(string arguments, Action<string> outputStreamReceiver, Action<string> errorStreamReceiver) {
             using (var cmdLine = new CommandLineProcess(ExeLocation, arguments)) {
                 SendReport($"Running command {ExeLocation} {arguments} ...", ReportType.Progress);
-                return cmdLine.Run(out output, out error);
+                return cmdLine.Run(outputStreamReceiver, errorStreamReceiver);
             }
         }
 

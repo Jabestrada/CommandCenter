@@ -21,7 +21,7 @@ namespace CommandCenter.UI.CmdLine {
         }
 
         private static void onReportReceived(BaseCommand command, CommandReportArgs args) {
-            Console.WriteLine($"{args.ReportType} : {args.Message}");
+            Console.WriteLine($"{args.ReportType}: {args.Message}");
         }
     }
 }

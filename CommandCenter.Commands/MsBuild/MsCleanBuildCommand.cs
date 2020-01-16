@@ -1,4 +1,5 @@
 ﻿using CommandCenter.Infrastructure;
+using System;
 using System.Collections.Generic;
 
 namespace CommandCenter.Commands.MsBuild {
@@ -27,17 +28,22 @@ namespace CommandCenter.Commands.MsBuild {
             using (CommandLineProcess cmd = new CommandLineProcess(MsBuildExe, string.Join(" ", arguments))) {
                 SendReport($"Build started. Solution: '{Source}', Configuration: {Configuration}", ReportType.Progress);
 
-                int exitCode = cmd.Run(out string processOutput, out string processError);
-                //if (!string.IsNullOrEmpty(processOutput)) {
-                //    SendReport($"Dumping output stream of MsCleanBuildCommand: {processOutput}", ReportType.Progress);
-                //}
-                if (!string.IsNullOrEmpty(processError)) {
-                    SendReport($"Dumping error stream of MsCleanBuildCommand: {processError}", ReportType.Progress);
-                }
+                int exitCode = cmd.Run(outputStreamReceiver, errorStreamReceiver);
+
                 DidCommandSucceed = exitCode == 0;
                 var result = DidCommandSucceed ? "SUCCEEDED" : "FAILED";
                 SendReport($"MsCleanBuildCommand {result} with exit code {exitCode}",
                            DidCommandSucceed ? ReportType.DoneTaskWithSuccess : ReportType.DoneTaskWithFailure);
+            }
+        }
+
+        private void outputStreamReceiver(string message) {
+            SendReport($"CleanAndBuild info => {message}", ReportType.Progress);
+        }
+
+        private void errorStreamReceiver(string message) {
+            if (!string.IsNullOrWhiteSpace(message)) {
+                SendReport($"CleanAndBuild ERROR => {message}", ReportType.Progress);
             }
         }
 
