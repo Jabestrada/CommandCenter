@@ -143,6 +143,27 @@ namespace CommandCenter.Infrastructure.Tests {
         }
 
         [TestMethod]
+        public void itShouldSetWasCommandStartedOnRanCommandsOnly() {
+            var commands = new List<BaseCommand>();
+            var command1= new MockSucceedingCommand();
+            commands.Add(command1);
+
+            var failingCmd = new MockFailingCommand();
+            commands.Add(failingCmd);
+
+            var command2  = new MockUndoableCommand();
+            commands.Add(command2);
+
+            var runner = new CommandsRunner(commands);
+            var result = runner.Run();
+
+            Assert.IsFalse(result);
+            Assert.IsTrue(command1.WasCommandStarted);
+            Assert.IsTrue(failingCmd.WasCommandStarted);
+            Assert.IsFalse(command2.WasCommandStarted);
+        }
+
+        [TestMethod]
         public void itShouldCallUndoOnFILOBasis() {
             var commands = new List<BaseCommand>();
             var undoableCommand1 = new MockUndoableCommand();
@@ -264,7 +285,7 @@ namespace CommandCenter.Infrastructure.Tests {
 
         [TestMethod]
         public void itShouldCallCleanupOnFILOBasis() {
-           var commands = new List<BaseCommand>();
+            var commands = new List<BaseCommand>();
             var command1 = new MockCommandWithCleanup();
             commands.Add(command1);
 

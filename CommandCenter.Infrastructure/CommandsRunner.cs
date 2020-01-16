@@ -48,6 +48,7 @@ namespace CommandCenter.Infrastructure {
             foreach (var command in Commands) {
                 InvokedCommandsStackForUndo.Push(command);
                 InvokedCommandsStackForCleanup.Push(command);
+                command.WasCommandStarted = true;
                 try {
                     command.Do();
                 }
