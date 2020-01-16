@@ -12,9 +12,11 @@ namespace CommandCenter.Commands.FileSystem {
         void DirectoryDelete(string dirName);
         void DirectoryDeleteContentsOnly(string sourceDirectory, Action<string, FileSystemItemType> progressCallback);
         void DirectoryMove(string sourceDir, string targetDir);
+
+        void DirectoryMoveContents(string sourceDir, string targetDir);
     }
 
-    public enum FileSystemItemType { 
+    public enum FileSystemItemType {
         File,
         Directory
     }

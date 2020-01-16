@@ -10,6 +10,7 @@ namespace CommandCenter.Tests.MockCommands {
 
         public override void Do() {
             SendReport(this, new CommandReportArgs("MockUndoThrowingExceptionCommand ReportType.DoneWithSuccess", ReportType.DoneTaskWithSuccess));
+            DidCommandSucceed = true;
         }
 
         public override void Undo() {

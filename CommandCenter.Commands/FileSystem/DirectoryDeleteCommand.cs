@@ -25,5 +25,9 @@ namespace CommandCenter.Commands.FileSystem {
                 SendReport($"Failed to delete directory {SourceDirectory}. {exc.Message}", ReportType.DoneTaskWithFailure);
             }
         }
+
+        protected override void RunUndo() {
+            FileSystemCommands.DirectoryMove(BackedUpDirectory, SourceDirectory);
+        }
     }
 }

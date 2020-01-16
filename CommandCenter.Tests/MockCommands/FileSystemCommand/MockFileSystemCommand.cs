@@ -13,6 +13,7 @@ namespace CommandCenter.Tests.MockCommands {
         public Action<string> DirectoryDeleteFunc { get; set; }
         public Action<string, string> DirectoryCopyFunc { get; set; }
         public Action<string, string> DirectoryMoveFunc { get; set; }
+        public Action<string, string> DirectoryMoveContentsFunc { get; set; }
         public Action<string, Action<string, FileSystemItemType>> DirectoryDeleteContentsOnlyFunc { get; set; }
 
 
@@ -83,28 +84,20 @@ namespace CommandCenter.Tests.MockCommands {
             throw new NotImplementedException("MockFileSystemCommand.IFileSystemCommandsStrategy.DirectoryMove not set");
         }
 
-        //public void DirectoryDeleteContentsOnly(string sourceDirectory) {
-        //    if (DirectoryDeleteContentsOnlyFunc != null) {
-        //        DirectoryDeleteContentsOnly(sourceDirectory);
-        //        return;
-        //    }
-        //    throw new NotImplementedException("MockFileSystemCommand.IFileSystemCommandsStrategy.DirectoryDeleteContentsOnly not set");
-        //}
-
-        //public void DirectoryDeleteContentsOnly(string sourceDirectory, Action<string, string> progressCallback) {
-        //    if (DirectoryDeleteContentsOnlyFunc != null) {
-        //        DirectoryDeleteContentsOnly(sourceDirectory, null);
-        //        return;
-        //    }
-        //    throw new NotImplementedException("MockFileSystemCommand.IFileSystemCommandsStrategy.DirectoryDeleteContentsOnly not set");
-        //}
-
         public void DirectoryDeleteContentsOnly(string sourceDirectory, Action<string, FileSystemItemType> progressCallback) {
             if (DirectoryDeleteContentsOnlyFunc != null) {
                 DirectoryDeleteContentsOnlyFunc(sourceDirectory, progressCallback);
                 return;
             }
             throw new NotImplementedException("MockFileSystemCommand.IFileSystemCommandsStrategy.DirectoryDeleteContentsOnly not set");
+        }
+
+        public void DirectoryMoveContents(string sourceDir, string targetDir) {
+            if (DirectoryMoveContentsFunc != null) {
+                DirectoryMoveContentsFunc(sourceDir, targetDir);
+                return;
+            }
+            throw new NotImplementedException();
         }
     }
 }

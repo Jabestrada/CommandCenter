@@ -5,6 +5,7 @@ using System.IO;
 namespace CommandCenter.Commands.FileSystem {
     public abstract class BaseDirectoryDeleteCommand : BaseDirectoryCommand {
         protected abstract void Delete();
+        protected abstract void RunUndo();
         
         public BaseDirectoryDeleteCommand(string dirToDelete, string backupDir, IFileSystemCommandsStrategy fileSysCommand)
             : this(dirToDelete, backupDir) {
@@ -27,7 +28,7 @@ namespace CommandCenter.Commands.FileSystem {
         public override void Undo() {
             if (DidCommandSucceed) {
                 try {
-                    FileSystemCommands.DirectoryMove(BackedUpDirectory, SourceDirectory);
+                    RunUndo();
                     SendReport($"Directory {SourceDirectory} restored from backup {BackedUpDirectory}", ReportType.UndoneTaskWithSuccess);
                 }
                 catch (Exception exc) {
@@ -36,6 +37,7 @@ namespace CommandCenter.Commands.FileSystem {
             }
         }
 
+        
         public override void Cleanup() {
             if (!FileSystemCommands.DirectoryExists(BackedUpDirectory)) { 
                 SendReport($"Cannot delete contents of folder {SourceDirectory} during cleanup because it does not exist", ReportType.DoneTaskWithSuccess);
@@ -55,6 +57,7 @@ namespace CommandCenter.Commands.FileSystem {
         private bool createBackup() {
             BackedUpDirectory = Path.Combine(BackupDirectory, $"{new DirectoryInfo(SourceDirectory).Name}.backup.dirDelete_{Id}.{Guid.NewGuid().ToString()}");
             try {
+                SendReport($"Creating backup of folder {SourceDirectory} to {BackedUpDirectory} ...", ReportType.Progress);
                 FileSystemCommands.DirectoryCopy(SourceDirectory, BackedUpDirectory);
                 SendReport($"Created backup of folder {SourceDirectory} to {BackedUpDirectory}", ReportType.Progress);
                 return true;

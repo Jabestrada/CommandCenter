@@ -1,9 +1,4 @@
-﻿using CommandCenter.Infrastructure;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace CommandCenter.Tests.MockCommands.FileSystemCommand {
     public class FakeFileSystem {
@@ -51,7 +46,7 @@ namespace CommandCenter.Tests.MockCommands.FileSystemCommand {
                     _files.Remove(item);
                 }
 
-                removeList = new List<string>();
+                removeList.Clear();
                 foreach (var dir in _dirs) {
                     if (dir != sourceDir && dir.StartsWith(sourceDir)) {
                         removeList.Add(sourceDir);
@@ -61,6 +56,44 @@ namespace CommandCenter.Tests.MockCommands.FileSystemCommand {
                 foreach (var item in removeList) {
                     _dirs.Remove(item);
                 }
+            };
+
+            fileSysCommand.DirectoryMoveContentsFunc = (sourceDir, targetDir) => {
+                var removeList = new List<string>();
+                var addList = new List<string>();
+
+                foreach (var file in _files) {
+                    if (file.StartsWith(sourceDir)) {
+                        removeList.Add(file);
+                        addList.Add(file.Replace(sourceDir, targetDir));
+                    }
+
+                }
+
+                foreach (var item in removeList) {
+                    _files.Remove(item);
+                }
+                foreach (var item in addList) {
+                    _files.Add(item);
+                }
+
+                removeList.Clear();
+                addList.Clear();
+                foreach (var dir in _dirs) {
+                    if (dir != sourceDir && dir.StartsWith(sourceDir)) {
+                        removeList.Add(sourceDir);
+                        addList.Add(sourceDir.Replace(sourceDir, targetDir));
+                    }
+                }
+
+                foreach (var item in removeList) {
+                    _dirs.Remove(item);
+                }
+
+                foreach (var item in addList) {
+                    _dirs.Add(item);
+                }
+              
             };
         }
 
@@ -72,7 +105,7 @@ namespace CommandCenter.Tests.MockCommands.FileSystemCommand {
         }
 
         public void AddDirectory(string dirName) {
-            _dirs.Add(dirName);   
+            _dirs.Add(dirName);
         }
 
         public bool DirectoryExists(string dirName) {

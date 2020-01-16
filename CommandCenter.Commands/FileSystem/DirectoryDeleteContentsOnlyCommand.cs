@@ -28,5 +28,10 @@ namespace CommandCenter.Commands.FileSystem {
             string deletedWhatType = type == FileSystemItemType.File ? "file" : "directory";
             SendReport($"Deleted {deletedWhatType} {deletedItem}", ReportType.Progress); 
         }
+
+        protected override void RunUndo() {
+            FileSystemCommands.DirectoryDeleteContentsOnly(SourceDirectory, null);
+            FileSystemCommands.DirectoryMoveContents(BackedUpDirectory, SourceDirectory);
+        }
     }
 }

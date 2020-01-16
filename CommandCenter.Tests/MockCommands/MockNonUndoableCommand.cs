@@ -10,6 +10,7 @@ namespace CommandCenter.Tests.MockCommands {
 
         public override void Do() {
             SendReport(this, new CommandReportArgs("MockNonUndoableCommand done with success message", ReportType.DoneTaskWithSuccess));
+            DidCommandSucceed = true;
         }
 
         public override void Undo() {
