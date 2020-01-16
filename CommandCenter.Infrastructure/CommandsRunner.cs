@@ -17,7 +17,9 @@ namespace CommandCenter.Infrastructure {
             registerCommands();
         }
 
-        public bool HasError => Reports.Any(r => r.ReportType == ReportType.DoneTaskWithFailure);
+        //public bool HasError => Reports.Any(r => r.ReportType == ReportType.DoneTaskWithFailure);
+
+        public bool HasError => Commands.Any(c => !c.DidCommandSucceed);
 
         public bool Run() {
             resetState();
@@ -56,7 +58,7 @@ namespace CommandCenter.Infrastructure {
                     reportCommand(command, ReportType.DoneTaskWithFailure, e.Message);
                 }
 
-                if (!didCommandSucceed(command)) break;
+                if (!command.DidCommandSucceed) break;
             }
         }
         private void undoCommandsIfNeeded() {
@@ -117,9 +119,6 @@ namespace CommandCenter.Infrastructure {
             InvokedCommandsStackForCleanup.Clear();
         }
 
-        private bool didCommandSucceed(BaseCommand command) {
-            return Reports.Any(r => r.Reporter.Id == command.Id && r.ReportType == ReportType.DoneTaskWithSuccess);
-        }
         #endregion
 
         #region BaseCommand implementation

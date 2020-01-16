@@ -11,6 +11,7 @@ namespace CommandCenter.Tests.MockCommands {
             SendReport(this, new CommandReportArgs($"MockSucceedingCommand {Id} progress message", ReportType.Progress, 50));
             SendReport(this, new CommandReportArgs($"MockSucceedingCommand {Id} progress message", ReportType.Progress, 100));
             SendReport(this, new CommandReportArgs($"MockSucceedingCommand {Id} success message", ReportType.DoneTaskWithSuccess));
+            DidCommandSucceed = true;
         }
 
         public override void Undo() {

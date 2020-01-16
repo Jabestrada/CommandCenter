@@ -12,6 +12,7 @@ namespace CommandCenter.Tests.MockCommands {
 
         public override void Do() {
             SendReport($"MockCommandWithCleanup {Id} Done task with success", ReportType.DoneTaskWithSuccess);
+            DidCommandSucceed = true;
         }
 
         public override void Undo() {
