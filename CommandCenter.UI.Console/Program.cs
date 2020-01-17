@@ -4,7 +4,7 @@ using System;
 namespace CommandCenter.UI.CmdLine {
     class Program {
         static void Main(string[] args) {
-            var orchestrator = new CommandsOrchestrator("CommandCenter.config", onReportReceived);
+            var orchestrator = new CommandsOrchestratorCmdLine("CommandCenter.config", onReportReceived);
             try {
                 bool result = orchestrator.Run();
                 Console.WriteLine(Environment.NewLine);

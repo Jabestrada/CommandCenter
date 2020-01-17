@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommandCenter.UI.CmdLine", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommandCenter.Tests", "CommandCenter.Tests\CommandCenter.Tests.csproj", "{B1DFBFC3-63C3-4F53-AA0D-AB1A3AD775B9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommandCenter.UI.WinForms", "CommandCenter.UI.WinForms\CommandCenter.UI.WinForms.csproj", "{A72005D0-511A-44D6-BE0F-A14368F9785D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{B1DFBFC3-63C3-4F53-AA0D-AB1A3AD775B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B1DFBFC3-63C3-4F53-AA0D-AB1A3AD775B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B1DFBFC3-63C3-4F53-AA0D-AB1A3AD775B9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A72005D0-511A-44D6-BE0F-A14368F9785D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A72005D0-511A-44D6-BE0F-A14368F9785D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A72005D0-511A-44D6-BE0F-A14368F9785D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A72005D0-511A-44D6-BE0F-A14368F9785D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

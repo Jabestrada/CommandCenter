@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{458D7022-F587-44F1-B019-48A38ACE3790}</ProjectGuid>
-    <OutputType>Exe</OutputType>
-    <RootNamespace>CommandCenter.UI.Console</RootNamespace>
-    <AssemblyName>CommandCenter.UI.CmdLine</AssemblyName>
+    <ProjectGuid>{A72005D0-511A-44D6-BE0F-A14368F9785D}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>CommandCenter.UI.WinForms</RootNamespace>
+    <AssemblyName>CommandCenter.UI.WinForms</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -39,19 +39,49 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CommandsOrchestratorCmdLine.cs" />
+    <Compile Include="CommandsOrchestratorWinForms.cs" />
+    <Compile Include="Main.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Main.Designer.cs">
+      <DependentUpon>Main.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
+    <EmbeddedResource Include="Main.resx">
+      <DependentUpon>Main.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Content Include="CommandCenter.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CommandCenter.Commands\CommandCenter.Commands.csproj">
@@ -61,10 +91,6 @@
     <ProjectReference Include="..\CommandCenter.Infrastructure\CommandCenter.Infrastructure.csproj">
       <Project>{6a22c313-8995-4e5b-9c97-16fb1fdd7989}</Project>
       <Name>CommandCenter.Infrastructure</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CommandCenter.Tests\CommandCenter.Tests.csproj">
-      <Project>{b1dfbfc3-63c3-4f53-aa0d-ab1a3ad775b9}</Project>
-      <Name>CommandCenter.Tests</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
