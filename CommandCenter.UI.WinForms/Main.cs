@@ -74,6 +74,8 @@ namespace CommandCenter.UI.WinForms {
         }
 
         private void loadCommands() {
+            commandsList.Nodes.Clear();
+
             if (string.IsNullOrWhiteSpace(txtConfigFile.Text)) return;
 
             if (!File.Exists(txtConfigFile.Text)) {
@@ -158,6 +160,7 @@ namespace CommandCenter.UI.WinForms {
             var response = fileDialog.ShowDialog();
             if (response == DialogResult.OK) {
                 txtConfigFile.Text = fileDialog.FileName;
+                loadCommands();
             }
         }
 
