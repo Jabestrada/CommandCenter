@@ -57,7 +57,7 @@
     <Compile Include="FileSystem\FileSystemCommands.cs" />
     <Compile Include="FileSystem\IFileSystemCommandsStrategy.cs" />
     <Compile Include="FileZip\Zip7UncompressCommand.cs" />
-    <Compile Include="MsBuild\MsCleanBuildCommand.cs" />
+    <Compile Include="MsBuild\MsCleanRebuildCommand.cs" />
     <Compile Include="MsBuild\MsPublishWebAppCommand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Svn\SvnUpdateCommand.cs" />

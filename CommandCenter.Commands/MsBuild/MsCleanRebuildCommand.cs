@@ -1,20 +1,26 @@
 ﻿using CommandCenter.Infrastructure;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace CommandCenter.Commands.MsBuild {
-    public class MsCleanBuildCommand : BaseCommand {
+    public class MsCleanRebuildCommand : BaseCommand {
+        private const string FAILED_PROJECT_BUILD_PATTERN = @"Done Building Project ""(.*\.csproj)"".*FAILED";
         public string MsBuildExe { get; protected set; }
         public string Source { get; protected set; }
         public string Configuration { get; protected set; }
+
+        public List<string> FailedProjectBuildResults { get; protected set; }
+
         //public string Platform { get; protected set; }
         public override bool IsUndoable => false;
-
-        public MsCleanBuildCommand(string msBuildExe, string sourceFile, string configuration) {
+        public MsCleanRebuildCommand(string msBuildExe, string sourceFile, string configuration) {
             MsBuildExe = msBuildExe;
             Source = sourceFile;        // can be .sln or .csproj
             //Platform = platform;
             Configuration = configuration;
+            FailedProjectBuildResults = new List<string>();
         }
 
         public override void Do() {
@@ -32,20 +38,34 @@ namespace CommandCenter.Commands.MsBuild {
 
                 DidCommandSucceed = exitCode == 0;
                 var result = DidCommandSucceed ? "SUCCEEDED" : "FAILED";
-                SendReport($"MsCleanBuildCommand {result} with exit code {exitCode}",
+                if (!DidCommandSucceed && FailedProjectBuildResults.Any()) {
+                    foreach (string failedBuildProject in FailedProjectBuildResults) {
+                        SendReport($"FAILED PROJECT BUILD: {failedBuildProject}", ReportType.Progress);
+                    }
+                }
+                SendReport($"MsCleanRebuildCommand {result} with exit code {exitCode}",
                            DidCommandSucceed ? ReportType.DoneTaskWithSuccess : ReportType.DoneTaskWithFailure);
             }
         }
 
         private void outputStreamReceiver(string message) {
             if (!string.IsNullOrWhiteSpace(message)) {
-                SendReport($"CleanAndBuild info => {message}", ReportType.Progress);
+                captureFailedProject(message);
+                SendReport($"MsCleanRebuild info => {message}", ReportType.Progress);
             }
         }
 
         private void errorStreamReceiver(string message) {
             if (!string.IsNullOrWhiteSpace(message)) {
-                SendReport($"CleanAndBuild ERROR => {message}", ReportType.Progress);
+                SendReport($"MsCleanRebuild ERROR => {message}", ReportType.Progress);
+            }
+        }
+
+        private void captureFailedProject(string message) {
+            var regEx = new Regex(FAILED_PROJECT_BUILD_PATTERN, RegexOptions.IgnoreCase);
+            var matches = regEx.Matches(message);
+            if (matches.Count > 0) {
+                FailedProjectBuildResults.Add(matches[0].Groups[1].Value);
             }
         }
     }
