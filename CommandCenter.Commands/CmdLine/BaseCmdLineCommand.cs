@@ -24,7 +24,7 @@ namespace CommandCenter.Commands.CmdLine {
         }
 
         private void runCommand() {
-            using (CommandLineProcess cmd = new CommandLineProcess(Executable, string.Join(" ", CommandLineArguments))) {
+            using (CommandLineProcessRunner cmd = new CommandLineProcessRunner(Executable, string.Join(" ", CommandLineArguments))) {
                 OnCommandWillRun();
                 ExitCode = cmd.Run(outputStreamReceiver, errorStreamReceiver);
                 DidCommandSucceed = ExitCode == 0;

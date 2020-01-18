@@ -1,4 +1,5 @@
-﻿using CommandCenter.Commands.FileSystem;
+﻿using CommandCenter.Commands.CmdLine;
+using CommandCenter.Commands.FileSystem;
 using CommandCenter.Infrastructure;
 using System;
 using System.Text;
@@ -93,7 +94,7 @@ namespace CommandCenter.Commands.FileZip {
         }
 
         private int runCompression(string arguments, Action<string> outputStreamReceiver, Action<string> errorStreamReceiver) {
-            using (var cmdLine = new CommandLineProcess(ExeLocation, arguments)) {
+            using (var cmdLine = new CommandLineProcessRunner(ExeLocation, arguments)) {
                 SendReport($"Running command {ExeLocation} {arguments} ...", ReportType.Progress);
                 return cmdLine.Run(outputStreamReceiver, errorStreamReceiver);
             }

@@ -2,8 +2,8 @@
 using System.Diagnostics;
 using System.IO;
 
-namespace CommandCenter.Commands {
-    public sealed class CommandLineProcess : IDisposable {
+namespace CommandCenter.Commands.CmdLine {
+    public sealed class CommandLineProcessRunner : IDisposable {
         public string Path { get; }
         public string Arguments { get; }
         public bool IsRunning { get; private set; }
@@ -12,7 +12,7 @@ namespace CommandCenter.Commands {
         private Process _process;
         private readonly object Locker = new object();
 
-        public CommandLineProcess(string path, string arguments) {
+        public CommandLineProcessRunner(string path, string arguments) {
             Path = path ?? throw new ArgumentNullException(nameof(path));
             if (!File.Exists(path)) throw new ArgumentException($"Executable not found: {path}");
             Arguments = arguments;

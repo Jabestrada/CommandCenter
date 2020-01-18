@@ -42,7 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CmdLine\BaseCmdLineCommand.cs" />
-    <Compile Include="CommandLineProcess.cs" />
+    <Compile Include="CmdLine\CommandLineProcessRunner.cs" />
     <Compile Include="Console\ConditionalConsolePauseCommand.cs" />
     <Compile Include="Console\ConsolePauseCommand.cs" />
     <Compile Include="FileSystem\BaseDirectoryCommand.cs" />
