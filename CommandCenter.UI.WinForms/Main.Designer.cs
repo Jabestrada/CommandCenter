@@ -171,7 +171,7 @@
             this.btnRun.Enabled = false;
             this.btnRun.Location = new System.Drawing.Point(1743, 1386);
             this.btnRun.Name = "btnRun";
-            this.btnRun.Size = new System.Drawing.Size(318, 56);
+            this.btnRun.Size = new System.Drawing.Size(318, 57);
             this.btnRun.TabIndex = 7;
             this.btnRun.Text = "Run";
             this.btnRun.UseVisualStyleBackColor = true;
