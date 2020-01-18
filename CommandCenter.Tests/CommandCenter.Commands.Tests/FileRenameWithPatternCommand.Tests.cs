@@ -6,7 +6,7 @@ using System;
 
 namespace CommandCenter.Tests.Commands {
     [TestClass]
-    public class FileRenameUsingPatternCommandTests {
+    public class FileRenameWithPatternCommandTests {
         [TestMethod]
         public void itShouldFailIfTargetFileAlreadyExists() {
             var fileSysCommand = new MockFileSystemCommand();
@@ -14,7 +14,7 @@ namespace CommandCenter.Tests.Commands {
 
             string inputFile = @"C:\someDir\someFile.txt";
             string pattern = "preText-[n]-postText.txt";
-            var fileRenameCommand = new FileRenameUsingPatternCommand(inputFile, pattern, fileSysCommand);
+            var fileRenameCommand = new FileRenameWithPatternCommand(inputFile, pattern, fileSysCommand);
             var outputFile = @"C:\someDir\preText-someFile-postText.txt";
 
             fakeFileSystem.AddFile(inputFile);
@@ -32,7 +32,7 @@ namespace CommandCenter.Tests.Commands {
 
             string inputFile = @"C:\someDir\someFile.txt";
             string pattern = "preText-[n]-postText.txt";
-            var fileRenameCommand = new FileRenameUsingPatternCommand(inputFile, pattern, fileSysCommand);
+            var fileRenameCommand = new FileRenameWithPatternCommand(inputFile, pattern, fileSysCommand);
 
             fileRenameCommand.Do();
 
@@ -46,7 +46,7 @@ namespace CommandCenter.Tests.Commands {
             var fileSysCommand = new MockFileSystemCommand();
             var fakeFileSystem = new FakeFileSystem(fileSysCommand);
             fakeFileSystem.AddFile(inputFile);
-            var renameFileCommand = new FileRenameUsingPatternCommand(inputFile, pattern, fileSysCommand);
+            var renameFileCommand = new FileRenameWithPatternCommand(inputFile, pattern, fileSysCommand);
 
             renameFileCommand.Do();
 
@@ -62,7 +62,7 @@ namespace CommandCenter.Tests.Commands {
             var fileSysCommand = new MockFileSystemCommand();
             var fakeFileSystem = new FakeFileSystem(fileSysCommand);
             fakeFileSystem.AddFile(inputFile);
-            var renameFileCommand = new FileRenameUsingPatternCommand(inputFile, pattern, fileSysCommand);
+            var renameFileCommand = new FileRenameWithPatternCommand(inputFile, pattern, fileSysCommand);
 
             renameFileCommand.Do();
 
@@ -78,7 +78,7 @@ namespace CommandCenter.Tests.Commands {
             var fileSysCommand = new MockFileSystemCommand();
             var fakeFileSystem = new FakeFileSystem(fileSysCommand);
             fakeFileSystem.AddFile(inputFile);
-            var renameFileCommand = new FileRenameUsingPatternCommand(inputFile, pattern, fileSysCommand);
+            var renameFileCommand = new FileRenameWithPatternCommand(inputFile, pattern, fileSysCommand);
 
             renameFileCommand.Do();
 
@@ -96,7 +96,7 @@ namespace CommandCenter.Tests.Commands {
             var fileSysCommand = new MockFileSystemCommand();
             var fakeFileSystem = new FakeFileSystem(fileSysCommand);
             fakeFileSystem.AddFile(inputFile);
-            var renameFileCommand = new FileRenameUsingPatternCommand(inputFile, pattern, fileSysCommand);
+            var renameFileCommand = new FileRenameWithPatternCommand(inputFile, pattern, fileSysCommand);
 
             renameFileCommand.Do();
 
@@ -115,7 +115,7 @@ namespace CommandCenter.Tests.Commands {
             var fileSysCommand = new MockFileSystemCommand();
             var fakeFileSystem = new FakeFileSystem(fileSysCommand);
             fakeFileSystem.AddFile(inputFile);
-            var renameFileCommand = new FileRenameUsingPatternCommand(inputFile, pattern, fileSysCommand);
+            var renameFileCommand = new FileRenameWithPatternCommand(inputFile, pattern, fileSysCommand);
 
             renameFileCommand.Do();
 
@@ -133,7 +133,7 @@ namespace CommandCenter.Tests.Commands {
             var fileSysCommand = new MockFileSystemCommand();
             var fakeFileSystem = new FakeFileSystem(fileSysCommand);
             fakeFileSystem.AddFile(inputFile);
-            var fileRenameCommand = new FileRenameUsingPatternCommand(inputFile, pattern, fileSysCommand);
+            var fileRenameCommand = new FileRenameWithPatternCommand(inputFile, pattern, fileSysCommand);
 
             fileRenameCommand.Do();
 
@@ -147,7 +147,7 @@ namespace CommandCenter.Tests.Commands {
             var fileSysCommand = new MockFileSystemCommand();
             var fakeFileSystem = new FakeFileSystem(fileSysCommand);
             fakeFileSystem.AddFile(inputFile);
-            var fileRenameCommand = new FileRenameUsingPatternCommand(inputFile, pattern, fileSysCommand);
+            var fileRenameCommand = new FileRenameWithPatternCommand(inputFile, pattern, fileSysCommand);
 
             fileRenameCommand.Do();
 
@@ -161,7 +161,7 @@ namespace CommandCenter.Tests.Commands {
             var fileSysCommand = new MockFileSystemCommand();
             var fakeFileSystem = new FakeFileSystem(fileSysCommand);
             fakeFileSystem.AddFile(inputFile);
-            var fileRenameCommand = new FileRenameUsingPatternCommand(inputFile, pattern, fileSysCommand);
+            var fileRenameCommand = new FileRenameWithPatternCommand(inputFile, pattern, fileSysCommand);
 
             fileRenameCommand.Do();
 
@@ -175,7 +175,7 @@ namespace CommandCenter.Tests.Commands {
             var fileSysCommand = new MockFileSystemCommand();
             var fakeFileSystem = new FakeFileSystem(fileSysCommand);
             fakeFileSystem.AddFile(inputFile);
-            var fileRenameCommand = new FileRenameUsingPatternCommand(inputFile, pattern, fileSysCommand);
+            var fileRenameCommand = new FileRenameWithPatternCommand(inputFile, pattern, fileSysCommand);
 
             fileRenameCommand.Do();
 
@@ -192,7 +192,7 @@ namespace CommandCenter.Tests.Commands {
             var fileSysCommand = new MockFileSystemCommand();
             var fakeFileSystem = new FakeFileSystem(fileSysCommand);
             fakeFileSystem.AddFile(inputFile);
-            var fileRenameCommand = new FileRenameUsingPatternCommand(inputFile, pattern, fileSysCommand);
+            var fileRenameCommand = new FileRenameWithPatternCommand(inputFile, pattern, fileSysCommand);
 
             fileRenameCommand.Do();
 
@@ -215,7 +215,7 @@ namespace CommandCenter.Tests.Commands {
             var fileSysCommand = new MockFileSystemCommand();
             var fakeFileSystem = new FakeFileSystem(fileSysCommand);
             fakeFileSystem.AddFile(inputFile);
-            var fileRenameCommand = new FileRenameUsingPatternCommand(inputFile, pattern, fileSysCommand);
+            var fileRenameCommand = new FileRenameWithPatternCommand(inputFile, pattern, fileSysCommand);
             var outputFile = @"C:\someDir\preText-someFile-postText.txt";
             fakeFileSystem.AddFile(outputFile);
 

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 
 namespace CommandCenter.Commands.FileSystem {
-    public class FileRenameUsingPatternCommand : BaseFileCommand {
+    public class FileRenameWithPatternCommand : BaseFileCommand {
         public string NewNamePattern { get; protected set; }
         public string ComputedNewName { get; protected set; }
         public DateTime DateTimeReference { get; protected set; }
@@ -12,12 +12,12 @@ namespace CommandCenter.Commands.FileSystem {
 
         protected Dictionary<string, Func<string, string, string, string>> Tokens;
 
-        public FileRenameUsingPatternCommand(string currentName, string newNamePattern) {
+        public FileRenameWithPatternCommand(string currentName, string newNamePattern) {
             SourceFilename = currentName;
             NewNamePattern = newNamePattern;
             initializeTokens();
         }
-        public FileRenameUsingPatternCommand(string currentName, string newNamePattern, IFileSystemCommandsStrategy fileSystemCommands)
+        public FileRenameWithPatternCommand(string currentName, string newNamePattern, IFileSystemCommandsStrategy fileSystemCommands)
                 : this(currentName, newNamePattern) {
             FileSystemCommands = fileSystemCommands;
         }
