@@ -15,7 +15,7 @@ namespace CommandCenter.Commands.FileSystem {
         }
 
         public void FileMove(string sourceFilename, string destinationFilename) {
-            File.Move(sourceFilename, sourceFilename);
+            File.Move(sourceFilename, destinationFilename);
         }
 
         public bool DirectoryExists(string dirName) {
