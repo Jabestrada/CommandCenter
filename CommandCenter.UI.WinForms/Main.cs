@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Security.Principal;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -22,8 +23,24 @@ namespace CommandCenter.UI.WinForms {
                 txtConfigFile.Text = defaultConfig;
             }
             loadCommands();
+            if (IsAnAdministrator()) {
+                this.Text = this.Text + " - launched as Admin";
+            }
+            else { 
+                this.Text = this.Text + " - not launched as Admin";
+            }
         }
 
+        bool IsAnAdministrator() {
+            try {
+                WindowsIdentity identity = WindowsIdentity.GetCurrent();
+                WindowsPrincipal principal = new WindowsPrincipal(identity);
+                return principal.IsInRole(WindowsBuiltInRole.Administrator);
+            }
+            catch {
+                return false;
+            }
+        }
         private void _reportReceiver(BaseCommand command, CommandReportArgs e) {
             appendStatusText($"{e.ReportType}: {e.Message}");
         }

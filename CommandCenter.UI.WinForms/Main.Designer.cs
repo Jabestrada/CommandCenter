@@ -60,7 +60,7 @@
             // btnLoadConfig
             // 
             this.btnLoadConfig.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnLoadConfig.Location = new System.Drawing.Point(1837, 27);
+            this.btnLoadConfig.Location = new System.Drawing.Point(1824, 27);
             this.btnLoadConfig.Name = "btnLoadConfig";
             this.btnLoadConfig.Size = new System.Drawing.Size(238, 57);
             this.btnLoadConfig.TabIndex = 2;
@@ -77,7 +77,7 @@
             this.commandsList.Location = new System.Drawing.Point(0, 0);
             this.commandsList.Name = "commandsList";
             this.commandsList.ShowRootLines = false;
-            this.commandsList.Size = new System.Drawing.Size(1093, 699);
+            this.commandsList.Size = new System.Drawing.Size(1078, 740);
             this.commandsList.TabIndex = 3;
             this.commandsList.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.commandsList_AfterCheck);
             this.commandsList.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.commandsList_AfterSelect);
@@ -95,8 +95,8 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.commandParametersList);
-            this.splitContainer1.Size = new System.Drawing.Size(2063, 699);
-            this.splitContainer1.SplitterDistance = 1093;
+            this.splitContainer1.Size = new System.Drawing.Size(2035, 740);
+            this.splitContainer1.SplitterDistance = 1078;
             this.splitContainer1.TabIndex = 4;
             // 
             // commandParametersList
@@ -115,7 +115,7 @@
             this.commandParametersList.RowHeadersVisible = false;
             this.commandParametersList.RowHeadersWidth = 102;
             this.commandParametersList.RowTemplate.Height = 40;
-            this.commandParametersList.Size = new System.Drawing.Size(966, 699);
+            this.commandParametersList.Size = new System.Drawing.Size(953, 740);
             this.commandParametersList.TabIndex = 0;
             // 
             // Column1
@@ -142,7 +142,7 @@
             this.statusWindow.Name = "statusWindow";
             this.statusWindow.ReadOnly = true;
             this.statusWindow.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.statusWindow.Size = new System.Drawing.Size(2063, 469);
+            this.statusWindow.Size = new System.Drawing.Size(2035, 498);
             this.statusWindow.TabIndex = 5;
             // 
             // splitContainer2
@@ -150,7 +150,7 @@
             this.splitContainer2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.splitContainer2.Location = new System.Drawing.Point(12, 113);
+            this.splitContainer2.Location = new System.Drawing.Point(26, 113);
             this.splitContainer2.Name = "splitContainer2";
             this.splitContainer2.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -161,17 +161,17 @@
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.statusWindow);
-            this.splitContainer2.Size = new System.Drawing.Size(2063, 1172);
-            this.splitContainer2.SplitterDistance = 699;
+            this.splitContainer2.Size = new System.Drawing.Size(2035, 1242);
+            this.splitContainer2.SplitterDistance = 740;
             this.splitContainer2.TabIndex = 6;
             // 
             // btnRun
             // 
             this.btnRun.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnRun.Enabled = false;
-            this.btnRun.Location = new System.Drawing.Point(1743, 1342);
+            this.btnRun.Location = new System.Drawing.Point(1743, 1386);
             this.btnRun.Name = "btnRun";
-            this.btnRun.Size = new System.Drawing.Size(318, 86);
+            this.btnRun.Size = new System.Drawing.Size(318, 56);
             this.btnRun.TabIndex = 7;
             this.btnRun.Text = "Run";
             this.btnRun.UseVisualStyleBackColor = true;
@@ -180,7 +180,7 @@
             // btnBrowseConfig
             // 
             this.btnBrowseConfig.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnBrowseConfig.Location = new System.Drawing.Point(1743, 27);
+            this.btnBrowseConfig.Location = new System.Drawing.Point(1738, 27);
             this.btnBrowseConfig.Name = "btnBrowseConfig";
             this.btnBrowseConfig.Size = new System.Drawing.Size(75, 57);
             this.btnBrowseConfig.TabIndex = 8;
@@ -193,13 +193,14 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(2087, 1493);
+            this.ClientSize = new System.Drawing.Size(2087, 1468);
             this.Controls.Add(this.btnBrowseConfig);
             this.Controls.Add(this.btnRun);
             this.Controls.Add(this.splitContainer2);
             this.Controls.Add(this.btnLoadConfig);
             this.Controls.Add(this.txtConfigFile);
             this.Name = "Main";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Command Center";
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
