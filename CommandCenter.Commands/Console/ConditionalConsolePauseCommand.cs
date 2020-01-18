@@ -11,9 +11,6 @@ namespace CommandCenter.Commands.Console {
         public ConditionalConsolePauseCommand(string messagePrompt) {
             MessagePrompt = messagePrompt;
         }
-        public override void Cleanup() {
-            // Nothing to clean up
-        }
 
         public override void Do() {
             System.Console.WriteLine(MessagePrompt);
@@ -29,10 +26,6 @@ namespace CommandCenter.Commands.Console {
             else { 
                 SendReport("User aborted execution of other commands", ReportType.DoneTaskWithFailure);
             }
-        }
-
-        public override void Undo() {
-            // Nothing to undo
         }
     }
 }
