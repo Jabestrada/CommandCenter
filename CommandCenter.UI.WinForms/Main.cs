@@ -53,15 +53,19 @@ namespace CommandCenter.UI.WinForms {
             try {
                 _loadedCommandConfigurations = _orchestrator.GetCommands(txtConfigFile.Text);
             }
-            catch (Exception exc) {
+            catch {
                 displayError($"File {txtConfigFile.Text} is not a valid Command Center configuration file");
                 return;
             }
+
             commandsList.Nodes.Clear();
             foreach (var command in _loadedCommandConfigurations) {
                 var commandName = new FullTypeNameEntry(command.TypeActivationName).TypeName;
-                var commandTypeNameOnly = commandName.Substring(commandName.LastIndexOf('.') + 1);
-                var cmdNode = commandsList.Nodes.Add(commandTypeNameOnly);
+                var commandDisplayText = commandName.Substring(commandName.LastIndexOf('.') + 1);
+                if (!string.IsNullOrWhiteSpace(command.ShortDescription)) {
+                    commandDisplayText += " - " + command.ShortDescription;
+                }
+                var cmdNode = commandsList.Nodes.Add(commandDisplayText);
                 cmdNode.Checked = true;
                 cmdNode.Tag = command;
             }
