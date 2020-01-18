@@ -14,10 +14,6 @@ namespace CommandCenter.Commands.Svn {
             DirectoryToUpdate = directoryToUpdate;
         }
 
-        public override void Cleanup() {
-            // None required
-        }
-
         public override void Do() {
             var arguments = new List<string>() {
                 $"update",
@@ -47,8 +43,5 @@ namespace CommandCenter.Commands.Svn {
             }
         }
 
-        public override void Undo() {
-            // None required
-        }
     }
 }

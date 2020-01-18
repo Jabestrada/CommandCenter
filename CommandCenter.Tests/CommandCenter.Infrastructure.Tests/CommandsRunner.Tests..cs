@@ -82,7 +82,7 @@ namespace CommandCenter.Infrastructure.Tests {
             Assert.IsFalse(result);
 
             // There should be no report from successfulCmd2 whatsoever because of failingCmd.
-            Assert.IsFalse(runner.Reports.Any(r => r.Reporter.Id == successfulCmd2.Id));
+            Assert.IsFalse(successfulCmd2.WasCommandStarted);
         }
 
         [TestMethod]
@@ -279,8 +279,14 @@ namespace CommandCenter.Infrastructure.Tests {
             var result = runner.Run();
 
             Assert.IsFalse(result);
+            Assert.IsTrue(command1.WasCommandStarted);
             Assert.IsTrue(runner.Reports.Any(r => isCleanupReport(r.ReportType) && r.Reporter.Id == command1.Id));
+
+
+            Assert.IsTrue(!command3.WasCommandStarted);
             Assert.IsFalse(runner.Reports.Any(r => isCleanupReport(r.ReportType) && r.Reporter.Id == command3.Id));
+
+
         }
 
         [TestMethod]

@@ -10,8 +10,6 @@ namespace CommandCenter.Tests.MockCommands {
 
         public override bool IsUndoable => true;
 
-        public override void Cleanup() {
-        }
 
         public override void Do() {
             SendReport(this, new CommandReportArgs($"Started work on ctor arg {_dummyArgs}", ReportType.Progress));

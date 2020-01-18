@@ -48,13 +48,5 @@ namespace CommandCenter.Commands.MsBuild {
                 SendReport($"CleanAndBuild ERROR => {message}", ReportType.Progress);
             }
         }
-
-        public override void Undo() {
-            // Do nothing
-        }
-
-        public override void Cleanup() {
-            // Do nothing
-        }
     }
 }

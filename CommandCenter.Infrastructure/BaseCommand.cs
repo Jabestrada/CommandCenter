@@ -20,8 +20,12 @@ namespace CommandCenter.Infrastructure {
     public abstract class BaseCommand : ICommand {
         #region ICommand
         public abstract void Do();
-        public abstract void Undo();
-        public abstract void Cleanup();
+        public virtual void Undo() {
+            throw new NotImplementedException();
+        }
+        public virtual void Cleanup() { 
+            // Empty default implementation
+        }
         public abstract bool IsUndoable { get; }
         #endregion
 
