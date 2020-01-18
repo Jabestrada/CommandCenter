@@ -46,9 +46,6 @@ namespace CommandCenter.Commands.FileZip {
         public override void Undo() {
             if (DidCommandSucceed) FileSystemCommandsStrategy.FileDelete(TargetZipfilename);
         }
-        public override void Cleanup() {
-            // No cleanup
-        }
 
         public int DoCompression(string targetZipfilename, params string[] sourcesToZip) {
             var arguments = buildCommandLineArguments();

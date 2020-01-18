@@ -1,47 +1,36 @@
-﻿using CommandCenter.Infrastructure;
-using System;
-using System.Collections.Generic;
+﻿using CommandCenter.Commands.CmdLine;
+using CommandCenter.Infrastructure;
 
 namespace CommandCenter.Commands.Svn {
-    public class SvnUpdateCommand : BaseCommand {
-
-        public string SvnCommand { get; protected set; }
+    public class SvnUpdateCommand : BaseCmdLineCommand {
         public string DirectoryToUpdate { get; protected set; }
         public override bool IsUndoable => false;
-
-        public SvnUpdateCommand(string svnCommand, string directoryToUpdate) {
-            SvnCommand = svnCommand;
+        public SvnUpdateCommand(string svnCommand, string directoryToUpdate) : base(){
+            Executable = svnCommand;
             DirectoryToUpdate = directoryToUpdate;
         }
 
-        public override void Do() {
-            var arguments = new List<string>() {
-                $"update",
-                $"\"{DirectoryToUpdate}\""
-            };
-            using (CommandLineProcess cmd = new CommandLineProcess(SvnCommand, string.Join(" ", arguments))) {
-                SendReport($"SVN update started on directory {DirectoryToUpdate}", ReportType.Progress);
-
-                int exitCode = cmd.Run(outputStreamReceiver, errorStreamReceiver);
-
-                DidCommandSucceed = exitCode == 0;
-                var result = DidCommandSucceed ? "SUCCEEDED" : "FAILED";
-                SendReport($"SvnUpdateCommand {result} with exit code {exitCode} for directory {DirectoryToUpdate}",
-                           DidCommandSucceed ? ReportType.DoneTaskWithSuccess : ReportType.DoneTaskWithFailure);
+        protected override void SetArguments() {
+            CommandLineArguments.Add("update");
+            CommandLineArguments.Add($"\"{DirectoryToUpdate}\"");
+        }
+        protected override void OnCommandWillRun() {
+            SendReport($"SVN update started on directory {DirectoryToUpdate}", ReportType.Progress);
+        }
+        protected override void OnCommandDidRun() {
+            var result = DidCommandSucceed ? "SUCCEEDED" : "FAILED";
+            SendReport($"SvnUpdateCommand {result} with exit code {ExitCode} for directory {DirectoryToUpdate}",
+                       DidCommandSucceed ? ReportType.DoneTaskWithSuccess : ReportType.DoneTaskWithFailure);
+        }
+        protected override void OnErrorStreamDataIn(string data) {
+            if (!string.IsNullOrWhiteSpace(data)) {
+                SendReport($"SvnUpdateCommand ERROR => {data}", ReportType.Progress);
             }
         }
-
-        private void errorStreamReceiver(string message) {
-            if (!string.IsNullOrWhiteSpace(message)) {
-                SendReport($"SvnUpdateCommand ERROR => {message}", ReportType.Progress);
+        protected override void OnOutputStreamDataIn(string data) {
+            if (!string.IsNullOrWhiteSpace(data)) {
+                SendReport($"SvnUpdateCommand info => {data}", ReportType.Progress);
             }
         }
-
-        private void outputStreamReceiver(string message) {
-            if (!string.IsNullOrWhiteSpace(message)) {
-                SendReport($"SvnUpdateCommand info => {message}", ReportType.Progress);
-            }
-        }
-
     }
 }

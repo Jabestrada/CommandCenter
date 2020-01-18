@@ -1,66 +1,47 @@
-﻿using CommandCenter.Infrastructure;
-using System;
+﻿using CommandCenter.Commands.CmdLine;
+using CommandCenter.Infrastructure;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace CommandCenter.Commands.MsBuild {
-    public class MsCleanRebuildCommand : BaseCommand {
+    public class MsCleanRebuildCommand : BaseCmdLineCommand {
         private const string FAILED_PROJECT_BUILD_PATTERN = @"Done Building Project ""(.*\.csproj)"".*FAILED";
-        public string MsBuildExe { get; protected set; }
         public string Source { get; protected set; }
         public string Configuration { get; protected set; }
-
         public List<string> FailedProjectBuildResults { get; protected set; }
-
-        //public string Platform { get; protected set; }
         public override bool IsUndoable => false;
         public MsCleanRebuildCommand(string msBuildExe, string sourceFile, string configuration) {
-            MsBuildExe = msBuildExe;
+            Executable = msBuildExe;
             Source = sourceFile;        // can be .sln or .csproj
-            //Platform = platform;
             Configuration = configuration;
             FailedProjectBuildResults = new List<string>();
         }
-
-        public override void Do() {
-            List<string> arguments = new List<string>() {
-                $"/nologo",
-                $"\"{Source}\"",
-                $"/p:Configuration={Configuration}",
-                //$"/p:Platform={Platform}",
-                $"/t:Clean,Build"
-            };
-            using (CommandLineProcess cmd = new CommandLineProcess(MsBuildExe, string.Join(" ", arguments))) {
-                SendReport($"Build started. Solution: '{Source}', Configuration: {Configuration}", ReportType.Progress);
-
-                int exitCode = cmd.Run(outputStreamReceiver, errorStreamReceiver);
-
-                DidCommandSucceed = exitCode == 0;
-                var result = DidCommandSucceed ? "SUCCEEDED" : "FAILED";
-                if (!DidCommandSucceed && FailedProjectBuildResults.Any()) {
-                    foreach (string failedBuildProject in FailedProjectBuildResults) {
-                        SendReport($"FAILED PROJECT BUILD: {failedBuildProject}", ReportType.Progress);
-                    }
+        protected override void SetArguments() {
+            CommandLineArguments.Add($"/nologo");
+            CommandLineArguments.Add($"\"{Source}\"");
+            CommandLineArguments.Add($"/p:Configuration={Configuration}");
+            CommandLineArguments.Add($"/t:Clean,Build");
+        }
+        protected override void OnCommandWillRun() {
+            SendReport($"Build started. Solution: '{Source}', Configuration: {Configuration}", ReportType.Progress);
+        }
+        protected override void OnCommandDidRun() {
+            if (!DidCommandSucceed && FailedProjectBuildResults.Any()) {
+                foreach (string failedBuildProject in FailedProjectBuildResults) {
+                    SendReport($"FAILED PROJECT BUILD: {failedBuildProject}", ReportType.Progress);
                 }
-                SendReport($"MsCleanRebuildCommand {result} with exit code {exitCode}",
-                           DidCommandSucceed ? ReportType.DoneTaskWithSuccess : ReportType.DoneTaskWithFailure);
+            }
+            var result = DidCommandSucceed ? "SUCCEEDED" : "FAILED";
+            SendReport($"MsCleanRebuildCommand {result} with exit code {ExitCode}",
+                       DidCommandSucceed ? ReportType.DoneTaskWithSuccess : ReportType.DoneTaskWithFailure);
+        }
+        protected override void OnOutputStreamDataIn(string data) {
+            if (!string.IsNullOrWhiteSpace(data)) {
+                captureFailedProject(data);
+                SendReport($"MsCleanRebuild info => {data}", ReportType.Progress);
             }
         }
-
-        private void outputStreamReceiver(string message) {
-            if (!string.IsNullOrWhiteSpace(message)) {
-                captureFailedProject(message);
-                SendReport($"MsCleanRebuild info => {message}", ReportType.Progress);
-            }
-        }
-
-        private void errorStreamReceiver(string message) {
-            if (!string.IsNullOrWhiteSpace(message)) {
-                SendReport($"MsCleanRebuild ERROR => {message}", ReportType.Progress);
-            }
-        }
-
         private void captureFailedProject(string message) {
             var regEx = new Regex(FAILED_PROJECT_BUILD_PATTERN, RegexOptions.IgnoreCase);
             var matches = regEx.Matches(message);

@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CmdLine\BaseCmdLineCommand.cs" />
     <Compile Include="CommandLineProcess.cs" />
     <Compile Include="Console\ConditionalConsolePauseCommand.cs" />
     <Compile Include="Console\ConsolePauseCommand.cs" />
