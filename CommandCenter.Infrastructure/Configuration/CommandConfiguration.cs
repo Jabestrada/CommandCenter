@@ -8,5 +8,6 @@ namespace CommandCenter.Infrastructure.Configuration {
         }
         public string TypeActivationName { get; set; }
 
+        public string ShortDescription { get; set; }
     }
 }

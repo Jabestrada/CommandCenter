@@ -24,8 +24,14 @@ namespace CommandCenter.Infrastructure.Configuration {
         private CommandConfiguration createCommandConfiguration(XmlNode commandNode) {
             var commandConfig = new CommandConfiguration();
             setTypeActivationName(commandConfig, commandNode);
+            setShortDescription(commandConfig, commandNode);
             setCtorArgs(commandConfig, commandNode);
             return commandConfig;
+        }
+
+        private void setShortDescription(CommandConfiguration commandConfig, XmlNode commandNode) {
+            XmlNode typeNameNode = getNode(commandNode, "shortDescription");
+            commandConfig.ShortDescription = typeNameNode == null ? string.Empty : typeNameNode.InnerText;
         }
 
         private void setCtorArgs(CommandConfiguration commandConfig, XmlNode commandNode) {
@@ -45,15 +51,20 @@ namespace CommandCenter.Infrastructure.Configuration {
         }
 
         private void setTypeActivationName(CommandConfiguration commandConfig, XmlNode commandNode) {
-            XmlNode typeNameNode = getTypeNameNode(commandNode);
+            XmlNode typeNameNode = getChildNode(commandNode, "typeName", new TypeNameNodeNotFoundException());
             commandConfig.TypeActivationName = typeNameNode.InnerText;
         }
 
-        private XmlNode getTypeNameNode(XmlNode commandNode) {
-            XmlNode typeNameNode = commandNode.SelectSingleNode("typeName");
-            if (typeNameNode == null) throw new TypeNameNodeNotFoundException();
+        private XmlNode getChildNode(XmlNode sourceNode, string nodeName, Exception exToThrowIfNotFound) { 
+            XmlNode requestedNode = sourceNode.SelectSingleNode(nodeName);
+            if (requestedNode == null && exToThrowIfNotFound != null) {
+                throw exToThrowIfNotFound;
+            }
+            return requestedNode;
+        }
 
-            return typeNameNode;
+        private XmlNode getNode(XmlNode sourceNode, string nodeName) {
+            return getChildNode(sourceNode, nodeName, null);
         }
 
         private XmlNodeList getCommandNodes() {
@@ -88,7 +99,7 @@ namespace CommandCenter.Infrastructure.Configuration {
     }
 
     public class DuplicateCtorArgNameException : ArgumentException {
-        public DuplicateCtorArgNameException (string ctorArgName)
+        public DuplicateCtorArgNameException(string ctorArgName)
             : base($"Duplicate ctorArg name {ctorArgName} found in configuration") {
 
         }

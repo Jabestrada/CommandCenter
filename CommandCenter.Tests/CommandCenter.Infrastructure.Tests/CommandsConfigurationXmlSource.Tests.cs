@@ -1,5 +1,6 @@
 ﻿using CommandCenter.Infrastructure.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Linq;
 using System.Xml;
 
 namespace CommandCenter.Infrastructure.Tests {
@@ -170,6 +171,48 @@ namespace CommandCenter.Infrastructure.Tests {
             var cmdConfigs = xmlConfigSource.GetCommandConfigurations();
 
             Assert.AreEqual(1, cmdConfigs.Count);
+        }
+
+        [TestMethod]
+        public void itShouldGetShortDesriptionWhenItExists() {
+            var shortDescText = "This is a test short description";
+            var xmlConfig = $@"
+                <commands>
+                    <command>
+                        <typeName>CommandCenter.Infrastructure.Tests, CommandCenter.Infrastructure.Tests.MockCommands.MockCommandWithNonDefaultConstructor</typeName>
+                        <shortDescription>{shortDescText}</shortDescription>
+                    </command>
+                </commands>
+                ";
+            XmlDocument xmlDoc = new XmlDocument();
+            xmlDoc.LoadXml(xmlConfig);
+            var xmlConfigSource = new CommandsConfigurationXmlSource(xmlDoc);
+
+            var cmdConfigs = xmlConfigSource.GetCommandConfigurations();
+            var cmdConfig = cmdConfigs.FirstOrDefault();
+
+            Assert.IsNotNull(cmdConfig);
+            Assert.AreEqual(cmdConfig.ShortDescription, shortDescText);
+        }
+
+        [TestMethod]
+        public void itShouldAssignEmptyStringIfShortDesriptionDoesNotExist() {
+            var xmlConfig = $@"
+                <commands>
+                    <command>
+                        <typeName>CommandCenter.Infrastructure.Tests, CommandCenter.Infrastructure.Tests.MockCommands.MockCommandWithNonDefaultConstructor</typeName>
+                    </command>
+                </commands>
+                ";
+            XmlDocument xmlDoc = new XmlDocument();
+            xmlDoc.LoadXml(xmlConfig);
+            var xmlConfigSource = new CommandsConfigurationXmlSource(xmlDoc);
+
+            var cmdConfigs = xmlConfigSource.GetCommandConfigurations();
+            var cmdConfig = cmdConfigs.FirstOrDefault();
+
+            Assert.IsNotNull(cmdConfig);
+            Assert.AreEqual(cmdConfig.ShortDescription, string.Empty);
         }
     }
 }
