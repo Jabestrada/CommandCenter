@@ -25,12 +25,27 @@ namespace CommandCenter.Infrastructure.Configuration {
             var commandConfig = new CommandConfiguration();
             setTypeActivationName(commandConfig, commandNode);
             setShortDescription(commandConfig, commandNode);
+            setEnabled(commandConfig, commandNode);
             setCtorArgs(commandConfig, commandNode);
             return commandConfig;
         }
 
+        private void setEnabled(CommandConfiguration commandConfig, XmlNode commandNode) {
+            var enabledAttr = commandNode.Attributes["enabled"];
+            if (enabledAttr == null) {
+                commandConfig.Enabled = true;
+                return;
+            }
+
+            var enableAttribValue = enabledAttr.Value.Trim().ToUpperInvariant();
+            if (!string.IsNullOrWhiteSpace(enableAttribValue) && (enableAttribValue != "TRUE" && enableAttribValue != "FALSE")) {
+                throw new InvalidEnabledAttributeValueException($"Invalid value for command[@enabled] attribute: {enableAttribValue}");
+            }
+            commandConfig.Enabled = string.IsNullOrWhiteSpace(enableAttribValue) || enabledAttr.Value.Trim().ToUpperInvariant() == "TRUE";
+        }
+
         private void setShortDescription(CommandConfiguration commandConfig, XmlNode commandNode) {
-            XmlNode typeNameNode = getNode(commandNode, "shortDescription");
+            XmlNode typeNameNode = getChildNode(commandNode, "shortDescription");
             commandConfig.ShortDescription = typeNameNode == null ? string.Empty : typeNameNode.InnerText;
         }
 
@@ -63,7 +78,7 @@ namespace CommandCenter.Infrastructure.Configuration {
             return requestedNode;
         }
 
-        private XmlNode getNode(XmlNode sourceNode, string nodeName) {
+        private XmlNode getChildNode(XmlNode sourceNode, string nodeName) {
             return getChildNode(sourceNode, nodeName, null);
         }
 
@@ -98,6 +113,12 @@ namespace CommandCenter.Infrastructure.Configuration {
         }
     }
 
+    public class InvalidEnabledAttributeValueException : ApplicationException {
+        public InvalidEnabledAttributeValueException(string enableAttribValue) :
+            base($"Invalid value for command[@enabled] attribute: {enableAttribValue}") {
+
+        }
+    }
     public class DuplicateCtorArgNameException : ArgumentException {
         public DuplicateCtorArgNameException(string ctorArgName)
             : base($"Duplicate ctorArg name {ctorArgName} found in configuration") {

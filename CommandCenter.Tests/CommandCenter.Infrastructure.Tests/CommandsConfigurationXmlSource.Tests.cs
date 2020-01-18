@@ -1,5 +1,6 @@
 ﻿using CommandCenter.Infrastructure.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Linq;
 using System.Xml;
 
@@ -213,6 +214,123 @@ namespace CommandCenter.Infrastructure.Tests {
 
             Assert.IsNotNull(cmdConfig);
             Assert.AreEqual(cmdConfig.ShortDescription, string.Empty);
+        }
+
+        [TestMethod]
+        public void itShouldSetEnabledToTrueIfEnabledAttributeDoesNotExist() {
+            var xmlConfig = $@"
+                <commands>
+                    <command>
+                        <typeName>CommandCenter.Infrastructure.Tests, CommandCenter.Infrastructure.Tests.MockCommands.MockCommandWithNonDefaultConstructor</typeName>
+                    </command>
+                </commands>
+                ";
+            XmlDocument xmlDoc = new XmlDocument();
+            xmlDoc.LoadXml(xmlConfig);
+            var xmlConfigSource = new CommandsConfigurationXmlSource(xmlDoc);
+
+            var cmdConfigs = xmlConfigSource.GetCommandConfigurations();
+            var cmdConfig = cmdConfigs.FirstOrDefault();
+
+            Assert.IsNotNull(cmdConfig);
+            Assert.IsTrue(cmdConfig.Enabled);
+        }
+
+         [TestMethod]
+        public void itShouldSetEnabledToTrueIfEnabledAttributeValueIsTrue() {
+            var xmlConfig = $@"
+                <commands>
+                    <command enabled='true'>
+                        <typeName>CommandCenter.Infrastructure.Tests, CommandCenter.Infrastructure.Tests.MockCommands.MockCommandWithNonDefaultConstructor</typeName>
+                    </command>
+                </commands>
+                ";
+            XmlDocument xmlDoc = new XmlDocument();
+            xmlDoc.LoadXml(xmlConfig);
+            var xmlConfigSource = new CommandsConfigurationXmlSource(xmlDoc);
+
+            var cmdConfigs = xmlConfigSource.GetCommandConfigurations();
+            var cmdConfig = cmdConfigs.FirstOrDefault();
+
+            Assert.IsNotNull(cmdConfig);
+            Assert.IsTrue(cmdConfig.Enabled);
+        }
+
+            [TestMethod]
+        public void itShouldSetEnabledToTrueIfEnabledAttributeValueIsTrueCaseInsensitive() {
+            var xmlConfig = $@"
+                <commands>
+                    <command enabled='tRuE'>
+                        <typeName>CommandCenter.Infrastructure.Tests, CommandCenter.Infrastructure.Tests.MockCommands.MockCommandWithNonDefaultConstructor</typeName>
+                    </command>
+                </commands>
+                ";
+            XmlDocument xmlDoc = new XmlDocument();
+            xmlDoc.LoadXml(xmlConfig);
+            var xmlConfigSource = new CommandsConfigurationXmlSource(xmlDoc);
+
+            var cmdConfigs = xmlConfigSource.GetCommandConfigurations();
+            var cmdConfig = cmdConfigs.FirstOrDefault();
+
+            Assert.IsNotNull(cmdConfig);
+            Assert.IsTrue(cmdConfig.Enabled);
+        }
+
+         [TestMethod]
+        public void itShouldSetEnabledToTrueIfEnabledAttributeValueIsFalse() {
+            var xmlConfig = $@"
+                <commands>
+                    <command enabled='false'>
+                        <typeName>CommandCenter.Infrastructure.Tests, CommandCenter.Infrastructure.Tests.MockCommands.MockCommandWithNonDefaultConstructor</typeName>
+                    </command>
+                </commands>
+                ";
+            XmlDocument xmlDoc = new XmlDocument();
+            xmlDoc.LoadXml(xmlConfig);
+            var xmlConfigSource = new CommandsConfigurationXmlSource(xmlDoc);
+
+            var cmdConfigs = xmlConfigSource.GetCommandConfigurations();
+            var cmdConfig = cmdConfigs.FirstOrDefault();
+
+            Assert.IsNotNull(cmdConfig);
+            Assert.IsFalse(cmdConfig.Enabled);
+        }
+
+         [TestMethod]
+        public void itShouldSetEnabledToTrueIfEnabledAttributeValueIsEmpty() {
+            var xmlConfig = $@"
+                <commands>
+                    <command enabled=''>
+                        <typeName>CommandCenter.Infrastructure.Tests, CommandCenter.Infrastructure.Tests.MockCommands.MockCommandWithNonDefaultConstructor</typeName>
+                    </command>
+                </commands>
+                ";
+            XmlDocument xmlDoc = new XmlDocument();
+            xmlDoc.LoadXml(xmlConfig);
+            var xmlConfigSource = new CommandsConfigurationXmlSource(xmlDoc);
+
+            var cmdConfigs = xmlConfigSource.GetCommandConfigurations();
+            var cmdConfig = cmdConfigs.FirstOrDefault();
+
+            Assert.IsNotNull(cmdConfig);
+            Assert.IsTrue(cmdConfig.Enabled);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidEnabledAttributeValueException))]
+        public void itShouldThrowExceptionIfEnabledAttributeValueIsNeitherTrueNorFalseNorEmpty() {
+            var xmlConfig = $@"
+                <commands>
+                    <command enabled='werjwjekqrl'>
+                        <typeName>CommandCenter.Infrastructure.Tests, CommandCenter.Infrastructure.Tests.MockCommands.MockCommandWithNonDefaultConstructor</typeName>
+                    </command>
+                </commands>
+                ";
+            XmlDocument xmlDoc = new XmlDocument();
+            xmlDoc.LoadXml(xmlConfig);
+            var xmlConfigSource = new CommandsConfigurationXmlSource(xmlDoc);
+
+            var cmdConfigs = xmlConfigSource.GetCommandConfigurations();
         }
     }
 }
