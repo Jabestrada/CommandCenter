@@ -73,9 +73,11 @@
             // 
             this.commandsList.CheckBoxes = true;
             this.commandsList.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.commandsList.FullRowSelect = true;
             this.commandsList.HideSelection = false;
             this.commandsList.Location = new System.Drawing.Point(0, 0);
             this.commandsList.Name = "commandsList";
+            this.commandsList.ShowRootLines = false;
             this.commandsList.Size = new System.Drawing.Size(1093, 699);
             this.commandsList.TabIndex = 3;
             this.commandsList.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.commandsList_AfterCheck);

@@ -19,10 +19,11 @@ namespace CommandCenter.UI.WinForms {
             _orchestrator = new CommandsOrchestratorWinForms(_reportReceiver);
         }
 
-        delegate void SetTextCallback(string message);
         private void _reportReceiver(BaseCommand command, CommandReportArgs e) {
             appendStatusText($"{e.ReportType}: {e.Message}");
         }
+
+        delegate void SetTextCallback(string message);
 
         private void appendStatusText(string message) {
             if (this.statusWindow.InvokeRequired) {
@@ -32,6 +33,17 @@ namespace CommandCenter.UI.WinForms {
             else {
                 statusWindow.AppendText(message);
                 statusWindow.AppendText(Environment.NewLine);
+            }
+        }
+
+        delegate void EnableRunButtonCallback();
+        private void enableRunButton() {
+            if (this.btnRun.InvokeRequired) {
+                var cb = new EnableRunButtonCallback(enableRunButton);
+                this.Invoke(cb);
+            }
+            else {
+                btnRun.Enabled = true;
             }
         }
 
@@ -95,20 +107,24 @@ namespace CommandCenter.UI.WinForms {
                 }
             }
             if (!commandConfigList.Any()) {
-                MessageBox.Show("At least 1 command has to be checked", "No command selected", 
+                MessageBox.Show("At least 1 command has to be checked", "No command selected",
                                 MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
             }
 
+            btnRun.Enabled = false;
             statusWindow.Clear();
             ThreadStart starter = new ThreadStart(() => _orchestrator.Run(commandConfigList));
             starter += () => {
                 appendStatusText(Environment.NewLine);
                 var status = _orchestrator.DidCommandsSucceed ? "SUCCEEDED" : "FAILED";
                 appendStatusText($"Commands {status}");
+                enableRunButton();
             };
             var thread = new Thread(starter);
             thread.Start();
         }
+
 
         private void btnBrowseConfig_Click(object sender, EventArgs e) {
             browseForConfigFile();
