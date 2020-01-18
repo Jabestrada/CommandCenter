@@ -4,6 +4,7 @@ using System;
 namespace CommandCenter.Tests.MockCommands {
     public class MockFileSystemCommand : IFileSystemCommandsStrategy {
 
+
         public Func<string, bool> FileExistsFunc { get; set; }
         public Func<string, bool> DirectoryExistsFunc { get; set; }
 
@@ -16,6 +17,15 @@ namespace CommandCenter.Tests.MockCommands {
         public Action<string, string> DirectoryMoveContentsFunc { get; set; }
         public Action<string, Action<string, FileSystemItemType>> DirectoryDeleteContentsOnlyFunc { get; set; }
 
+        public Action<string, string, Func<string, string, bool>, Action<string, string>> DirectoryCopyContentsFunc { get; set; }
+
+        public void DirectoryCopyContents(string sourceDirName, string destinationDirName, Func<string, string, bool> preCopyCallback, Action<string, string> progressCallback) {
+            if (DirectoryCopyContentsFunc != null) {
+                DirectoryCopyContentsFunc(sourceDirName, destinationDirName, preCopyCallback, progressCallback);
+                return;
+            }
+            throw new NotImplementedException();
+        }
 
         public void DirectoryDelete(string dirName) {
             if (DirectoryDeleteFunc != null) {
@@ -99,5 +109,7 @@ namespace CommandCenter.Tests.MockCommands {
             }
             throw new NotImplementedException();
         }
+
+
     }
 }

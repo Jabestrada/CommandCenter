@@ -46,11 +46,10 @@ namespace CommandCenter.Commands.FileSystem {
             foreach (DirectoryInfo subdir in dirs) {
                 string temppath = Path.Combine(destinationDirName, subdir.Name);
                 subdir.MoveTo(temppath);
-                //DirectoryMoveContents(subdir.FullName, temppath);
             }
         }
 
-        public void DirectoryCopy(string sourceDirName, string destinationDirName) {
+        public void DirectoryCopyContents(string sourceDirName, string destinationDirName, Func<string, string, bool> preCopyCallback, Action<string, string> postCopyCallback) {
 
             if (!DirectoryExists(sourceDirName)) {
                 throw new DirectoryNotFoundException($"Source directory does not exist or could not be found: {sourceDirName}");
@@ -68,13 +67,19 @@ namespace CommandCenter.Commands.FileSystem {
             FileInfo[] files = dir.GetFiles();
             foreach (FileInfo file in files) {
                 string temppath = Path.Combine(destinationDirName, file.Name);
+                if (preCopyCallback != null) {
+                    if (!preCopyCallback(file.FullName, temppath)) return;
+                }
+
                 file.CopyTo(temppath, false);
+
+                if (postCopyCallback != null) postCopyCallback(file.FullName, temppath);
             }
 
             // Copy subdirectories
             foreach (DirectoryInfo subdir in dirs) {
                 string temppath = Path.Combine(destinationDirName, subdir.Name);
-                DirectoryCopy(subdir.FullName, temppath);
+                DirectoryCopyContents(subdir.FullName, temppath, preCopyCallback, postCopyCallback);
             }
         }
 

@@ -75,6 +75,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommandCenter.Commands.Tests\FileCopyCommand.Tests.cs" />
+    <Compile Include="CommandCenter.Commands.Tests\DirectoryCopyContentsCommand.Tests.cs" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

@@ -47,6 +47,7 @@
     <Compile Include="Console\ConsolePauseCommand.cs" />
     <Compile Include="FileSystem\BaseDirectoryCommand.cs" />
     <Compile Include="FileSystem\BaseDirectoryDeleteCommand.cs" />
+    <Compile Include="FileSystem\DirectoryCopyContentsCommand.cs" />
     <Compile Include="FileSystem\DirectoryDeleteCommand.cs" />
     <Compile Include="FileSystem\DirectoryDeleteContentsOnlyCommand.cs" />
     <Compile Include="FileZip\IFileCompressionStrategy.cs" />

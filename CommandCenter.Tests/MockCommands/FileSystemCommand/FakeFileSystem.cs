@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 namespace CommandCenter.Tests.MockCommands.FileSystemCommand {
     public class FakeFileSystem {
@@ -7,7 +10,23 @@ namespace CommandCenter.Tests.MockCommands.FileSystemCommand {
         public FakeFileSystem(MockFileSystemCommand fileSysCommand) {
             registerMockFileSystemCommand(fileSysCommand);
         }
+
         private void registerMockFileSystemCommand(MockFileSystemCommand fileSysCommand) {
+            fileSysCommand.DirectoryCopyContentsFunc = (sourceDir, targetDir, preCopyCallback, postCopyCallback) => {
+                //var targetFiles = _files.Where(f => f.StartsWith(targetDir) && f != targetDir);
+                var sourceFiles = _files.Where(f => f.StartsWith(sourceDir) && f != sourceDir).ToList();
+                foreach (var sourceFile in sourceFiles) {
+                    var targetFile = Path.Combine(targetDir, Path.GetFileName(sourceFile));
+                    if (preCopyCallback != null) {
+                        if (!preCopyCallback(sourceDir, targetFile)) return;
+                    }
+                    
+                    _files.Add(targetFile);
+
+                    if (postCopyCallback != null) postCopyCallback(sourceDir, targetFile);
+                }
+            };
+
             fileSysCommand.FileExistsFunc = (filename) => {
                 return _files.Contains(filename);
             };
@@ -58,6 +77,8 @@ namespace CommandCenter.Tests.MockCommands.FileSystemCommand {
                 }
             };
 
+
+
             fileSysCommand.DirectoryMoveContentsFunc = (sourceDir, targetDir) => {
                 var removeList = new List<string>();
                 var addList = new List<string>();
@@ -93,7 +114,7 @@ namespace CommandCenter.Tests.MockCommands.FileSystemCommand {
                 foreach (var item in addList) {
                     _dirs.Add(item);
                 }
-              
+
             };
         }
 

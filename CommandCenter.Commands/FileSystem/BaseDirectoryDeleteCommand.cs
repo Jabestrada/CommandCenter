@@ -58,7 +58,7 @@ namespace CommandCenter.Commands.FileSystem {
             BackedUpDirectory = Path.Combine(BackupDirectory, $"{new DirectoryInfo(SourceDirectory).Name}.backup.dirDelete_{Id}.{Guid.NewGuid().ToString()}");
             try {
                 SendReport($"Creating backup of folder {SourceDirectory} to {BackedUpDirectory} ...", ReportType.Progress);
-                FileSystemCommands.DirectoryCopy(SourceDirectory, BackedUpDirectory);
+                FileSystemCommands.DirectoryCopyContents(SourceDirectory, BackedUpDirectory, null, null);
                 SendReport($"Created backup of folder {SourceDirectory} to {BackedUpDirectory}", ReportType.Progress);
                 return true;
             }

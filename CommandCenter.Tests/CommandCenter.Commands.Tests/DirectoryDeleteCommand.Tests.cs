@@ -7,6 +7,7 @@ using System;
 namespace CommandCenter.Tests.Commands {
     [TestClass]
     public class DirectoryDeleteCommandTests {
+
         [TestMethod]
         public void itShouldSucceedIfSourceDiretoryDoesNotExist() {
             var fileSysCommand = new MockFileSystemCommand();
