@@ -25,6 +25,7 @@ namespace CommandCenter.Commands.FileSystem {
                 DidCommandSucceed = true;
             }
             catch (Exception exc) {
+                SendReport($"Failed to copy file {SourceFilename} to {TargetFilename}. {exc.Message}", ReportType.DoneTaskWithFailure);
                 DidCommandSucceed = false;
             }
         }
