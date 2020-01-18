@@ -2,6 +2,7 @@
 using CommandCenter.Infrastructure.Configuration;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml;
 
 namespace CommandCenter.UI.WinForms {
@@ -27,7 +28,7 @@ namespace CommandCenter.UI.WinForms {
             XmlDocument xmlDoc = new XmlDocument();
             xmlDoc.Load(configFile);
             var commandsConfigurationSource = new CommandsConfigurationXmlSource(xmlDoc);
-            return commandsConfigurationSource.GetCommandConfigurations();
+            return commandsConfigurationSource.GetCommandConfigurations().Where(c => c.Enabled).ToList();
         }
 
         private void CommandsRunner_OnReportSent(BaseCommand command, CommandReportArgs args) {

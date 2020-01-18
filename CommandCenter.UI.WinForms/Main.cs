@@ -17,6 +17,11 @@ namespace CommandCenter.UI.WinForms {
         public Main() {
             InitializeComponent();
             _orchestrator = new CommandsOrchestratorWinForms(_reportReceiver);
+            var defaultConfig = Path.Combine(Application.StartupPath, "CommandCenter.config");
+            if (string.IsNullOrWhiteSpace(txtConfigFile.Text) && File.Exists(defaultConfig)) {
+                txtConfigFile.Text = defaultConfig;
+            }
+            loadCommands();
         }
 
         private void _reportReceiver(BaseCommand command, CommandReportArgs e) {

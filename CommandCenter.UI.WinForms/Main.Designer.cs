@@ -55,7 +55,6 @@
             this.txtConfigFile.Name = "txtConfigFile";
             this.txtConfigFile.Size = new System.Drawing.Size(1699, 38);
             this.txtConfigFile.TabIndex = 1;
-            this.txtConfigFile.Text = "C:\\JABE\\JABELabs\\CommandCenter\\CommandCenter.UI.WinForms\\CommandCenter.config";
             this.txtConfigFile.TextChanged += new System.EventHandler(this.txtConfigFile_TextChanged);
             // 
             // btnLoadConfig
