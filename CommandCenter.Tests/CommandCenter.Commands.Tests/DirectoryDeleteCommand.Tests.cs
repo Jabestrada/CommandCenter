@@ -26,7 +26,7 @@ namespace CommandCenter.Tests.Commands {
             var sourceDir = @"c:\dummysourceDir";
             var dirDeleteCommand = new DirectoryDeleteCommand(sourceDir, @"c:\dummybackupdir", fileSysCommand);
             var fakeFileSystem = new FakeFileSystem(fileSysCommand);
-            fileSysCommand.DirectoryCopyFunc = (sourceFile, destinationFile) => {
+            fileSysCommand.DirectoryCopyContentsFunc = (sourceFile, destinationFile, preCopyCallback, postCopyCallback) => {
                 throw new ApplicationException("Exception raised by MockFileSystemCommand during DirectoryCopy");
             };
             fakeFileSystem.AddDirectory(sourceDir);
