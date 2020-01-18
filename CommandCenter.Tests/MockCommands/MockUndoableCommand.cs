@@ -4,9 +4,6 @@ namespace CommandCenter.Tests.MockCommands {
     public class MockUndoableCommand : BaseCommand {
         public override bool IsUndoable => true;
 
-        public override void Cleanup() {
-        }
-
         public override void Do() {
             SendReport(this, new CommandReportArgs("MockUndoableCommand done with success message", ReportType.DoneTaskWithSuccess));
             DidCommandSucceed = true;

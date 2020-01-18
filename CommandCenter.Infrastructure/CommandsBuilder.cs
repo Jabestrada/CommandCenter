@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using CommandCenter.Infrastructure.Configuration;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace CommandCenter.Infrastructure {
@@ -18,12 +19,5 @@ namespace CommandCenter.Infrastructure {
         }
     }
 
-    public class CommandConfiguration {
-        public readonly Dictionary<string, string> ConstructorArgs;
-        public CommandConfiguration() {
-            ConstructorArgs = new Dictionary<string, string>();
-        }
-        public string TypeActivationName { get; set; }
-
-    }
+   
 }
