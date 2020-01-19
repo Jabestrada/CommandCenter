@@ -1,4 +1,4 @@
-using CommandCenter.Infrastructure.Dispatch;
+using CommandCenter.Infrastructure.Orchestration;
 using CommandCenter.Tests.MockCommands;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;

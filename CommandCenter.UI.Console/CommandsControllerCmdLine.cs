@@ -1,7 +1,7 @@
 ﻿using CommandCenter.Infrastructure;
 using CommandCenter.Infrastructure.Configuration;
-using CommandCenter.Infrastructure.Dispatch;
 using CommandCenter.Infrastructure.Factory;
+using CommandCenter.Infrastructure.Orchestration;
 using System;
 using System.Xml;
 

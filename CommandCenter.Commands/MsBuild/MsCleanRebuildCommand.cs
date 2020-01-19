@@ -1,6 +1,5 @@
 ﻿using CommandCenter.Commands.CmdLine;
-using CommandCenter.Infrastructure;
-using CommandCenter.Infrastructure.Dispatch;
+using CommandCenter.Infrastructure.Orchestration;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;

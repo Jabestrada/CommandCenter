@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace CommandCenter.Infrastructure.Dispatch {
+namespace CommandCenter.Infrastructure.Orchestration {
     public class CommandsRunner : BaseCommand {
         public readonly List<CommandReport> Reports;
 

@@ -1,5 +1,5 @@
 ﻿using CommandCenter.Infrastructure;
-using CommandCenter.Infrastructure.Dispatch;
+using CommandCenter.Infrastructure.Orchestration;
 
 namespace CommandCenter.Tests.MockCommands {
     public class MockSucceedingCommand : BaseCommand {

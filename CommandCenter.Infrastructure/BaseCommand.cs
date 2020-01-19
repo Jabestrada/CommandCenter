@@ -1,4 +1,4 @@
-﻿using CommandCenter.Infrastructure.Dispatch;
+﻿using CommandCenter.Infrastructure.Orchestration;
 using System;
 
 namespace CommandCenter.Infrastructure {

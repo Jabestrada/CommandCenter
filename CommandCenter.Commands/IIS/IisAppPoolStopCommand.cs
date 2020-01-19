@@ -1,6 +1,5 @@
 ﻿using CommandCenter.Commands.CmdLine;
-using CommandCenter.Infrastructure;
-using CommandCenter.Infrastructure.Dispatch;
+using CommandCenter.Infrastructure.Orchestration;
 
 namespace CommandCenter.Commands.IIS {
     public class IisAppPoolStopCommand : BaseCmdLineCommand {

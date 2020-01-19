@@ -1,4 +1,4 @@
-﻿namespace CommandCenter.Infrastructure.Dispatch {
+﻿namespace CommandCenter.Infrastructure.Orchestration {
     public enum ReportType {
         Cancel,
         Progress,

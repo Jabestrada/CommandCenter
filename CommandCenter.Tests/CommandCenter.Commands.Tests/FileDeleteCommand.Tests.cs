@@ -1,6 +1,5 @@
 ﻿using CommandCenter.Commands.FileSystem;
-using CommandCenter.Infrastructure;
-using CommandCenter.Infrastructure.Dispatch;
+using CommandCenter.Infrastructure.Orchestration;
 using CommandCenter.Tests.MockCommands;
 using CommandCenter.Tests.MockCommands.FileSystemCommand;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

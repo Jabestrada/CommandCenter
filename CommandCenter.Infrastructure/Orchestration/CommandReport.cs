@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CommandCenter.Infrastructure.Dispatch {
+namespace CommandCenter.Infrastructure.Orchestration {
     public class CommandReport {
         public readonly DateTime ReportedOn;
         public CommandReport() {
