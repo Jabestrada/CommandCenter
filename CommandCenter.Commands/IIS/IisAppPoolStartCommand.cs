@@ -1,5 +1,6 @@
 ﻿using CommandCenter.Commands.CmdLine;
 using CommandCenter.Infrastructure;
+using CommandCenter.Infrastructure.Dispatch;
 
 namespace CommandCenter.Commands.IIS {
     public class IisAppPoolStartCommand : BaseCmdLineCommand {

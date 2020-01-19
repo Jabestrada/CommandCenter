@@ -41,7 +41,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CommandsRunner.cs" />
+    <Compile Include="Dispatch\CommandReport.cs" />
+    <Compile Include="Dispatch\CommandsRunner.cs" />
+    <Compile Include="Dispatch\ReportType.cs" />
     <Compile Include="Factory\CommandsBuilder.cs" />
     <Compile Include="BaseCommand.cs" />
     <Compile Include="Configuration\CommandConfiguration.cs" />

@@ -1,4 +1,5 @@
 ﻿using CommandCenter.Infrastructure;
+using CommandCenter.Infrastructure.Dispatch;
 
 namespace CommandCenter.Commands.Console {
     public class ConditionalConsolePauseCommand : BaseCommand {

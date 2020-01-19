@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CommandCenter.Infrastructure.Dispatch;
+using System;
 
 namespace CommandCenter.Infrastructure {
     public interface ICommand {

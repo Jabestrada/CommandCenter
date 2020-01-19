@@ -1,4 +1,5 @@
 ﻿using CommandCenter.Infrastructure;
+using CommandCenter.Infrastructure.Dispatch;
 
 namespace CommandCenter.Tests.MockCommands {
     public class MockSucceedingCommand : BaseCommand {

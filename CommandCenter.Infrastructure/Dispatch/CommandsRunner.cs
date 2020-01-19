@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace CommandCenter.Infrastructure {
+namespace CommandCenter.Infrastructure.Dispatch {
     public class CommandsRunner : BaseCommand {
         public readonly List<CommandReport> Reports;
 
@@ -17,8 +17,6 @@ namespace CommandCenter.Infrastructure {
             registerCommands();
         }
 
-        //public bool HasError => Reports.Any(r => r.ReportType == ReportType.DoneTaskWithFailure);
-
         public bool HasError => Commands.Any(c => !c.DidCommandSucceed);
 
         public bool Run() {
@@ -29,8 +27,6 @@ namespace CommandCenter.Infrastructure {
 
             return !HasError;
         }
-
-
 
         #region Non-public methods
         private void registerCommands() {
@@ -138,31 +134,4 @@ namespace CommandCenter.Infrastructure {
         }
         #endregion
     }
-
-    #region Ancillary types
-    public enum ReportType {
-        Cancel,
-        Progress,
-        DoneTaskWithSuccess,
-        DoneTaskWithFailure,
-        UndoneTaskWithSuccess,
-        UndoneTaskWithFailure,
-        DoneCleanupWithSuccess,
-        DoneCleanupWithFailure,
-        Error,
-        Warning,
-        Info
-    }
-
-    public class CommandReport {
-        public readonly DateTime ReportedOn;
-        public CommandReport() {
-            ReportedOn = DateTime.Now;
-        }
-        public BaseCommand Reporter { get; set; }
-        public string Message { get; set; }
-        public ReportType ReportType { get; set; }
-
-    }
-    #endregion
 }

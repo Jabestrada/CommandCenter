@@ -1,5 +1,6 @@
 ﻿using CommandCenter.Commands.CmdLine;
 using CommandCenter.Infrastructure;
+using CommandCenter.Infrastructure.Dispatch;
 
 namespace CommandCenter.Commands.Svn {
     public class SvnUpdateCommand : BaseCmdLineCommand {

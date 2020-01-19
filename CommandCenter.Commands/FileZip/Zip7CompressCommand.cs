@@ -1,6 +1,7 @@
 ﻿using CommandCenter.Commands.CmdLine;
 using CommandCenter.Commands.FileSystem;
 using CommandCenter.Infrastructure;
+using CommandCenter.Infrastructure.Dispatch;
 using System;
 using System.Text;
 
