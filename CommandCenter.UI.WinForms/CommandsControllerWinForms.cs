@@ -8,9 +8,9 @@ using System.Linq;
 using System.Xml;
 
 namespace CommandCenter.UI.WinForms {
-    public class CommandsOrchestratorWinForms {
+    public class CommandsControllerWinForms {
         private readonly Action<BaseCommand, CommandReportArgs> _reportReceiver;
-        public CommandsOrchestratorWinForms(Action<BaseCommand, CommandReportArgs> reportReceiver) {
+        public CommandsControllerWinForms(Action<BaseCommand, CommandReportArgs> reportReceiver) {
             _reportReceiver = reportReceiver;
         }
 

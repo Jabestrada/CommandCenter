@@ -6,10 +6,10 @@ using System;
 using System.Xml;
 
 namespace CommandCenter.UI.CmdLine {
-    public class CommandsOrchestratorCmdLine {
+    public class CommandsControllerCmdLine {
         private readonly string _commandsConfigFile;
         private readonly  Action<BaseCommand, CommandReportArgs> _reportReceiver;
-        public CommandsOrchestratorCmdLine(string commandsConfigFile, Action<BaseCommand, CommandReportArgs> reportReceiver) {
+        public CommandsControllerCmdLine(string commandsConfigFile, Action<BaseCommand, CommandReportArgs> reportReceiver) {
             _commandsConfigFile = commandsConfigFile;
             _reportReceiver = reportReceiver;
         }

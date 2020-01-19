@@ -46,7 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CommandsOrchestratorWinForms.cs" />
+    <Compile Include="CommandsControllerWinForms.cs" />
     <Compile Include="Main.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -4,9 +4,9 @@ using System;
 namespace CommandCenter.UI.CmdLine {
     class Program {
         static void Main(string[] args) {
-            var orchestrator = new CommandsOrchestratorCmdLine("CommandCenter.config", onReportReceived);
+            var controller = new CommandsControllerCmdLine("CommandCenter.config", onReportReceived);
             try {
-                bool result = orchestrator.Run();
+                bool result = controller.Run();
                 Console.WriteLine(Environment.NewLine);
                 Console.WriteLine("Commands " + (result ? "SUCCEEDED" : "FAILED"));
             }

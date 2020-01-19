@@ -12,12 +12,12 @@ using System.Windows.Forms;
 namespace CommandCenter.UI.WinForms {
     public partial class Main : Form {
 
-        private CommandsOrchestratorWinForms _orchestrator;
+        private CommandsControllerWinForms _controller;
 
         private List<CommandConfiguration> _loadedCommandConfigurations;
         public Main() {
             InitializeComponent();
-            _orchestrator = new CommandsOrchestratorWinForms(_reportReceiver);
+            _controller = new CommandsControllerWinForms(_reportReceiver);
             var defaultConfig = Path.Combine(Application.StartupPath, "CommandCenter.config");
             if (string.IsNullOrWhiteSpace(txtConfigFile.Text) && File.Exists(defaultConfig)) {
                 txtConfigFile.Text = defaultConfig;
@@ -87,7 +87,7 @@ namespace CommandCenter.UI.WinForms {
 
         private void displayCommands() {
             try {
-                _loadedCommandConfigurations = _orchestrator.GetCommands(txtConfigFile.Text);
+                _loadedCommandConfigurations = _controller.GetCommands(txtConfigFile.Text);
             }
             catch {
                 displayError($"File {txtConfigFile.Text} is not a valid Command Center configuration file");
@@ -138,10 +138,10 @@ namespace CommandCenter.UI.WinForms {
 
             btnRun.Enabled = false;
             statusWindow.Clear();
-            ThreadStart starter = new ThreadStart(() => _orchestrator.Run(commandConfigList));
+            ThreadStart starter = new ThreadStart(() => _controller.Run(commandConfigList));
             starter += () => {
                 appendStatusText(Environment.NewLine);
-                var status = _orchestrator.DidCommandsSucceed ? "SUCCEEDED" : "FAILED";
+                var status = _controller.DidCommandsSucceed ? "SUCCEEDED" : "FAILED";
                 appendStatusText($"Commands {status}");
                 enableRunButton();
             };
