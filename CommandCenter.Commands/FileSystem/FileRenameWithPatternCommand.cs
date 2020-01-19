@@ -53,8 +53,10 @@ namespace CommandCenter.Commands.FileSystem {
                 var tokenKey = token.Substring(0, 1);
                 if (!Tokens.ContainsKey(tokenKey)) throw new UnrecognizedReplacementToken(token);
 
-                ComputedNewName = Tokens[tokenKey](token, SourceFilename, ComputedNewName);
+                var replacerFunc = Tokens[tokenKey]; 
+                ComputedNewName = replacerFunc(token, SourceFilename, ComputedNewName);
             }
+
             ComputedNewName = Path.Combine(Path.GetDirectoryName(SourceFilename), ComputedNewName);
 
             if (FileExists(ComputedNewName)) {
@@ -83,6 +85,7 @@ namespace CommandCenter.Commands.FileSystem {
                             tokensFromPattern.Add(currentToken);
                         }
                     }
+                    // Reset for next token match
                     currentToken = string.Empty;
                     foundOpenBracket = false;
                 }
@@ -95,13 +98,15 @@ namespace CommandCenter.Commands.FileSystem {
 
         private void initializeTokens() {
             Tokens = new Dictionary<string, Func<string, string, string, string>>();
+            // All tokens should have single-char key, although a token itself can have multiple characters.
             Tokens.Add("n", fileNameReplacer);
             Tokens.Add("d", datetimeReplacer);
         }
 
         private string datetimeReplacer(string replacerToken, string sourceFileName, string currentName) {
-            var formatString = replacerToken.Substring(2);
-            return currentName.Replace($"[{replacerToken}]", DateTimeReference.ToString(formatString));
+            // ex. [d:yyyyMM]
+            var dateTimeFormatSpecifiers = replacerToken.Substring(2);
+            return currentName.Replace($"[{replacerToken}]", DateTimeReference.ToString(dateTimeFormatSpecifiers));
         }
 
         private string fileNameReplacer(string replacerToken, string sourceFileName, string currentName) {
