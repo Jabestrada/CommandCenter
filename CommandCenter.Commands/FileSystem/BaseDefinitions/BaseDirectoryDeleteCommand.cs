@@ -3,7 +3,7 @@ using CommandCenter.Infrastructure.Dispatch;
 using System;
 using System.IO;
 
-namespace CommandCenter.Commands.FileSystem {
+namespace CommandCenter.Commands.FileSystem.BaseDefinitions {
     public abstract class BaseDirectoryDeleteCommand : BaseDirectoryCommand {
         protected abstract void Delete();
         protected abstract void RunUndo();

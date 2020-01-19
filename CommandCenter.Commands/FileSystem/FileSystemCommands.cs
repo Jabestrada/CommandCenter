@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CommandCenter.Commands.FileSystem.BaseDefinitions;
+using System;
 using System.IO;
 
 namespace CommandCenter.Commands.FileSystem {

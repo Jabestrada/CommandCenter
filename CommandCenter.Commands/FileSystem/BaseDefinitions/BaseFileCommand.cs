@@ -1,7 +1,7 @@
 ﻿using CommandCenter.Infrastructure;
 using System;
 
-namespace CommandCenter.Commands.FileSystem {
+namespace CommandCenter.Commands.FileSystem.BaseDefinitions {
     public abstract class BaseFileCommand : BaseCommand {
         protected IFileSystemCommandsStrategy FileSystemCommands { get; set; }
 

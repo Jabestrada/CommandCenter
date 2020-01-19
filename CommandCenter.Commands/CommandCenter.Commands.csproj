@@ -45,8 +45,8 @@
     <Compile Include="CmdLine\CommandLineProcessRunner.cs" />
     <Compile Include="Console\ConditionalConsolePauseCommand.cs" />
     <Compile Include="Console\ConsolePauseCommand.cs" />
-    <Compile Include="FileSystem\BaseDirectoryCommand.cs" />
-    <Compile Include="FileSystem\BaseDirectoryDeleteCommand.cs" />
+    <Compile Include="FileSystem\BaseDefinitions\BaseDirectoryCommand.cs" />
+    <Compile Include="FileSystem\BaseDefinitions\BaseDirectoryDeleteCommand.cs" />
     <Compile Include="FileSystem\DirectoryCopyContentsCommand.cs" />
     <Compile Include="FileSystem\DirectoryDeleteCommand.cs" />
     <Compile Include="FileSystem\DirectoryDeleteContentsOnlyCommand.cs" />
@@ -54,11 +54,11 @@
     <Compile Include="FileZip\IFileCompressionStrategy.cs" />
     <Compile Include="FileZip\IFileUncompressionStrategy.cs" />
     <Compile Include="FileZip\Zip7CompressCommand.cs" />
-    <Compile Include="FileSystem\BaseFileCommand.cs" />
+    <Compile Include="FileSystem\BaseDefinitions\BaseFileCommand.cs" />
     <Compile Include="FileSystem\FileCopyCommand.cs" />
     <Compile Include="FileSystem\FileDeleteCommand.cs" />
     <Compile Include="FileSystem\FileSystemCommands.cs" />
-    <Compile Include="FileSystem\IFileSystemCommandsStrategy.cs" />
+    <Compile Include="FileSystem\BaseDefinitions\IFileSystemCommandsStrategy.cs" />
     <Compile Include="FileZip\Zip7UncompressCommand.cs" />
     <Compile Include="IIS\IisAppPoolStartCommand.cs" />
     <Compile Include="IIS\IisAppPoolStopCommand.cs" />

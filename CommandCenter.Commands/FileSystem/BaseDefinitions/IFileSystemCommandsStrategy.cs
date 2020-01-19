@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CommandCenter.Commands.FileSystem {
+namespace CommandCenter.Commands.FileSystem.BaseDefinitions {
     public interface IFileSystemCommandsStrategy {
         bool FileExists(string filename);
         void FileCopy(string sourceFilename, string destinationFilename);

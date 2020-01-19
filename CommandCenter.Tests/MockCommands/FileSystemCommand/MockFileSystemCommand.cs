@@ -1,4 +1,5 @@
 ﻿using CommandCenter.Commands.FileSystem;
+using CommandCenter.Commands.FileSystem.BaseDefinitions;
 using System;
 
 namespace CommandCenter.Tests.MockCommands {

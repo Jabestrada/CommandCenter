@@ -1,4 +1,5 @@
-﻿using CommandCenter.Infrastructure;
+﻿using CommandCenter.Commands.FileSystem.BaseDefinitions;
+using CommandCenter.Infrastructure;
 using CommandCenter.Infrastructure.Dispatch;
 using System;
 using System.Collections.Generic;
