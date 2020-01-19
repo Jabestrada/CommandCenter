@@ -146,13 +146,13 @@ namespace CommandCenter.Infrastructure.Tests {
         [TestMethod]
         public void itShouldSetWasCommandStartedOnRanCommandsOnly() {
             var commands = new List<BaseCommand>();
-            var command1= new MockSucceedingCommand();
+            var command1 = new MockSucceedingCommand();
             commands.Add(command1);
 
             var failingCmd = new MockFailingCommand();
             commands.Add(failingCmd);
 
-            var command2  = new MockUndoableCommand();
+            var command2 = new MockUndoableCommand();
             commands.Add(command2);
 
             var runner = new CommandsRunner(commands);
@@ -330,6 +330,25 @@ namespace CommandCenter.Infrastructure.Tests {
             var result = runner.Run();
 
             Assert.IsTrue(result);
+        }
+
+        [TestMethod]
+        public void itShouldRunEnabledCommandsOnly() {
+            var commands = new List<BaseCommand>();
+            var command1 = new MockSucceedingCommand();
+            command1.Enabled = true;
+            commands.Add(command1);
+
+            var command2 = new MockSucceedingCommand();
+            command2.Enabled = false;
+            commands.Add(command2);
+            
+            var runner = new CommandsRunner(commands);
+            var result = runner.Run();
+
+            Assert.IsTrue(result);
+            Assert.IsTrue(command1.WasCommandStarted);
+            Assert.IsFalse(command2.WasCommandStarted);
         }
 
         #region Helper methods

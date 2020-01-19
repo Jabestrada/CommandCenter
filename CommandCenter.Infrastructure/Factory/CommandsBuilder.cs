@@ -19,6 +19,7 @@ namespace CommandCenter.Infrastructure.Factory {
             foreach (var cmdConfig in CommandConfigurations) {
                 var args = cmdConfig.ConstructorArgs.Select(a => expandTokens(a.Value));
                 var command = TypeFactory.CreateInstance<BaseCommand>(new FullTypeNameEntry(cmdConfig.TypeActivationName), args.ToArray<object>());
+                command.Enabled = cmdConfig.Enabled;
                 commands.Add(command);
             }
             return commands;

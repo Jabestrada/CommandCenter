@@ -17,7 +17,7 @@ namespace CommandCenter.Infrastructure.Orchestration {
             registerCommands();
         }
 
-        public bool HasError => Commands.Any(c => !c.DidCommandSucceed);
+        public bool HasError => Commands.Any(c => c.WasCommandStarted && !c.DidCommandSucceed);
 
         public bool Run() {
             resetState();
@@ -44,8 +44,15 @@ namespace CommandCenter.Infrastructure.Orchestration {
         }
         private void runCommands() {
             foreach (var command in Commands) {
+                if (!command.Enabled) {
+                    // TODO: Add friendlyName to BaseCommand, read from configuration.
+                    //SendReport($"Command {command} was not run because it is disabled", ReportType.Progress);
+                    continue;
+                }
+
                 InvokedCommandsStackForUndo.Push(command);
                 InvokedCommandsStackForCleanup.Push(command);
+                
                 command.WasCommandStarted = true;
                 try {
                     command.Do();
