@@ -26,7 +26,7 @@ namespace CommandCenter.UI.WinForms {
             if (IsAnAdministrator()) {
                 this.Text = this.Text + " - launched as Admin";
             }
-            else { 
+            else {
                 this.Text = this.Text + " - not launched as Admin";
             }
         }
@@ -169,14 +169,44 @@ namespace CommandCenter.UI.WinForms {
         }
 
         private void commandsList_AfterCheck(object sender, TreeViewEventArgs e) {
-            TreeNodeCollection nodes = commandsList.Nodes;
-            foreach (TreeNode commandNode in nodes) {
+            foreach (TreeNode commandNode in commandsList.Nodes) {
                 if (commandNode.Checked) {
                     btnRun.Enabled = true;
                     return;
                 }
             }
             btnRun.Enabled = false;
+        }
+
+        private void commandsList_MouseDown(object sender, MouseEventArgs e) {
+            commandsList.SelectedNode = commandsList.GetNodeAt(e.X, e.Y);
+        }
+
+        private void checkAllButThisMenuItem_Click(object sender, EventArgs e) {
+            checkAll(true, commandsList.SelectedNode, false);
+        }
+
+        private void uncheckAllButThisMenuItem_Click(object sender, EventArgs e) {
+            checkAll(false, commandsList.SelectedNode, true);
+        }
+
+        private void checkAllMenuItem_Click(object sender, EventArgs e) {
+            checkAll(true);
+        }
+
+        private void uncheckAllMenuItem_Click(object sender, EventArgs e) {
+            checkAll(false);
+        }
+
+        private void checkAll(bool isChecked, TreeNode excludedNode = null, bool excludedNodeSetting = false) {
+            if (excludedNode != null) {
+                excludedNode.Checked = excludedNodeSetting;
+            }
+            foreach (TreeNode node in commandsList.Nodes) {
+                if (node != excludedNode) { 
+                   node.Checked = isChecked;
+                }
+            }
         }
     }
 }

@@ -36,6 +36,12 @@
             this.btnRun = new System.Windows.Forms.Button();
             this.btnBrowseConfig = new System.Windows.Forms.Button();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.commandsListContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.checkAllButThisMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.uncheckAllButThisMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.checkAllMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.uncheckAllMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -45,6 +51,7 @@
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
+            this.commandsListContextMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // txtConfigFile
@@ -71,6 +78,7 @@
             // commandsList
             // 
             this.commandsList.CheckBoxes = true;
+            this.commandsList.ContextMenuStrip = this.commandsListContextMenu;
             this.commandsList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.commandsList.FullRowSelect = true;
             this.commandsList.HideSelection = false;
@@ -81,6 +89,7 @@
             this.commandsList.TabIndex = 3;
             this.commandsList.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.commandsList_AfterCheck);
             this.commandsList.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.commandsList_AfterSelect);
+            this.commandsList.MouseDown += new System.Windows.Forms.MouseEventHandler(this.commandsList_MouseDown);
             // 
             // splitContainer1
             // 
@@ -189,6 +198,51 @@
             this.btnBrowseConfig.UseVisualStyleBackColor = true;
             this.btnBrowseConfig.Click += new System.EventHandler(this.btnBrowseConfig_Click);
             // 
+            // commandsListContextMenu
+            // 
+            this.commandsListContextMenu.ImageScalingSize = new System.Drawing.Size(40, 40);
+            this.commandsListContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.checkAllButThisMenuItem,
+            this.uncheckAllButThisMenuItem,
+            this.toolStripSeparator1,
+            this.checkAllMenuItem,
+            this.uncheckAllMenuItem});
+            this.commandsListContextMenu.Name = "commandsListContextMenu";
+            this.commandsListContextMenu.Size = new System.Drawing.Size(361, 257);
+            // 
+            // checkAllButThisMenuItem
+            // 
+            this.checkAllButThisMenuItem.Name = "checkAllButThisMenuItem";
+            this.checkAllButThisMenuItem.Size = new System.Drawing.Size(360, 48);
+            this.checkAllButThisMenuItem.Text = "Check all but this";
+            this.checkAllButThisMenuItem.Click += new System.EventHandler(this.checkAllButThisMenuItem_Click);
+            // 
+            // uncheckAllButThisMenuItem
+            // 
+            this.uncheckAllButThisMenuItem.Name = "uncheckAllButThisMenuItem";
+            this.uncheckAllButThisMenuItem.Size = new System.Drawing.Size(360, 48);
+            this.uncheckAllButThisMenuItem.Text = "Uncheck all but this";
+            this.uncheckAllButThisMenuItem.Click += new System.EventHandler(this.uncheckAllButThisMenuItem_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(357, 6);
+            // 
+            // checkAllMenuItem
+            // 
+            this.checkAllMenuItem.Name = "checkAllMenuItem";
+            this.checkAllMenuItem.Size = new System.Drawing.Size(360, 48);
+            this.checkAllMenuItem.Text = "Check all";
+            this.checkAllMenuItem.Click += new System.EventHandler(this.checkAllMenuItem_Click);
+            // 
+            // uncheckAllMenuItem
+            // 
+            this.uncheckAllMenuItem.Name = "uncheckAllMenuItem";
+            this.uncheckAllMenuItem.Size = new System.Drawing.Size(360, 48);
+            this.uncheckAllMenuItem.Text = "Uncheck all";
+            this.uncheckAllMenuItem.Click += new System.EventHandler(this.uncheckAllMenuItem_Click);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
@@ -212,6 +266,7 @@
             this.splitContainer2.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
             this.splitContainer2.ResumeLayout(false);
+            this.commandsListContextMenu.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -230,6 +285,12 @@
         private System.Windows.Forms.Button btnRun;
         private System.Windows.Forms.Button btnBrowseConfig;
         private System.Windows.Forms.ToolTip toolTip1;
+        private System.Windows.Forms.ContextMenuStrip commandsListContextMenu;
+        private System.Windows.Forms.ToolStripMenuItem checkAllButThisMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem uncheckAllButThisMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem checkAllMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem uncheckAllMenuItem;
     }
 }
 
