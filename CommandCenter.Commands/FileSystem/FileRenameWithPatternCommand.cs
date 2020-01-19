@@ -32,7 +32,7 @@ namespace CommandCenter.Commands.FileSystem {
 
                 doRename();
                 DidCommandSucceed = true;
-                SendReport($"File {SourceFilename} renamed to {ComputedNewName}", ReportType.DoneTaskWithSuccess);
+                SendReport($"File {SourceFilename} renamed with pattern {NewNamePattern} to {ComputedNewName}", ReportType.DoneTaskWithSuccess);
             }
             catch (Exception exc) {
                 DidCommandSucceed = false;
@@ -57,7 +57,7 @@ namespace CommandCenter.Commands.FileSystem {
             ComputedNewName = Path.Combine(Path.GetDirectoryName(SourceFilename), ComputedNewName);
 
             if (FileExists(ComputedNewName)) {
-                throw new Exception($"{ComputedNewName} already exists");
+                throw new Exception($"File {ComputedNewName} already exists");
             }
 
             FileSystemCommands.FileMove(SourceFilename, ComputedNewName);
