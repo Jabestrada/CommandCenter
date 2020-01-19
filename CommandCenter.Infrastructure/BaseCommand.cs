@@ -34,9 +34,11 @@ namespace CommandCenter.Infrastructure {
         public bool DidCommandSucceed { get; protected set; }
         public bool WasCommandStarted { get; internal set; }
         public bool Enabled { get; set; }
+        public string ShortDescription { get; set; }
         public BaseCommand() {
             Id = Guid.NewGuid().ToString();
             Enabled = true;
+            ShortDescription = string.Empty;
         }
 
         public delegate void ReportSentEventHandler(BaseCommand command, CommandReportArgs args);

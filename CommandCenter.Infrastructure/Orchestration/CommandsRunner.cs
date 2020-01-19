@@ -45,8 +45,7 @@ namespace CommandCenter.Infrastructure.Orchestration {
         private void runCommands() {
             foreach (var command in Commands) {
                 if (!command.Enabled) {
-                    // TODO: Add friendlyName to BaseCommand, read from configuration.
-                    //SendReport($"Command {command} was not run because it is disabled", ReportType.Progress);
+                    SendReport($"Command [{command.ShortDescription}] was not run because it is disabled", ReportType.Progress);
                     continue;
                 }
 
