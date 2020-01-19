@@ -45,6 +45,10 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabCommands = new System.Windows.Forms.TabPage();
             this.tabTokens = new System.Windows.Forms.TabPage();
+            this.tokensList = new System.Windows.Forms.DataGridView();
+            this.Key = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Value = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.label1 = new System.Windows.Forms.Label();
             this.commandsListContextMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -57,24 +61,26 @@
             this.splitContainer2.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabCommands.SuspendLayout();
+            this.tabTokens.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tokensList)).BeginInit();
             this.SuspendLayout();
             // 
             // txtConfigFile
             // 
             this.txtConfigFile.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtConfigFile.Location = new System.Drawing.Point(26, 37);
+            this.txtConfigFile.Location = new System.Drawing.Point(194, 37);
             this.txtConfigFile.Name = "txtConfigFile";
-            this.txtConfigFile.Size = new System.Drawing.Size(1699, 38);
+            this.txtConfigFile.Size = new System.Drawing.Size(1834, 38);
             this.txtConfigFile.TabIndex = 1;
             this.txtConfigFile.TextChanged += new System.EventHandler(this.txtConfigFile_TextChanged);
             // 
             // btnLoadConfig
             // 
             this.btnLoadConfig.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnLoadConfig.Location = new System.Drawing.Point(1824, 27);
+            this.btnLoadConfig.Location = new System.Drawing.Point(2117, 31);
             this.btnLoadConfig.Name = "btnLoadConfig";
-            this.btnLoadConfig.Size = new System.Drawing.Size(238, 57);
+            this.btnLoadConfig.Size = new System.Drawing.Size(241, 57);
             this.btnLoadConfig.TabIndex = 2;
             this.btnLoadConfig.Text = "Load";
             this.btnLoadConfig.UseVisualStyleBackColor = true;
@@ -174,6 +180,7 @@
             this.commandParametersList.RowHeadersVisible = false;
             this.commandParametersList.RowHeadersWidth = 102;
             this.commandParametersList.RowTemplate.Height = 40;
+            this.commandParametersList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.commandParametersList.Size = new System.Drawing.Size(941, 701);
             this.commandParametersList.TabIndex = 0;
             // 
@@ -226,7 +233,7 @@
             // 
             this.btnRun.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnRun.Enabled = false;
-            this.btnRun.Location = new System.Drawing.Point(1743, 1386);
+            this.btnRun.Location = new System.Drawing.Point(2046, 1386);
             this.btnRun.Name = "btnRun";
             this.btnRun.Size = new System.Drawing.Size(318, 57);
             this.btnRun.TabIndex = 7;
@@ -237,7 +244,7 @@
             // btnBrowseConfig
             // 
             this.btnBrowseConfig.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnBrowseConfig.Location = new System.Drawing.Point(1738, 27);
+            this.btnBrowseConfig.Location = new System.Drawing.Point(2037, 31);
             this.btnBrowseConfig.Name = "btnBrowseConfig";
             this.btnBrowseConfig.Size = new System.Drawing.Size(75, 57);
             this.btnBrowseConfig.TabIndex = 8;
@@ -256,7 +263,7 @@
             this.tabControl1.Location = new System.Drawing.Point(26, 112);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(2035, 1242);
+            this.tabControl1.Size = new System.Drawing.Size(2338, 1242);
             this.tabControl1.TabIndex = 9;
             // 
             // tabCommands
@@ -272,19 +279,67 @@
             // 
             // tabTokens
             // 
+            this.tabTokens.Controls.Add(this.tokensList);
             this.tabTokens.Location = new System.Drawing.Point(10, 48);
             this.tabTokens.Name = "tabTokens";
             this.tabTokens.Padding = new System.Windows.Forms.Padding(3);
-            this.tabTokens.Size = new System.Drawing.Size(2015, 1184);
+            this.tabTokens.Size = new System.Drawing.Size(2318, 1184);
             this.tabTokens.TabIndex = 1;
             this.tabTokens.Text = "Tokens";
             this.tabTokens.UseVisualStyleBackColor = true;
+            // 
+            // tokensList
+            // 
+            this.tokensList.AllowUserToAddRows = false;
+            this.tokensList.AllowUserToDeleteRows = false;
+            this.tokensList.AllowUserToResizeRows = false;
+            this.tokensList.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.tokensList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.tokensList.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Key,
+            this.Value});
+            this.tokensList.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tokensList.Location = new System.Drawing.Point(3, 3);
+            this.tokensList.Name = "tokensList";
+            this.tokensList.ReadOnly = true;
+            this.tokensList.RowHeadersVisible = false;
+            this.tokensList.RowHeadersWidth = 102;
+            this.tokensList.RowTemplate.Height = 40;
+            this.tokensList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.tokensList.Size = new System.Drawing.Size(2312, 1178);
+            this.tokensList.TabIndex = 0;
+            // 
+            // Key
+            // 
+            this.Key.DataPropertyName = "Key";
+            this.Key.HeaderText = "Token";
+            this.Key.MinimumWidth = 12;
+            this.Key.Name = "Key";
+            this.Key.ReadOnly = true;
+            // 
+            // Value
+            // 
+            this.Value.DataPropertyName = "Value";
+            this.Value.HeaderText = "Value";
+            this.Value.MinimumWidth = 12;
+            this.Value.Name = "Value";
+            this.Value.ReadOnly = true;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(36, 40);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(152, 32);
+            this.label1.TabIndex = 10;
+            this.label1.Text = "Config File";
             // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(2087, 1468);
+            this.ClientSize = new System.Drawing.Size(2390, 1468);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.btnBrowseConfig);
             this.Controls.Add(this.btnRun);
@@ -306,6 +361,8 @@
             this.splitContainer2.ResumeLayout(false);
             this.tabControl1.ResumeLayout(false);
             this.tabCommands.ResumeLayout(false);
+            this.tabTokens.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.tokensList)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -333,6 +390,10 @@
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabCommands;
         private System.Windows.Forms.TabPage tabTokens;
+        private System.Windows.Forms.DataGridView tokensList;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Key;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Value;
+        private System.Windows.Forms.Label label1;
     }
 }
 

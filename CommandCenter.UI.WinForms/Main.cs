@@ -16,6 +16,7 @@ namespace CommandCenter.UI.WinForms {
 
         private List<CommandConfiguration> _loadedCommandConfigurations;
         private List<Token> _loadedTokens;
+        private string _lastLoadedConfig = string.Empty;
         public Main() {
             InitializeComponent();
             _controller = new CommandsControllerWinForms(_reportReceiver);
@@ -75,16 +76,23 @@ namespace CommandCenter.UI.WinForms {
         }
 
         private void loadCommands() {
-            commandsList.Nodes.Clear();
-            commandParametersList.DataSource = null;
-
             if (string.IsNullOrWhiteSpace(txtConfigFile.Text)) return;
-
             if (!File.Exists(txtConfigFile.Text)) {
                 displayError($"Config file {txtConfigFile.Text} does not exist");
+                if (!string.IsNullOrWhiteSpace(_lastLoadedConfig)) {
+                    txtConfigFile.Text = _lastLoadedConfig;
+                }
                 return;
             }
+
+            resetLists();
             displayCommands();
+        }
+
+        private void resetLists() {
+            commandsList.Nodes.Clear();
+            commandParametersList.DataSource = null;
+            tokensList.DataSource = null;
         }
 
         private void displayCommands() {
@@ -93,12 +101,13 @@ namespace CommandCenter.UI.WinForms {
             }
             catch {
                 displayError($"File {txtConfigFile.Text} is not a valid Command Center configuration file");
+                _lastLoadedConfig = string.Empty;
                 return;
             }
 
             _loadedTokens = _controller.GetTokens(txtConfigFile.Text);
+            tokensList.DataSource = _loadedTokens.Select(a => new { a.Key, a.Value }).ToList();
 
-            commandsList.Nodes.Clear();
             foreach (var command in _loadedCommandConfigurations) {
                 var commandName = new FullTypeNameEntry(command.TypeActivationName).TypeName;
                 var commandDisplayText = commandName.Substring(commandName.LastIndexOf('.') + 1);
@@ -109,6 +118,7 @@ namespace CommandCenter.UI.WinForms {
                 cmdNode.Checked = true;
                 cmdNode.Tag = command;
             }
+            _lastLoadedConfig = txtConfigFile.Text;
         }
 
         private void displayError(string message) {
@@ -118,7 +128,7 @@ namespace CommandCenter.UI.WinForms {
         private void commandsList_AfterSelect(object sender, TreeViewEventArgs e) {
             var selectedCommand = e.Node.Tag as CommandConfiguration;
             if (selectedCommand != null) {
-                commandParametersList.DataSource = selectedCommand.ConstructorArgs.Select(a => new { Key = a.Key, Value = a.Value }).ToList();
+                commandParametersList.DataSource = selectedCommand.ConstructorArgs.Select(a => new { a.Key, a.Value }).ToList();
             }
         }
 
