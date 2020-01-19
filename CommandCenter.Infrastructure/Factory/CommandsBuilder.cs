@@ -24,6 +24,17 @@ namespace CommandCenter.Infrastructure.Factory {
             return commands;
         }
 
+        public List<CommandConfiguration> GetTokenizedConfiguration() {
+            return CommandConfigurations.Select(c => new CommandConfiguration { 
+                                                         TypeActivationName = c.TypeActivationName,
+                                                         Enabled = c.Enabled,
+                                                         ShortDescription = c.ShortDescription,
+                                                         ConstructorArgs = c.ConstructorArgs
+                                                                            .ToDictionary(p => p.Key,
+                                                                                          p => expandTokens(p.Value))
+                                                    }).ToList();
+        }
+
         private string expandTokens(string input) {
             if (Tokens == null || !Tokens.Any()) return input;
 

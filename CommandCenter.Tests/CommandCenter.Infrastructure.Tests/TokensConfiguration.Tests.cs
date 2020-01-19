@@ -28,9 +28,9 @@ namespace CommandCenter.Infrastructure.Tests {
             xmlDoc.LoadXml(xmlConfig);
             var xmlConfigSource = new CommandsConfigurationXmlSource(xmlDoc);
 
-            var tokens = xmlConfigSource.GetTokens();
+            var tokens = xmlConfigSource.Tokens;
 
-            Assert.AreEqual(2, tokens.Count);
+            Assert.AreEqual(2, xmlConfigSource.Tokens.Count);
             var token = tokens.First();
             Assert.IsNotNull(token);
             Assert.AreEqual(token.Key, tokenKey1);
@@ -54,7 +54,7 @@ namespace CommandCenter.Infrastructure.Tests {
             xmlDoc.LoadXml(xmlConfig);
             var xmlConfigSource = new CommandsConfigurationXmlSource(xmlDoc);
 
-            var tokens = xmlConfigSource.GetTokens();
+            var tokens = xmlConfigSource.Tokens;
 
             Assert.AreEqual(0, tokens.Count);
 
@@ -68,7 +68,7 @@ namespace CommandCenter.Infrastructure.Tests {
             xmlDoc.LoadXml(xmlConfig);
             xmlConfigSource = new CommandsConfigurationXmlSource(xmlDoc);
 
-            tokens = xmlConfigSource.GetTokens();
+            tokens = xmlConfigSource.Tokens;
 
             Assert.AreEqual(0, tokens.Count);
         }
@@ -88,7 +88,7 @@ namespace CommandCenter.Infrastructure.Tests {
             xmlDoc.LoadXml(xmlConfig);
             var xmlConfigSource = new CommandsConfigurationXmlSource(xmlDoc);
 
-            var tokens = xmlConfigSource.GetTokens();
+            var tokens = xmlConfigSource.Tokens;
 
             Assert.AreEqual(0, tokens.Count);
         }
@@ -108,7 +108,7 @@ namespace CommandCenter.Infrastructure.Tests {
             xmlDoc.LoadXml(xmlConfig);
             var xmlConfigSource = new CommandsConfigurationXmlSource(xmlDoc);
 
-            var tokens = xmlConfigSource.GetTokens();
+            var tokens = xmlConfigSource.Tokens;
 
             Assert.AreEqual(0, tokens.Count);
         }
@@ -128,7 +128,7 @@ namespace CommandCenter.Infrastructure.Tests {
             xmlDoc.LoadXml(xmlConfig);
             var xmlConfigSource = new CommandsConfigurationXmlSource(xmlDoc);
 
-            var tokens = xmlConfigSource.GetTokens();
+            var tokens = xmlConfigSource.Tokens;
 
             Assert.AreEqual(0, tokens.Count);
         }
@@ -148,7 +148,7 @@ namespace CommandCenter.Infrastructure.Tests {
             xmlDoc.LoadXml(xmlConfig);
             var xmlConfigSource = new CommandsConfigurationXmlSource(xmlDoc);
 
-            var tokens = xmlConfigSource.GetTokens();
+            var tokens = xmlConfigSource.Tokens;
 
             Assert.AreEqual(0, tokens.Count);
         }
@@ -172,7 +172,7 @@ namespace CommandCenter.Infrastructure.Tests {
             xmlDoc.LoadXml(xmlConfig);
             var xmlConfigSource = new CommandsConfigurationXmlSource(xmlDoc);
 
-            var tokens = xmlConfigSource.GetTokens();
+            var tokens = xmlConfigSource.Tokens;
         }
     }
 }

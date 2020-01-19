@@ -2,7 +2,7 @@
 
 namespace CommandCenter.Infrastructure.Configuration {
     public class CommandConfiguration {
-        public readonly Dictionary<string, string> ConstructorArgs;
+        public Dictionary<string, string> ConstructorArgs { get; internal set; }
         public CommandConfiguration() {
             ConstructorArgs = new Dictionary<string, string>();
         }

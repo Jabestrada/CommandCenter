@@ -15,6 +15,7 @@ namespace CommandCenter.UI.WinForms {
         private CommandsControllerWinForms _controller;
 
         private List<CommandConfiguration> _loadedCommandConfigurations;
+        private List<Token> _loadedTokens;
         public Main() {
             InitializeComponent();
             _controller = new CommandsControllerWinForms(_reportReceiver);
@@ -75,6 +76,7 @@ namespace CommandCenter.UI.WinForms {
 
         private void loadCommands() {
             commandsList.Nodes.Clear();
+            commandParametersList.DataSource = null;
 
             if (string.IsNullOrWhiteSpace(txtConfigFile.Text)) return;
 
@@ -93,6 +95,8 @@ namespace CommandCenter.UI.WinForms {
                 displayError($"File {txtConfigFile.Text} is not a valid Command Center configuration file");
                 return;
             }
+
+            _loadedTokens = _controller.GetTokens(txtConfigFile.Text);
 
             commandsList.Nodes.Clear();
             foreach (var command in _loadedCommandConfigurations) {

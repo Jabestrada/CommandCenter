@@ -30,7 +30,16 @@ namespace CommandCenter.UI.WinForms {
             XmlDocument xmlDoc = new XmlDocument();
             xmlDoc.Load(configFile);
             var commandsConfigurationSource = new CommandsConfigurationXmlSource(xmlDoc);
-            return commandsConfigurationSource.GetCommandConfigurations().Where(c => c.Enabled).ToList();
+            var commandConfigs = commandsConfigurationSource.GetCommandConfigurations().Where(c => c.Enabled).ToList();
+            var cmdBuilder = new CommandsBuilder(commandConfigs, commandsConfigurationSource.Tokens);
+            return cmdBuilder.GetTokenizedConfiguration();
+        }
+
+        public List<Token> GetTokens(string configFile) {
+            XmlDocument xmlDoc = new XmlDocument();
+            xmlDoc.Load(configFile);
+            var commandsConfigurationSource = new CommandsConfigurationXmlSource(xmlDoc);
+            return commandsConfigurationSource.Tokens;
         }
 
         private void CommandsRunner_OnReportSent(BaseCommand command, CommandReportArgs args) {

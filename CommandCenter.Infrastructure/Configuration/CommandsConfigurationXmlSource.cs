@@ -5,13 +5,27 @@ using System.Xml;
 
 namespace CommandCenter.Infrastructure.Configuration {
     public class CommandsConfigurationXmlSource : IConfigurationSource {
+        private List<Token> _tokens = null;
+        public List<Token> Tokens {
+            set {
+                if (value == null) throw new ArgumentNullException(nameof(value));
+
+                _tokens = value;
+            }
+            get {
+                if (_tokens == null) {
+                    readTokens();
+                }
+                return _tokens;
+            }
+        }
 
         private readonly XmlNode _rootConfigNode;
         public CommandsConfigurationXmlSource(XmlNode rootConfigNode) {
             _rootConfigNode = rootConfigNode;
         }
 
-        public List<Token> GetTokens() {
+        private void readTokens() {
             var tokenNodes = getTokenNodes();
             var tokenList = new List<Token>();
             foreach (XmlNode node in tokenNodes) {
@@ -24,7 +38,7 @@ namespace CommandCenter.Infrastructure.Configuration {
 
                 tokenList.Add(newToken);
             }
-            return tokenList;
+            _tokens = tokenList;
         }
 
         private string getKeyAttributeValue(XmlNode node, List<Token> tokenList) {
