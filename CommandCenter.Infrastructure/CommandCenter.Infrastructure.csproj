@@ -42,7 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommandsRunner.cs" />
-    <Compile Include="CommandsBuilder.cs" />
+    <Compile Include="Factory\CommandsBuilder.cs" />
     <Compile Include="BaseCommand.cs" />
     <Compile Include="Configuration\CommandConfiguration.cs" />
     <Compile Include="Configuration\CommandsConfigurationXmlSource.cs" />

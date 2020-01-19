@@ -1,5 +1,6 @@
 ﻿using CommandCenter.Infrastructure;
 using CommandCenter.Infrastructure.Configuration;
+using CommandCenter.Infrastructure.Factory;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,4 +1,5 @@
 ﻿using CommandCenter.Infrastructure.Configuration;
+using CommandCenter.Infrastructure.Factory;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Linq;

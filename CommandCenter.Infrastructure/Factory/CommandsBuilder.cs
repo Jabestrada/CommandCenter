@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace CommandCenter.Infrastructure {
+namespace CommandCenter.Infrastructure.Factory {
     public class CommandsBuilder {
         public readonly List<CommandConfiguration> CommandConfigurations;
         public CommandsBuilder(List<CommandConfiguration> commandConfigurations) {
