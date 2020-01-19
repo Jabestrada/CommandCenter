@@ -10,14 +10,16 @@ namespace CommandCenter.Infrastructure.Tests {
         [TestMethod]
         public void itShouldLoadCommandConfigurationsWithParameterElements() {
             var xmlConfig = @"
-                <commands>
-                    <command>
-                        <typeName>CommandCenter.Tests, CommandCenter.Tests.MockCommands.MockCommandWithNonDefaultConstructor</typeName>
-                        <ctorArgs>
-                            <ctorArg name='dummyName' value='dummyValue' />
-                        </ctorArgs>
-                    </command>
-                </commands>
+                <commandCenter>
+                    <commands>
+                        <command>
+                            <typeName>CommandCenter.Tests, CommandCenter.Tests.MockCommands.MockCommandWithNonDefaultConstructor</typeName>
+                            <ctorArgs>
+                                <ctorArg name='dummyName' value='dummyValue' />
+                            </ctorArgs>
+                        </command>
+                    </commands>
+                </commandCenter>
                 ";
             XmlDocument xmlDoc = new XmlDocument();
             xmlDoc.LoadXml(xmlConfig);
@@ -31,11 +33,13 @@ namespace CommandCenter.Infrastructure.Tests {
         [TestMethod]
         public void itShouldLoadCommandConfigurationsWithoutParameterElements() {
             var xmlConfig = @"
-                <commands>
-                    <command>
-                        <typeName>CommandCenter.Infrastructure.Tests, CommandCenter.Infrastructure.Tests.MockCommands.MockCommandWithNonDefaultConstructor</typeName>
-                    </command>
-                </commands>
+                <commandCenter>
+                    <commands>
+                        <command>
+                            <typeName>CommandCenter.Infrastructure.Tests, CommandCenter.Infrastructure.Tests.MockCommands.MockCommandWithNonDefaultConstructor</typeName>
+                        </command>
+                    </commands>
+                </commandCenter>
                 ";
             XmlDocument xmlDoc = new XmlDocument();
             xmlDoc.LoadXml(xmlConfig);
@@ -50,10 +54,12 @@ namespace CommandCenter.Infrastructure.Tests {
         [ExpectedException(typeof(CommandNodeNotFoundException))]
         public void itShouldRaiseExceptionWhenCommandNodeNotFound() {
             var xmlConfig = @"
-                <commands>
-                    <commandNodeNot>
-                    </commandNodeNot>
-                </commands>
+                <commandCenter>
+                    <commands>
+                        <commandNodeNot>
+                        </commandNodeNot>
+                    </commands>
+                </commandCenter>
                 ";
             XmlDocument xmlDoc = new XmlDocument();
             xmlDoc.LoadXml(xmlConfig);
@@ -68,13 +74,15 @@ namespace CommandCenter.Infrastructure.Tests {
         [ExpectedException(typeof(TypeNameNodeNotFoundException))]
         public void itShouldRaiseExceptionWhenTypeNameNotFound() {
             var xmlConfig = @"
-                <commands>
-                    <command>
-                        <ctorArgs>
-                            <ctorArg name='dummyName' value='dummyValue' />
-                        </ctorArgs>
-                    </command>
-                </commands>
+                <commandCenter>
+                    <commands>
+                        <command>
+                            <ctorArgs>
+                                <ctorArg name='dummyName' value='dummyValue' />
+                            </ctorArgs>
+                        </command>
+                    </commands>
+                </commandCenter>
                 ";
             XmlDocument xmlDoc = new XmlDocument();
             xmlDoc.LoadXml(xmlConfig);
@@ -89,14 +97,16 @@ namespace CommandCenter.Infrastructure.Tests {
         [ExpectedException(typeof(CtorValueAttributeNotFoundException))]
         public void itShouldRaiseExceptionWhenCtorValueAttributeNotFound() {
             var xmlConfig = @"
-                <commands>
-                    <command>
-                        <typeName>CommandCenter.Infrastructure.Tests, CommandCenter.Infrastructure.Tests.MockCommands.MockCommandWithNonDefaultConstructor</typeName>
-                        <ctorArgs>
+                <commandCenter>
+                    <commands>
+                        <command>
+                            <typeName>CommandCenter.Infrastructure.Tests, CommandCenter.Infrastructure.Tests.MockCommands.MockCommandWithNonDefaultConstructor</typeName>
+                            <ctorArgs>
                             <ctorArg name='dummyName'/>
-                        </ctorArgs>
-                    </command>
-                </commands>
+                            </ctorArgs>
+                        </command>
+                    </commands>
+                </commandCenter>
                 ";
             XmlDocument xmlDoc = new XmlDocument();
             xmlDoc.LoadXml(xmlConfig);
@@ -110,14 +120,16 @@ namespace CommandCenter.Infrastructure.Tests {
         [TestMethod]
         public void itShouldRaiseNotExceptionWhenCtorNameAttributeIsOmitted() {
             var xmlConfig = @"
-                <commands>
-                    <command>
-                        <typeName>CommandCenter.Infrastructure.Tests, CommandCenter.Infrastructure.Tests.MockCommands.MockCommandWithNonDefaultConstructor</typeName>
-                        <ctorArgs>
-                            <ctorArg value='someValue'/>
-                        </ctorArgs>
-                    </command>
-                </commands>
+                <commandCenter>
+                    <commands>
+                        <command>
+                            <typeName>CommandCenter.Infrastructure.Tests, CommandCenter.Infrastructure.Tests.MockCommands.MockCommandWithNonDefaultConstructor</typeName>
+                            <ctorArgs>
+                                <ctorArg value='someValue'/>
+                            </ctorArgs>
+                        </command>
+                    </commands>
+                </commandCenter>
                 ";
             XmlDocument xmlDoc = new XmlDocument();
             xmlDoc.LoadXml(xmlConfig);
@@ -131,16 +143,18 @@ namespace CommandCenter.Infrastructure.Tests {
         [TestMethod]
         public void itShouldNotRaiseExceptionWhenCtorArgsHasNonctorArgsElements() {
             var xmlConfig = @"
-                <commands>
-                    <command>
-                        <typeName>CommandCenter.Infrastructure.Tests, CommandCenter.Infrastructure.Tests.MockCommands.MockCommandWithNonDefaultConstructor</typeName>
-                        <ctorArgs>
-                            <ctorArg value='someValue'/>
-                            <!-- <ctorArg value='commentedOutForTesting'/> -->
-                            <anotherNonCtorArgElement />
-                        </ctorArgs>
-                    </command>
-                </commands>
+                <commandCenter>
+                    <commands>
+                        <command>
+                            <typeName>CommandCenter.Infrastructure.Tests, CommandCenter.Infrastructure.Tests.MockCommands.MockCommandWithNonDefaultConstructor</typeName>
+                            <ctorArgs>
+                                <ctorArg value='someValue'/>
+                                <!-- <ctorArg value='commentedOutForTesting'/> -->
+                                <anotherNonCtorArgElement />
+                            </ctorArgs>
+                        </command>
+                    </commands>
+                </commandCenter>
                 ";
             XmlDocument xmlDoc = new XmlDocument();
             xmlDoc.LoadXml(xmlConfig);
@@ -155,15 +169,17 @@ namespace CommandCenter.Infrastructure.Tests {
         [ExpectedException(typeof(DuplicateCtorArgNameException))]
         public void itShouldRaiseExceptionWhenCtorArgsHasDuplicateName() {
             var xmlConfig = @"
-                <commands>
-                    <command>
-                        <typeName>CommandCenter.Infrastructure.Tests, CommandCenter.Infrastructure.Tests.MockCommands.MockCommandWithNonDefaultConstructor</typeName>
-                        <ctorArgs>
-                            <ctorArg name='key1' value='someValue' />
-                            <ctorArg name='key1' value='someValue' />
-                        </ctorArgs>
-                    </command>
-                </commands>
+                <commandCenter>
+                    <commands>
+                        <command>
+                            <typeName>CommandCenter.Infrastructure.Tests, CommandCenter.Infrastructure.Tests.MockCommands.MockCommandWithNonDefaultConstructor</typeName>
+                            <ctorArgs>
+                                <ctorArg name='key1' value='someValue' />
+                                <ctorArg name='key1' value='someValue' />
+                            </ctorArgs>
+                        </command>
+                    </commands>
+                </commandCenter>
                 ";
             XmlDocument xmlDoc = new XmlDocument();
             xmlDoc.LoadXml(xmlConfig);
@@ -178,12 +194,14 @@ namespace CommandCenter.Infrastructure.Tests {
         public void itShouldGetShortDesriptionWhenItExists() {
             var shortDescText = "This is a test short description";
             var xmlConfig = $@"
-                <commands>
-                    <command>
-                        <typeName>CommandCenter.Infrastructure.Tests, CommandCenter.Infrastructure.Tests.MockCommands.MockCommandWithNonDefaultConstructor</typeName>
-                        <shortDescription>{shortDescText}</shortDescription>
-                    </command>
-                </commands>
+                <commandCenter>
+                    <commands>
+                        <command>
+                            <typeName>CommandCenter.Infrastructure.Tests, CommandCenter.Infrastructure.Tests.MockCommands.MockCommandWithNonDefaultConstructor</typeName>
+                            <shortDescription>{shortDescText}</shortDescription>
+                        </command>
+                    </commands>
+                </commandCenter>
                 ";
             XmlDocument xmlDoc = new XmlDocument();
             xmlDoc.LoadXml(xmlConfig);
@@ -199,11 +217,13 @@ namespace CommandCenter.Infrastructure.Tests {
         [TestMethod]
         public void itShouldAssignEmptyStringIfShortDesriptionDoesNotExist() {
             var xmlConfig = $@"
-                <commands>
-                    <command>
-                        <typeName>CommandCenter.Infrastructure.Tests, CommandCenter.Infrastructure.Tests.MockCommands.MockCommandWithNonDefaultConstructor</typeName>
-                    </command>
-                </commands>
+                <commandCenter>
+                    <commands>
+                        <command>
+                            <typeName>CommandCenter.Infrastructure.Tests, CommandCenter.Infrastructure.Tests.MockCommands.MockCommandWithNonDefaultConstructor</typeName>
+                        </command>
+                    </commands>
+                </commandCenter>
                 ";
             XmlDocument xmlDoc = new XmlDocument();
             xmlDoc.LoadXml(xmlConfig);
@@ -219,11 +239,13 @@ namespace CommandCenter.Infrastructure.Tests {
         [TestMethod]
         public void itShouldSetEnabledToTrueIfEnabledAttributeDoesNotExist() {
             var xmlConfig = $@"
-                <commands>
-                    <command>
-                        <typeName>CommandCenter.Infrastructure.Tests, CommandCenter.Infrastructure.Tests.MockCommands.MockCommandWithNonDefaultConstructor</typeName>
-                    </command>
-                </commands>
+                <commandCenter>
+                    <commands>
+                        <command>
+                            <typeName>CommandCenter.Infrastructure.Tests, CommandCenter.Infrastructure.Tests.MockCommands.MockCommandWithNonDefaultConstructor</typeName>
+                        </command>
+                    </commands>
+                </commandCenter>
                 ";
             XmlDocument xmlDoc = new XmlDocument();
             xmlDoc.LoadXml(xmlConfig);
@@ -239,11 +261,13 @@ namespace CommandCenter.Infrastructure.Tests {
          [TestMethod]
         public void itShouldSetEnabledToTrueIfEnabledAttributeValueIsTrue() {
             var xmlConfig = $@"
-                <commands>
-                    <command enabled='true'>
-                        <typeName>CommandCenter.Infrastructure.Tests, CommandCenter.Infrastructure.Tests.MockCommands.MockCommandWithNonDefaultConstructor</typeName>
-                    </command>
-                </commands>
+                <commandCenter>
+                    <commands>
+                        <command enabled='true'>
+                            <typeName>CommandCenter.Infrastructure.Tests, CommandCenter.Infrastructure.Tests.MockCommands.MockCommandWithNonDefaultConstructor</typeName>
+                        </command>
+                    </commands>
+                </commandCenter>
                 ";
             XmlDocument xmlDoc = new XmlDocument();
             xmlDoc.LoadXml(xmlConfig);
@@ -259,11 +283,13 @@ namespace CommandCenter.Infrastructure.Tests {
             [TestMethod]
         public void itShouldSetEnabledToTrueIfEnabledAttributeValueIsTrueCaseInsensitive() {
             var xmlConfig = $@"
-                <commands>
-                    <command enabled='tRuE'>
-                        <typeName>CommandCenter.Infrastructure.Tests, CommandCenter.Infrastructure.Tests.MockCommands.MockCommandWithNonDefaultConstructor</typeName>
-                    </command>
-                </commands>
+                <commandCenter>
+                    <commands>
+                        <command enabled='tRuE'>
+                            <typeName>CommandCenter.Infrastructure.Tests, CommandCenter.Infrastructure.Tests.MockCommands.MockCommandWithNonDefaultConstructor</typeName>
+                        </command>
+                    </commands>
+                </commandCenter>
                 ";
             XmlDocument xmlDoc = new XmlDocument();
             xmlDoc.LoadXml(xmlConfig);
@@ -279,11 +305,13 @@ namespace CommandCenter.Infrastructure.Tests {
          [TestMethod]
         public void itShouldSetEnabledToTrueIfEnabledAttributeValueIsFalse() {
             var xmlConfig = $@"
-                <commands>
-                    <command enabled='false'>
-                        <typeName>CommandCenter.Infrastructure.Tests, CommandCenter.Infrastructure.Tests.MockCommands.MockCommandWithNonDefaultConstructor</typeName>
-                    </command>
-                </commands>
+                <commandCenter>
+                    <commands>
+                        <command enabled='false'>
+                            <typeName>CommandCenter.Infrastructure.Tests, CommandCenter.Infrastructure.Tests.MockCommands.MockCommandWithNonDefaultConstructor</typeName>
+                        </command>
+                    </commands>
+                </commandCenter>
                 ";
             XmlDocument xmlDoc = new XmlDocument();
             xmlDoc.LoadXml(xmlConfig);
@@ -299,11 +327,13 @@ namespace CommandCenter.Infrastructure.Tests {
          [TestMethod]
         public void itShouldSetEnabledToTrueIfEnabledAttributeValueIsEmpty() {
             var xmlConfig = $@"
-                <commands>
-                    <command enabled=''>
-                        <typeName>CommandCenter.Infrastructure.Tests, CommandCenter.Infrastructure.Tests.MockCommands.MockCommandWithNonDefaultConstructor</typeName>
-                    </command>
-                </commands>
+                <commandCenter>
+                    <commands>
+                        <command enabled=''>
+                            <typeName>CommandCenter.Infrastructure.Tests, CommandCenter.Infrastructure.Tests.MockCommands.MockCommandWithNonDefaultConstructor</typeName>
+                        </command>
+                    </commands>
+                </commandCenter>
                 ";
             XmlDocument xmlDoc = new XmlDocument();
             xmlDoc.LoadXml(xmlConfig);
@@ -320,11 +350,13 @@ namespace CommandCenter.Infrastructure.Tests {
         [ExpectedException(typeof(InvalidEnabledAttributeValueException))]
         public void itShouldThrowExceptionIfEnabledAttributeValueIsNeitherTrueNorFalseNorEmpty() {
             var xmlConfig = $@"
-                <commands>
-                    <command enabled='werjwjekqrl'>
-                        <typeName>CommandCenter.Infrastructure.Tests, CommandCenter.Infrastructure.Tests.MockCommands.MockCommandWithNonDefaultConstructor</typeName>
-                    </command>
-                </commands>
+                <commandCenter>
+                    <commands>
+                        <command enabled='werjwjekqrl'>
+                            <typeName>CommandCenter.Infrastructure.Tests, CommandCenter.Infrastructure.Tests.MockCommands.MockCommandWithNonDefaultConstructor</typeName>
+                        </command>
+                    </commands>
+                </commandCenter>
                 ";
             XmlDocument xmlDoc = new XmlDocument();
             xmlDoc.LoadXml(xmlConfig);

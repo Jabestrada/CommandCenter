@@ -27,6 +27,12 @@
             this.txtConfigFile = new System.Windows.Forms.TextBox();
             this.btnLoadConfig = new System.Windows.Forms.Button();
             this.commandsList = new System.Windows.Forms.TreeView();
+            this.commandsListContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.checkAllButThisMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.uncheckAllButThisMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.checkAllMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.uncheckAllMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.commandParametersList = new System.Windows.Forms.DataGridView();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -36,12 +42,10 @@
             this.btnRun = new System.Windows.Forms.Button();
             this.btnBrowseConfig = new System.Windows.Forms.Button();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.commandsListContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.checkAllButThisMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.uncheckAllButThisMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.checkAllMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.uncheckAllMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabCommands = new System.Windows.Forms.TabPage();
+            this.tabTokens = new System.Windows.Forms.TabPage();
+            this.commandsListContextMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -51,7 +55,8 @@
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
-            this.commandsListContextMenu.SuspendLayout();
+            this.tabControl1.SuspendLayout();
+            this.tabCommands.SuspendLayout();
             this.SuspendLayout();
             // 
             // txtConfigFile
@@ -85,11 +90,56 @@
             this.commandsList.Location = new System.Drawing.Point(0, 0);
             this.commandsList.Name = "commandsList";
             this.commandsList.ShowRootLines = false;
-            this.commandsList.Size = new System.Drawing.Size(1078, 740);
+            this.commandsList.Size = new System.Drawing.Size(1064, 701);
             this.commandsList.TabIndex = 3;
             this.commandsList.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.commandsList_AfterCheck);
             this.commandsList.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.commandsList_AfterSelect);
             this.commandsList.MouseDown += new System.Windows.Forms.MouseEventHandler(this.commandsList_MouseDown);
+            // 
+            // commandsListContextMenu
+            // 
+            this.commandsListContextMenu.ImageScalingSize = new System.Drawing.Size(40, 40);
+            this.commandsListContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.checkAllButThisMenuItem,
+            this.uncheckAllButThisMenuItem,
+            this.toolStripSeparator1,
+            this.checkAllMenuItem,
+            this.uncheckAllMenuItem});
+            this.commandsListContextMenu.Name = "commandsListContextMenu";
+            this.commandsListContextMenu.Size = new System.Drawing.Size(356, 202);
+            // 
+            // checkAllButThisMenuItem
+            // 
+            this.checkAllButThisMenuItem.Name = "checkAllButThisMenuItem";
+            this.checkAllButThisMenuItem.Size = new System.Drawing.Size(355, 48);
+            this.checkAllButThisMenuItem.Text = "Check all but this";
+            this.checkAllButThisMenuItem.Click += new System.EventHandler(this.checkAllButThisMenuItem_Click);
+            // 
+            // uncheckAllButThisMenuItem
+            // 
+            this.uncheckAllButThisMenuItem.Name = "uncheckAllButThisMenuItem";
+            this.uncheckAllButThisMenuItem.Size = new System.Drawing.Size(355, 48);
+            this.uncheckAllButThisMenuItem.Text = "Uncheck all but this";
+            this.uncheckAllButThisMenuItem.Click += new System.EventHandler(this.uncheckAllButThisMenuItem_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(352, 6);
+            // 
+            // checkAllMenuItem
+            // 
+            this.checkAllMenuItem.Name = "checkAllMenuItem";
+            this.checkAllMenuItem.Size = new System.Drawing.Size(355, 48);
+            this.checkAllMenuItem.Text = "Check all";
+            this.checkAllMenuItem.Click += new System.EventHandler(this.checkAllMenuItem_Click);
+            // 
+            // uncheckAllMenuItem
+            // 
+            this.uncheckAllMenuItem.Name = "uncheckAllMenuItem";
+            this.uncheckAllMenuItem.Size = new System.Drawing.Size(355, 48);
+            this.uncheckAllMenuItem.Text = "Uncheck all";
+            this.uncheckAllMenuItem.Click += new System.EventHandler(this.uncheckAllMenuItem_Click);
             // 
             // splitContainer1
             // 
@@ -104,8 +154,8 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.commandParametersList);
-            this.splitContainer1.Size = new System.Drawing.Size(2035, 740);
-            this.splitContainer1.SplitterDistance = 1078;
+            this.splitContainer1.Size = new System.Drawing.Size(2009, 701);
+            this.splitContainer1.SplitterDistance = 1064;
             this.splitContainer1.TabIndex = 4;
             // 
             // commandParametersList
@@ -124,7 +174,7 @@
             this.commandParametersList.RowHeadersVisible = false;
             this.commandParametersList.RowHeadersWidth = 102;
             this.commandParametersList.RowTemplate.Height = 40;
-            this.commandParametersList.Size = new System.Drawing.Size(953, 740);
+            this.commandParametersList.Size = new System.Drawing.Size(941, 701);
             this.commandParametersList.TabIndex = 0;
             // 
             // Column1
@@ -151,15 +201,13 @@
             this.statusWindow.Name = "statusWindow";
             this.statusWindow.ReadOnly = true;
             this.statusWindow.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.statusWindow.Size = new System.Drawing.Size(2035, 498);
+            this.statusWindow.Size = new System.Drawing.Size(2009, 473);
             this.statusWindow.TabIndex = 5;
             // 
             // splitContainer2
             // 
-            this.splitContainer2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.splitContainer2.Location = new System.Drawing.Point(26, 113);
+            this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer2.Location = new System.Drawing.Point(3, 3);
             this.splitContainer2.Name = "splitContainer2";
             this.splitContainer2.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -170,8 +218,8 @@
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.statusWindow);
-            this.splitContainer2.Size = new System.Drawing.Size(2035, 1242);
-            this.splitContainer2.SplitterDistance = 740;
+            this.splitContainer2.Size = new System.Drawing.Size(2009, 1178);
+            this.splitContainer2.SplitterDistance = 701;
             this.splitContainer2.TabIndex = 6;
             // 
             // btnRun
@@ -198,64 +246,54 @@
             this.btnBrowseConfig.UseVisualStyleBackColor = true;
             this.btnBrowseConfig.Click += new System.EventHandler(this.btnBrowseConfig_Click);
             // 
-            // commandsListContextMenu
+            // tabControl1
             // 
-            this.commandsListContextMenu.ImageScalingSize = new System.Drawing.Size(40, 40);
-            this.commandsListContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.checkAllButThisMenuItem,
-            this.uncheckAllButThisMenuItem,
-            this.toolStripSeparator1,
-            this.checkAllMenuItem,
-            this.uncheckAllMenuItem});
-            this.commandsListContextMenu.Name = "commandsListContextMenu";
-            this.commandsListContextMenu.Size = new System.Drawing.Size(361, 257);
+            this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tabControl1.Controls.Add(this.tabCommands);
+            this.tabControl1.Controls.Add(this.tabTokens);
+            this.tabControl1.Location = new System.Drawing.Point(26, 112);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(2035, 1242);
+            this.tabControl1.TabIndex = 9;
             // 
-            // checkAllButThisMenuItem
+            // tabCommands
             // 
-            this.checkAllButThisMenuItem.Name = "checkAllButThisMenuItem";
-            this.checkAllButThisMenuItem.Size = new System.Drawing.Size(360, 48);
-            this.checkAllButThisMenuItem.Text = "Check all but this";
-            this.checkAllButThisMenuItem.Click += new System.EventHandler(this.checkAllButThisMenuItem_Click);
+            this.tabCommands.Controls.Add(this.splitContainer2);
+            this.tabCommands.Location = new System.Drawing.Point(10, 48);
+            this.tabCommands.Name = "tabCommands";
+            this.tabCommands.Padding = new System.Windows.Forms.Padding(3);
+            this.tabCommands.Size = new System.Drawing.Size(2015, 1184);
+            this.tabCommands.TabIndex = 0;
+            this.tabCommands.Text = "Commands";
+            this.tabCommands.UseVisualStyleBackColor = true;
             // 
-            // uncheckAllButThisMenuItem
+            // tabTokens
             // 
-            this.uncheckAllButThisMenuItem.Name = "uncheckAllButThisMenuItem";
-            this.uncheckAllButThisMenuItem.Size = new System.Drawing.Size(360, 48);
-            this.uncheckAllButThisMenuItem.Text = "Uncheck all but this";
-            this.uncheckAllButThisMenuItem.Click += new System.EventHandler(this.uncheckAllButThisMenuItem_Click);
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(357, 6);
-            // 
-            // checkAllMenuItem
-            // 
-            this.checkAllMenuItem.Name = "checkAllMenuItem";
-            this.checkAllMenuItem.Size = new System.Drawing.Size(360, 48);
-            this.checkAllMenuItem.Text = "Check all";
-            this.checkAllMenuItem.Click += new System.EventHandler(this.checkAllMenuItem_Click);
-            // 
-            // uncheckAllMenuItem
-            // 
-            this.uncheckAllMenuItem.Name = "uncheckAllMenuItem";
-            this.uncheckAllMenuItem.Size = new System.Drawing.Size(360, 48);
-            this.uncheckAllMenuItem.Text = "Uncheck all";
-            this.uncheckAllMenuItem.Click += new System.EventHandler(this.uncheckAllMenuItem_Click);
+            this.tabTokens.Location = new System.Drawing.Point(10, 48);
+            this.tabTokens.Name = "tabTokens";
+            this.tabTokens.Padding = new System.Windows.Forms.Padding(3);
+            this.tabTokens.Size = new System.Drawing.Size(2015, 1184);
+            this.tabTokens.TabIndex = 1;
+            this.tabTokens.Text = "Tokens";
+            this.tabTokens.UseVisualStyleBackColor = true;
             // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(2087, 1468);
+            this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.btnBrowseConfig);
             this.Controls.Add(this.btnRun);
-            this.Controls.Add(this.splitContainer2);
             this.Controls.Add(this.btnLoadConfig);
             this.Controls.Add(this.txtConfigFile);
             this.Name = "Main";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Command Center";
+            this.commandsListContextMenu.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
@@ -266,7 +304,8 @@
             this.splitContainer2.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
             this.splitContainer2.ResumeLayout(false);
-            this.commandsListContextMenu.ResumeLayout(false);
+            this.tabControl1.ResumeLayout(false);
+            this.tabCommands.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -291,6 +330,9 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem checkAllMenuItem;
         private System.Windows.Forms.ToolStripMenuItem uncheckAllMenuItem;
+        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabPage tabCommands;
+        private System.Windows.Forms.TabPage tabTokens;
     }
 }
 

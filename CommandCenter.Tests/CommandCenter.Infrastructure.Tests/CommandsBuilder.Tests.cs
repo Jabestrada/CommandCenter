@@ -1,5 +1,6 @@
 ﻿using CommandCenter.Infrastructure.Configuration;
 using CommandCenter.Infrastructure.Factory;
+using CommandCenter.Tests.MockCommands;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Linq;
@@ -97,6 +98,54 @@ namespace CommandCenter.Infrastructure.Tests {
             cmdBuilder.BuildCommands();
         }
 
-      
+        [TestMethod]
+        public void itShouldExpandCtorArgsWithConfiguredTokens() {
+            var mockCommandConsumingToken = "CommandCenter.Tests, CommandCenter.Tests.MockCommands.MockCommandConsumingToken";
+            var cmdConfiguration = new CommandConfiguration {
+                TypeActivationName = mockCommandConsumingToken
+            };
+            cmdConfiguration.ConstructorArgs.Add("ctorArg1", @"[BACKUPDIR]\FakeFile.txt");
+            var cmdConfigurations = new List<CommandConfiguration>();
+            cmdConfigurations.Add(cmdConfiguration);
+            var tokens = new List<Token>();
+            tokens.Add(new Token { 
+                 Key = "[BACKUPDIR]",
+                 Value = @"C:\SomeFakeDirectory"
+            });
+
+            var cmdBuilder = new CommandsBuilder(cmdConfigurations, tokens);
+            var builtCommands = cmdBuilder.BuildCommands();
+
+            var builtCommand = builtCommands.First() as MockCommandConsumingToken;
+            Assert.IsNotNull(builtCommand);
+            Assert.AreEqual(builtCommand.TokenizedArg, @"C:\SomeFakeDirectory\FakeFile.txt");
+        }
+
+         [TestMethod]
+        public void itShouldExpandCtorArgsWithMultipleConfiguredTokens() {
+            var mockCommandConsumingToken = "CommandCenter.Tests, CommandCenter.Tests.MockCommands.MockCommandConsumingToken";
+            var cmdConfiguration = new CommandConfiguration {
+                TypeActivationName = mockCommandConsumingToken
+            };
+            cmdConfiguration.ConstructorArgs.Add("ctorArg1", @"[BACKUPDIR]\FakeFile.[EXT]");
+            var cmdConfigurations = new List<CommandConfiguration>();
+            cmdConfigurations.Add(cmdConfiguration);
+            var tokens = new List<Token>();
+            tokens.Add(new Token { 
+                 Key = "[BACKUPDIR]",
+                 Value = @"C:\SomeFakeDirectory"
+            });
+            tokens.Add(new Token { 
+                 Key = "[EXT]",
+                 Value = "jpg"
+            });
+
+            var cmdBuilder = new CommandsBuilder(cmdConfigurations, tokens);
+            var builtCommands = cmdBuilder.BuildCommands();
+
+            var builtCommand = builtCommands.First() as MockCommandConsumingToken;
+            Assert.IsNotNull(builtCommand);
+            Assert.AreEqual(builtCommand.TokenizedArg, @"C:\SomeFakeDirectory\FakeFile.jpg");
+        }
     }
 }

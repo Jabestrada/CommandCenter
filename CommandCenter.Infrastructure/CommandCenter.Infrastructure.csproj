@@ -41,6 +41,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configuration\CommandsConfigurationExceptions.cs" />
+    <Compile Include="Configuration\Token.cs" />
     <Compile Include="Orchestration\CommandReport.cs" />
     <Compile Include="Orchestration\CommandsRunner.cs" />
     <Compile Include="Orchestration\ReportType.cs" />

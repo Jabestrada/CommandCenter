@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml;
 
 namespace CommandCenter.Infrastructure.Configuration {
@@ -8,6 +9,40 @@ namespace CommandCenter.Infrastructure.Configuration {
         private readonly XmlNode _rootConfigNode;
         public CommandsConfigurationXmlSource(XmlNode rootConfigNode) {
             _rootConfigNode = rootConfigNode;
+        }
+
+        public List<Token> GetTokens() {
+            var tokenNodes = getTokenNodes();
+            var tokenList = new List<Token>();
+            foreach (XmlNode node in tokenNodes) {
+                var keyAttributeValue = getKeyAttributeValue(node, tokenList);
+
+                var newToken = new Token {
+                    Key = keyAttributeValue,
+                    Value = getAttributeValueFromNode(node, "value")
+                };
+
+                tokenList.Add(newToken);
+            }
+            return tokenList;
+        }
+
+        private string getKeyAttributeValue(XmlNode node, List<Token> tokenList) {
+            var keyAttributeValue = getAttributeValueFromNode(node, "key");
+            if (tokenList.Any(t => t.Key == keyAttributeValue)) throw new DuplicateTokenKeyException(keyAttributeValue);
+
+            return keyAttributeValue;
+        }
+
+        private string getAttributeValueFromNode(XmlNode node, string attribKey) {
+            var attribute = node.Attributes[attribKey];
+            if (attribute == null) throw new TokenAttributeNotFoundException(attribKey);
+
+            var attributeValue = attribute.Value;
+            if (string.IsNullOrWhiteSpace(attributeValue)) throw new TokenAttributeValueBlankException(attribKey);
+
+
+            return attributeValue;
         }
 
         public List<CommandConfiguration> GetCommandConfigurations() {
@@ -70,7 +105,7 @@ namespace CommandCenter.Infrastructure.Configuration {
             commandConfig.TypeActivationName = typeNameNode.InnerText;
         }
 
-        private XmlNode getChildNode(XmlNode sourceNode, string nodeName, Exception exToThrowIfNotFound) { 
+        private XmlNode getChildNode(XmlNode sourceNode, string nodeName, Exception exToThrowIfNotFound) {
             XmlNode requestedNode = sourceNode.SelectSingleNode(nodeName);
             if (requestedNode == null && exToThrowIfNotFound != null) {
                 throw exToThrowIfNotFound;
@@ -88,42 +123,13 @@ namespace CommandCenter.Infrastructure.Configuration {
 
             return commandNodes;
         }
+        private XmlNodeList getTokenNodes() {
+            return _rootConfigNode.SelectNodes("//token");
+        }
+
+
         #endregion
     }
 
-    #region Exception types
-    public class CommandNodeNotFoundException : ArgumentException {
-        public CommandNodeNotFoundException() :
-            base("<command> node not found in configuration") {
 
-        }
-    }
-
-    public class TypeNameNodeNotFoundException : ArgumentException {
-        public TypeNameNodeNotFoundException()
-            : base("<typeName> node not found in configuration") {
-
-        }
-    }
-
-    public class CtorValueAttributeNotFoundException : ArgumentException {
-        public CtorValueAttributeNotFoundException()
-            : base("ctorArg value attribute not found") {
-
-        }
-    }
-
-    public class InvalidEnabledAttributeValueException : ApplicationException {
-        public InvalidEnabledAttributeValueException(string enableAttribValue) :
-            base($"Invalid value for command[@enabled] attribute: {enableAttribValue}") {
-
-        }
-    }
-    public class DuplicateCtorArgNameException : ArgumentException {
-        public DuplicateCtorArgNameException(string ctorArgName)
-            : base($"Duplicate ctorArg name {ctorArgName} found in configuration") {
-
-        }
-    }
-    #endregion
 }
