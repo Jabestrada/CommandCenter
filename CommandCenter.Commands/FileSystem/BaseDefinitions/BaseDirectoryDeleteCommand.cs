@@ -55,7 +55,12 @@ namespace CommandCenter.Commands.FileSystem.BaseDefinitions {
 
         #region private
         private bool createBackup() {
-            BackedUpDirectory = Path.Combine(BackupDirectory, $"{new DirectoryInfo(SourceDirectory).Name}.backup.dirDelete_{Id}.{Guid.NewGuid().ToString()}");
+            BackedUpDirectory = Path.Combine(BackupDirectory, $"{new DirectoryInfo(SourceDirectory).Name}");
+            var counter = 0;
+            while (FileSystemCommands.DirectoryExists(BackedUpDirectory)) { 
+                BackedUpDirectory = Path.Combine(BackupDirectory, $"{new DirectoryInfo(SourceDirectory).Name}{counter}");
+                counter++;
+            }
             try {
                 SendReport($"Creating backup of folder {SourceDirectory} to {BackedUpDirectory} ...", ReportType.Progress);
                 FileSystemCommands.DirectoryCopyContents(SourceDirectory, BackedUpDirectory, null, null);

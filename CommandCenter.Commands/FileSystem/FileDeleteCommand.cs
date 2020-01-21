@@ -70,7 +70,12 @@ namespace CommandCenter.Commands.FileSystem {
 
         private bool createBackup() {
             var fileNameOnly = Path.GetFileName(SourceFilename);
-            BackupFilename = Path.Combine(BackupFolder, $"{fileNameOnly}.backup.{Id}");
+            BackupFilename = Path.Combine(BackupFolder, $"{fileNameOnly}");
+            int counter = 0;
+            while (FileExists(BackupFilename)) {
+                BackupFilename = Path.Combine(BackupFolder, $"{fileNameOnly}.{counter}");
+                counter++;
+            }
             try {
                 FileCopy(SourceFilename, BackupFilename);
                 SendReport($"Created backup of file {SourceFilename} to {BackupFilename}", ReportType.Progress);

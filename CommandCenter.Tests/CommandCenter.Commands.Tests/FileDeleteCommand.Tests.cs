@@ -35,11 +35,14 @@ namespace CommandCenter.Tests.Commands {
         [TestMethod]
         public void itShouldFailIfBackupFails() {
             var fileSysCommand = new MockFileSystemCommand();
-            fileSysCommand.FileExistsFunc = (filename) => true;
+            var fakeFileSystem = new FakeFileSystem(fileSysCommand);
             fileSysCommand.FileCopyFunc = (sourceFile, destinationFile) => {
                 throw new ApplicationException("Exception raised by MockFileSystemCommand during FileCopy");
             };
-            var fileDeleteCommand = new FileDeleteCommand(@"c:\dummysourcefile.txt", @"c:\dummybackupdir", fileSysCommand);
+            var source = @"c:\dummysourcefile.txt";
+            fakeFileSystem.AddFile(source);
+
+            var fileDeleteCommand = new FileDeleteCommand(source, @"c:\dummybackupdir", fileSysCommand);
             var reports = new List<CommandReport>();
             fileDeleteCommand.OnReportSent += (command, args) => {
                 reports.Add(new CommandReport {
@@ -59,14 +62,13 @@ namespace CommandCenter.Tests.Commands {
         [TestMethod]
         public void itShouldFailIfDeleteFails() {
             var fileSysCommand = new MockFileSystemCommand();
-            fileSysCommand.FileExistsFunc = (filename) => true;
-            fileSysCommand.FileCopyFunc = (sourceFile, destinationFile) => {
-                // Don't throw exception to signify success.
-            };
+            var fakeFileSystem = new FakeFileSystem(fileSysCommand);
             fileSysCommand.FileDeleteFunc = (filename) => {
                 throw new ApplicationException("Exception raised by MockFileSystemCommand during FileDelete");
             };
-            var fileDeleteCommand = new FileDeleteCommand(@"c:\dummysourcefile.txt", @"c:\dummybackupdir", fileSysCommand);
+            var source = @"c:\dummysourcefile.txt";
+            fakeFileSystem.AddFile(source);
+            var fileDeleteCommand = new FileDeleteCommand(source, @"c:\dummybackupdir", fileSysCommand);
             var reports = new List<CommandReport>();
             fileDeleteCommand.OnReportSent += (command, args) => {
                 reports.Add(new CommandReport {
