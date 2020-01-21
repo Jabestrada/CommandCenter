@@ -85,14 +85,15 @@ namespace CommandCenter.UI.WinForms {
                 return;
             }
 
-            resetLists();
+            resetForm();
             displayCommands();
         }
 
-        private void resetLists() {
+        private void resetForm() {
             commandsList.Nodes.Clear();
             commandParametersList.DataSource = null;
             tokensList.DataSource = null;
+            statusWindow.Text = string.Empty;
         }
 
         private void displayCommands() {
