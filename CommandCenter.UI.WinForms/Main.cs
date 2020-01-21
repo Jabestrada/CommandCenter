@@ -1,5 +1,6 @@
 ﻿using CommandCenter.Infrastructure;
 using CommandCenter.Infrastructure.Configuration;
+using CommandCenter.Infrastructure.Orchestration;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -44,7 +45,12 @@ namespace CommandCenter.UI.WinForms {
             }
         }
         private void _reportReceiver(BaseCommand command, CommandReportArgs e) {
-            appendStatusText($"{e.ReportType}: {e.Message}");
+            if (e.ReportType == ReportType.Progress) {
+                appendStatusText($"{e.Message}");
+            }
+            else {
+                appendStatusText($"{e.ReportType}: {e.Message}");
+            }
         }
 
         delegate void SetTextCallback(string message);
@@ -126,12 +132,7 @@ namespace CommandCenter.UI.WinForms {
             MessageBox.Show(message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
-        private void commandsList_AfterSelect(object sender, TreeViewEventArgs e) {
-            var selectedCommand = e.Node.Tag as CommandConfiguration;
-            if (selectedCommand != null) {
-                commandParametersList.DataSource = selectedCommand.ConstructorArgs.Select(a => new { a.Key, a.Value }).ToList();
-            }
-        }
+
 
         private void btnRun_Click(object sender, EventArgs e) {
             runCommands();
@@ -156,14 +157,23 @@ namespace CommandCenter.UI.WinForms {
             ThreadStart starter = new ThreadStart(() => _controller.Run(commandConfigList));
             starter += () => {
                 appendStatusText(Environment.NewLine);
+                appendStatusText("================== SUMMARY ==================");
+                var finalReports = _controller.Reports.Where(r => isDoneTaskReport(r.ReportType));
+                foreach (var finalReport in finalReports) {
+                    appendStatusText($"{finalReport.Reporter.ShortDescription}: {finalReport.Message}");
+                }
                 var status = _controller.DidCommandsSucceed ? "SUCCEEDED" : "FAILED";
-                appendStatusText($"Commands {status}");
+                appendStatusText($"FINAL RESULT => Commands {status}");
+                
                 enableRunButton();
             };
             var thread = new Thread(starter);
             thread.Start();
         }
 
+        private bool isDoneTaskReport(ReportType r) {
+            return r == ReportType.DoneTaskWithFailure || r == ReportType.DoneTaskWithSuccess;
+        }
 
         private void btnBrowseConfig_Click(object sender, EventArgs e) {
             browseForConfigFile();
@@ -182,7 +192,13 @@ namespace CommandCenter.UI.WinForms {
         private void txtConfigFile_TextChanged(object sender, EventArgs e) {
             btnLoadConfig.Enabled = txtConfigFile.Text.Length > 0;
         }
-
+        #region commandsList Treeview-related
+        private void commandsList_AfterSelect(object sender, TreeViewEventArgs e) {
+            var selectedCommand = e.Node.Tag as CommandConfiguration;
+            if (selectedCommand != null) {
+                commandParametersList.DataSource = selectedCommand.ConstructorArgs.Select(a => new { a.Key, a.Value }).ToList();
+            }
+        }
         private void commandsList_AfterCheck(object sender, TreeViewEventArgs e) {
             foreach (TreeNode commandNode in commandsList.Nodes) {
                 if (commandNode.Checked) {
@@ -218,10 +234,11 @@ namespace CommandCenter.UI.WinForms {
                 excludedNode.Checked = excludedNodeSetting;
             }
             foreach (TreeNode node in commandsList.Nodes) {
-                if (node != excludedNode) { 
-                   node.Checked = isChecked;
+                if (node != excludedNode) {
+                    node.Checked = isChecked;
                 }
             }
         }
+        #endregion
     }
 }

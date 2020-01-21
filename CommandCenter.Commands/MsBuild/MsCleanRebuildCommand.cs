@@ -33,13 +33,13 @@ namespace CommandCenter.Commands.MsBuild {
                 }
             }
             var result = DidCommandSucceed ? "SUCCEEDED" : "FAILED";
-            SendReport($"MsCleanRebuildCommand {result} with exit code {ExitCode}",
+            SendReport($"MsCleanRebuildCommand {result} with exit code {ExitCode} for {Source}",
                        DidCommandSucceed ? ReportType.DoneTaskWithSuccess : ReportType.DoneTaskWithFailure);
         }
         protected override void OnOutputStreamDataIn(string data) {
             if (!string.IsNullOrWhiteSpace(data)) {
                 captureFailedProject(data);
-                SendReport($"MsCleanRebuild info => {data}", ReportType.Progress);
+                SendReport($"MsCleanRebuildCommand info => {data}", ReportType.Progress);
             }
         }
         private void captureFailedProject(string message) {

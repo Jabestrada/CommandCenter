@@ -14,7 +14,7 @@ namespace CommandCenter.Commands.FileSystem {
 
         protected override void Delete() {
             try {
-                SendReport($"Deleting contents of folder {SourceDirectory} ...", ReportType.DoneTaskWithSuccess);
+                SendReport($"Deleting contents of folder {SourceDirectory} ...", ReportType.Progress);
                 FileSystemCommands.DirectoryDeleteContentsOnly(SourceDirectory, deleteProgress);
                 DidCommandSucceed = true;
                 SendReport($"Deleted contents of folder {SourceDirectory}", ReportType.DoneTaskWithSuccess);

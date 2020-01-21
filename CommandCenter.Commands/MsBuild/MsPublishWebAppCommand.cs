@@ -27,7 +27,7 @@ namespace CommandCenter.Commands.MsBuild {
         }
         protected override void OnCommandDidRun() {
             var result = DidCommandSucceed ? "SUCCEEDED" : "FAILED";
-            SendReport($"MsPublishWebAppCommand {result} with exit code {ExitCode}",
+            SendReport($"MsPublishWebAppCommand {result} with exit code {ExitCode} for {Source}",
                        DidCommandSucceed ? ReportType.DoneTaskWithSuccess : ReportType.DoneTaskWithFailure);
         }
         protected override void OnOutputStreamDataIn(string data) {

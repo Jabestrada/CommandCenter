@@ -9,20 +9,28 @@ using System.Xml;
 
 namespace CommandCenter.UI.WinForms {
     public class CommandsControllerWinForms {
+        private CommandsRunner _commandsRunner;
         private readonly Action<BaseCommand, CommandReportArgs> _reportReceiver;
         public CommandsControllerWinForms(Action<BaseCommand, CommandReportArgs> reportReceiver) {
             _reportReceiver = reportReceiver;
         }
 
         public bool DidCommandsSucceed { get; protected set; }
-
+        public List<CommandReport> Reports {
+            get {
+                if (_commandsRunner != null) {
+                    return _commandsRunner.Reports;
+                }
+                return new List<CommandReport>();
+            }
+        }
         public bool Run(List<CommandConfiguration> commandsConfiguration) {
             var commandsBuilder = new CommandsBuilder(commandsConfiguration);
             var commands = commandsBuilder.BuildCommands();
 
-            var commandsRunner = new CommandsRunner(commands);
-            commandsRunner.OnReportSent += CommandsRunner_OnReportSent;
-            DidCommandsSucceed = commandsRunner.Run();
+            _commandsRunner = new CommandsRunner(commands);
+            _commandsRunner.OnReportSent += CommandsRunner_OnReportSent;
+            DidCommandsSucceed = _commandsRunner.Run();
             return DidCommandsSucceed;
         }
 
