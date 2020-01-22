@@ -147,5 +147,26 @@ namespace CommandCenter.Infrastructure.Tests {
             Assert.IsNotNull(builtCommand);
             Assert.AreEqual(builtCommand.TokenizedArg, @"C:\SomeFakeDirectory\FakeFile.jpg");
         }
+
+        [TestMethod]
+        public void itShouldExpandTypeNamesWithTokens() { 
+            var cmdConfiguration = new CommandConfiguration {
+                TypeActivationName = "[COMMAND1]"
+            };
+            cmdConfiguration.ConstructorArgs.Add("ctorArg1", @"anything  goes");
+            var cmdConfigurations = new List<CommandConfiguration>();
+            cmdConfigurations.Add(cmdConfiguration);
+            var tokens = new List<Token>();
+            tokens.Add(new Token { 
+                Key = "[COMMAND1]",
+                Value = "CommandCenter.Tests, CommandCenter.Tests.MockCommands.MockCommandConsumingToken"
+            });
+
+            var cmdBuilder = new CommandsBuilder(cmdConfigurations, tokens);
+            var builtCommands = cmdBuilder.BuildCommands();
+
+            var builtCommand = builtCommands.First() as MockCommandConsumingToken;
+            Assert.IsNotNull(builtCommand);
+        }
     }
 }

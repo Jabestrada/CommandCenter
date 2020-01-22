@@ -18,7 +18,8 @@ namespace CommandCenter.Infrastructure.Factory {
             var commands = new List<BaseCommand>();
             foreach (var cmdConfig in CommandConfigurations) {
                 var args = cmdConfig.ConstructorArgs.Select(a => expandTokens(a.Value));
-                var command = TypeFactory.CreateInstance<BaseCommand>(new FullTypeNameEntry(cmdConfig.TypeActivationName), args.ToArray<object>());
+                var typeName = expandTokens(cmdConfig.TypeActivationName);
+                var command = TypeFactory.CreateInstance<BaseCommand>(new FullTypeNameEntry(typeName), args.ToArray<object>());
                 command.Enabled = cmdConfig.Enabled;
                 command.ShortDescription = cmdConfig.ShortDescription;
                 commands.Add(command);
@@ -28,7 +29,7 @@ namespace CommandCenter.Infrastructure.Factory {
 
         public List<CommandConfiguration> GetTokenizedConfiguration() {
             return CommandConfigurations.Select(c => new CommandConfiguration { 
-                                                         TypeActivationName = c.TypeActivationName,
+                                                         TypeActivationName = expandTokens(c.TypeActivationName),
                                                          Enabled = c.Enabled,
                                                          ShortDescription = c.ShortDescription,
                                                          ConstructorArgs = c.ConstructorArgs
