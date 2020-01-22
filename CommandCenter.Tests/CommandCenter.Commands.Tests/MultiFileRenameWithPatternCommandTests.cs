@@ -229,15 +229,20 @@ namespace CommandCenter.Tests.Commands {
         }
 
         [TestMethod]
-        public void itShouldRevertNameOnUndoButOnlyIfCommandSucceeded() {
-            string inputFile = @"C:\someDir\someFile.txt";
+        public void itShouldRevertNameOnUndoButOnlyForThoseThatWereRenamed() {
+            string inputFile1 = @"C:\someDir\someFile1.txt";
+            string inputFile2 = @"C:\someDir\someFile2.txt";
+            string inputFile3 = @"C:\someDir\someFile3.txt";
+
             string pattern = "preText-[n]-postText.txt";
             var fileSysCommand = new MockFileSystemCommand();
             var fakeFileSystem = new FakeFileSystem(fileSysCommand);
-            fakeFileSystem.AddFiles(inputFile);
-            var fileRenameCommand = new MultiFileRenameWithPatternCommand(pattern, fileSysCommand, inputFile);
-            var outputFile = @"C:\someDir\preText-someFile-postText.txt";
-            fakeFileSystem.AddFiles(outputFile);
+            fakeFileSystem.AddFiles(inputFile1, inputFile2, inputFile3);
+            var fileRenameCommand = new MultiFileRenameWithPatternCommand(pattern, fileSysCommand, inputFile1, inputFile2,  inputFile3);
+            var outputFile1 = @"C:\someDir\preText-someFile1-postText.txt";
+            var outputFile2 = @"C:\someDir\preText-someFile2-postText.txt";
+            var outputFile3 = @"C:\someDir\preText-someFile3-postText.txt";
+            fakeFileSystem.AddFiles(outputFile3);
 
             fileRenameCommand.Do();
 
@@ -245,7 +250,9 @@ namespace CommandCenter.Tests.Commands {
 
             fileRenameCommand.Undo();
 
-            Assert.IsTrue(fakeFileSystem.FileExists(outputFile));
+            Assert.IsFalse(fakeFileSystem.FileExists(outputFile1));
+            Assert.IsFalse(fakeFileSystem.FileExists(outputFile2));
+            Assert.IsTrue(fakeFileSystem.FileExists(outputFile3));
         }
 
         [TestMethod]

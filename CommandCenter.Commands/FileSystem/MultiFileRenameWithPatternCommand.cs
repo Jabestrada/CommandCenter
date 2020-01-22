@@ -48,7 +48,7 @@ namespace CommandCenter.Commands.FileSystem {
             }
             catch (Exception exc) {
                 DidCommandSucceed = false;
-                SendReport($"FAILED to rename files using pattern {Pattern}. {exc.Message}.", ReportType.DoneCleanupWithFailure);
+                SendReport($"FAILED to rename all files using pattern {Pattern}. {exc.Message}.", ReportType.DoneTaskWithFailure);
             }
         }
         private void doRename() {
@@ -67,21 +67,20 @@ namespace CommandCenter.Commands.FileSystem {
                 computedNewName = Path.Combine(Path.GetDirectoryName(file), computedNewName);
 
                 if (FileExists(computedNewName)) {
-                    throw new Exception($"File {computedNewName} already exists");
+                    throw new Exception($"Cannot rename {file} to {computedNewName} because the latter already exists");
                 }
 
                 FileSystemCommands.FileMove(file, computedNewName);
-                SendReport($"Renamed {file} using pattern {Pattern}", ReportType.Progress);
+                SendReport($"Renamed {file} to {computedNewName} using pattern {Pattern}", ReportType.Progress);
                 RenamedFiles.Add(file, computedNewName);
             }
         }
 
         public override void Undo() {
-            if (DidCommandSucceed) {
-                foreach (var file in RenamedFiles) { 
-                  FileMove(file.Value, file.Key);
-                }
-            } 
+            foreach (var file in RenamedFiles) {
+                FileMove(file.Value, file.Key);
+                SendReport($"Reverting file {file.Value} to its original name {file.Key}", ReportType.Progress);
+            }
         }
 
         private List<string> parseTokensFromPattern() {
