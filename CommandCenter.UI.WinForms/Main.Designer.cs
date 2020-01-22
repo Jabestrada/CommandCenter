@@ -96,7 +96,7 @@
             this.commandsList.Location = new System.Drawing.Point(0, 0);
             this.commandsList.Name = "commandsList";
             this.commandsList.ShowRootLines = false;
-            this.commandsList.Size = new System.Drawing.Size(1224, 701);
+            this.commandsList.Size = new System.Drawing.Size(541, 182);
             this.commandsList.TabIndex = 3;
             this.commandsList.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.commandsList_AfterCheck);
             this.commandsList.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.commandsList_AfterSelect);
@@ -106,44 +106,44 @@
             // 
             this.commandsListContextMenu.ImageScalingSize = new System.Drawing.Size(40, 40);
             this.commandsListContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.checkAllButThisMenuItem,
             this.uncheckAllButThisMenuItem,
+            this.checkAllButThisMenuItem,
             this.toolStripSeparator1,
             this.checkAllMenuItem,
             this.uncheckAllMenuItem});
             this.commandsListContextMenu.Name = "commandsListContextMenu";
-            this.commandsListContextMenu.Size = new System.Drawing.Size(356, 202);
+            this.commandsListContextMenu.Size = new System.Drawing.Size(361, 257);
             // 
             // checkAllButThisMenuItem
             // 
             this.checkAllButThisMenuItem.Name = "checkAllButThisMenuItem";
-            this.checkAllButThisMenuItem.Size = new System.Drawing.Size(355, 48);
+            this.checkAllButThisMenuItem.Size = new System.Drawing.Size(360, 48);
             this.checkAllButThisMenuItem.Text = "Check all but this";
             this.checkAllButThisMenuItem.Click += new System.EventHandler(this.checkAllButThisMenuItem_Click);
             // 
             // uncheckAllButThisMenuItem
             // 
             this.uncheckAllButThisMenuItem.Name = "uncheckAllButThisMenuItem";
-            this.uncheckAllButThisMenuItem.Size = new System.Drawing.Size(355, 48);
-            this.uncheckAllButThisMenuItem.Text = "Uncheck all but this";
+            this.uncheckAllButThisMenuItem.Size = new System.Drawing.Size(360, 48);
+            this.uncheckAllButThisMenuItem.Text = "Check this only";
             this.uncheckAllButThisMenuItem.Click += new System.EventHandler(this.uncheckAllButThisMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(352, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(357, 6);
             // 
             // checkAllMenuItem
             // 
             this.checkAllMenuItem.Name = "checkAllMenuItem";
-            this.checkAllMenuItem.Size = new System.Drawing.Size(355, 48);
+            this.checkAllMenuItem.Size = new System.Drawing.Size(360, 48);
             this.checkAllMenuItem.Text = "Check all";
             this.checkAllMenuItem.Click += new System.EventHandler(this.checkAllMenuItem_Click);
             // 
             // uncheckAllMenuItem
             // 
             this.uncheckAllMenuItem.Name = "uncheckAllMenuItem";
-            this.uncheckAllMenuItem.Size = new System.Drawing.Size(355, 48);
+            this.uncheckAllMenuItem.Size = new System.Drawing.Size(360, 48);
             this.uncheckAllMenuItem.Text = "Uncheck all";
             this.uncheckAllMenuItem.Click += new System.EventHandler(this.uncheckAllMenuItem_Click);
             // 
@@ -160,8 +160,8 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.commandParametersList);
-            this.splitContainer1.Size = new System.Drawing.Size(2312, 701);
-            this.splitContainer1.SplitterDistance = 1224;
+            this.splitContainer1.Size = new System.Drawing.Size(1023, 182);
+            this.splitContainer1.SplitterDistance = 541;
             this.splitContainer1.TabIndex = 4;
             // 
             // commandParametersList
@@ -181,7 +181,7 @@
             this.commandParametersList.RowHeadersWidth = 102;
             this.commandParametersList.RowTemplate.Height = 40;
             this.commandParametersList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.commandParametersList.Size = new System.Drawing.Size(1084, 701);
+            this.commandParametersList.Size = new System.Drawing.Size(478, 182);
             this.commandParametersList.TabIndex = 0;
             // 
             // Column1
@@ -208,7 +208,7 @@
             this.statusWindow.Name = "statusWindow";
             this.statusWindow.ReadOnly = true;
             this.statusWindow.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.statusWindow.Size = new System.Drawing.Size(2312, 473);
+            this.statusWindow.Size = new System.Drawing.Size(1023, 121);
             this.statusWindow.TabIndex = 5;
             // 
             // splitContainer2
@@ -225,8 +225,8 @@
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.statusWindow);
-            this.splitContainer2.Size = new System.Drawing.Size(2312, 1178);
-            this.splitContainer2.SplitterDistance = 701;
+            this.splitContainer2.Size = new System.Drawing.Size(1023, 307);
+            this.splitContainer2.SplitterDistance = 182;
             this.splitContainer2.TabIndex = 6;
             // 
             // btnRun
@@ -272,7 +272,7 @@
             this.tabCommands.Location = new System.Drawing.Point(10, 48);
             this.tabCommands.Name = "tabCommands";
             this.tabCommands.Padding = new System.Windows.Forms.Padding(3);
-            this.tabCommands.Size = new System.Drawing.Size(2318, 1184);
+            this.tabCommands.Size = new System.Drawing.Size(1029, 313);
             this.tabCommands.TabIndex = 0;
             this.tabCommands.Text = "Commands";
             this.tabCommands.UseVisualStyleBackColor = true;
