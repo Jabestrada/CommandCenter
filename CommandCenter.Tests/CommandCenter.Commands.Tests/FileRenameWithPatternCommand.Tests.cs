@@ -226,7 +226,40 @@ namespace CommandCenter.Tests.Commands {
             fileRenameCommand.Undo();
 
             Assert.IsTrue(fakeFileSystem.FileExists(outputFile));
+        }
 
+        [TestMethod]
+        public void itShouldRenameUsingFileExtensionToken() {
+            string inputFile = @"C:\someDir\someFile.txt";
+            string pattern = "renamed-[n][e]";
+            var fileSysCommand = new MockFileSystemCommand();
+            var fakeFileSystem = new FakeFileSystem(fileSysCommand);
+            fakeFileSystem.AddFile(inputFile);
+            var renameFileCommand = new FileRenameWithPatternCommand(inputFile, pattern, fileSysCommand);
+
+            renameFileCommand.Do();
+
+            Assert.IsTrue(renameFileCommand.DidCommandSucceed);
+            var outputFile = $@"C:\someDir\renamed-someFile.txt";
+            Assert.AreEqual(renameFileCommand.ComputedNewName, outputFile);
+            Assert.IsTrue(fakeFileSystem.FileExists(outputFile));
+        }
+
+        [TestMethod]
+        public void itShouldRenameUsingFileExtensionTokenEvenIfSourceHasNoExtension() {
+            string inputFile = @"C:\someDir\someFileNoExt";
+            string pattern = "renamed-[n][e]";
+            var fileSysCommand = new MockFileSystemCommand();
+            var fakeFileSystem = new FakeFileSystem(fileSysCommand);
+            fakeFileSystem.AddFile(inputFile);
+            var renameFileCommand = new FileRenameWithPatternCommand(inputFile, pattern, fileSysCommand);
+
+            renameFileCommand.Do();
+
+            Assert.IsTrue(renameFileCommand.DidCommandSucceed);
+            var outputFile = $@"C:\someDir\renamed-someFileNoExt";
+            Assert.AreEqual(renameFileCommand.ComputedNewName, outputFile);
+            Assert.IsTrue(fakeFileSystem.FileExists(outputFile));
         }
     }
 }

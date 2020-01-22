@@ -53,7 +53,7 @@ namespace CommandCenter.Commands.FileSystem {
                 var tokenKey = token.Substring(0, 1);
                 if (!Tokens.ContainsKey(tokenKey)) throw new UnrecognizedReplacementToken(token);
 
-                var replacerFunc = Tokens[tokenKey]; 
+                var replacerFunc = Tokens[tokenKey];
                 ComputedNewName = replacerFunc(token, SourceFilename, ComputedNewName);
             }
 
@@ -101,6 +101,12 @@ namespace CommandCenter.Commands.FileSystem {
             // All tokens should have single-char key, although a token itself can have multiple characters.
             Tokens.Add("n", fileNameReplacer);
             Tokens.Add("d", datetimeReplacer);
+            Tokens.Add("e", filenameExtensionReplacer);
+        }
+
+        private string filenameExtensionReplacer(string replacerToken, string sourceFileName, string currentName) {
+            var currentExt = Path.GetExtension(sourceFileName);
+            return currentName.Replace($"[{replacerToken}]", currentExt);
         }
 
         private string datetimeReplacer(string replacerToken, string sourceFileName, string currentName) {
