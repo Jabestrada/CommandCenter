@@ -3,21 +3,25 @@ using CommandCenter.Tests.MockCommands;
 using CommandCenter.Tests.MockCommands.FileSystemCommand;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace CommandCenter.Tests.Commands {
     [TestClass]
-    public class FileRenameWithPatternCommandTests {
+    public class MultiFileRenameWithPatternCommandTests {
         [TestMethod]
-        public void itShouldFailIfTargetFileAlreadyExists() {
+        public void itShouldFailIfOneOfTheTargetFilesAlreadyExists() {
             var fileSysCommand = new MockFileSystemCommand();
             var fakeFileSystem = new FakeFileSystem(fileSysCommand);
 
-            string inputFile = @"C:\someDir\someFile.txt";
+            var inputFiles = new string[] { @"C:\someDir\someFile.txt" };
             string pattern = "preText-[n]-postText.txt";
-            var fileRenameCommand = new FileRenameWithPatternCommand(inputFile, pattern, fileSysCommand);
+            var fileRenameCommand = new MultiFileRenameWithPatternCommand(pattern, fileSysCommand, inputFiles);
             var outputFile = @"C:\someDir\preText-someFile-postText.txt";
 
-            fakeFileSystem.AddFiles(inputFile);
+            fakeFileSystem.AddFiles(inputFiles);
             fakeFileSystem.AddFiles(outputFile);
 
             fileRenameCommand.Do();
@@ -26,13 +30,13 @@ namespace CommandCenter.Tests.Commands {
         }
 
         [TestMethod]
-        public void itShouldFailIfSourceFileDoesNotExist() {
+        public void itShouldFailIfOneOfTheSourceFilesDoesNotExist() {
             var fileSysCommand = new MockFileSystemCommand();
             var fakeFileSystem = new FakeFileSystem(fileSysCommand);
 
-            string inputFile = @"C:\someDir\someFile.txt";
+            var inputFiles = new string[] { @"C:\someDir\someFile.txt", @"C:\someDir\someFile2.txt" };
             string pattern = "preText-[n]-postText.txt";
-            var fileRenameCommand = new FileRenameWithPatternCommand(inputFile, pattern, fileSysCommand);
+            var fileRenameCommand = new MultiFileRenameWithPatternCommand(pattern, fileSysCommand, inputFiles);
 
             fileRenameCommand.Do();
 
@@ -41,52 +45,68 @@ namespace CommandCenter.Tests.Commands {
 
         [TestMethod]
         public void itShouldRenameUsingFilenameToken() {
-            string inputFile = @"C:\someDir\someFile.txt";
+            string inputFile1 = @"C:\someDir\someFile1.txt";
+            string inputFile2 = @"C:\someDir\someFile2.txt";
+
             string pattern = "preText-[n]-postText.txt";
             var fileSysCommand = new MockFileSystemCommand();
             var fakeFileSystem = new FakeFileSystem(fileSysCommand);
-            fakeFileSystem.AddFiles(inputFile);
-            var renameFileCommand = new FileRenameWithPatternCommand(inputFile, pattern, fileSysCommand);
+            fakeFileSystem.AddFiles(inputFile1, inputFile2);
+            var renameFileCommand = new MultiFileRenameWithPatternCommand(pattern, fileSysCommand, inputFile1, inputFile2);
 
             renameFileCommand.Do();
 
-            var outputFile = @"C:\someDir\preText-someFile-postText.txt";
-            Assert.AreEqual(renameFileCommand.ComputedNewName, outputFile);
-            Assert.IsTrue(fakeFileSystem.FileExists(outputFile));
+            var outputFile1 = @"C:\someDir\preText-someFile1-postText.txt";
+            var outputFile2 = @"C:\someDir\preText-someFile2-postText.txt";
+
+            Assert.IsTrue(renameFileCommand.DidCommandSucceed);
+
+            Assert.AreEqual(renameFileCommand.RenamedFiles[inputFile1], outputFile1);
+            Assert.AreEqual(renameFileCommand.RenamedFiles[inputFile2], outputFile2);
+
+            Assert.IsTrue(fakeFileSystem.FileExists(outputFile1));
+            Assert.IsTrue(fakeFileSystem.FileExists(outputFile2));
         }
 
         [TestMethod]
         public void itShouldRenameUsingMultipleFilenameTokens() {
-            string inputFile = @"C:\someDir\someFile.txt";
+            string inputFile1 = @"C:\someDir\someFile.txt";
             string pattern = "preText-[n]-postText-[n].txt";
             var fileSysCommand = new MockFileSystemCommand();
             var fakeFileSystem = new FakeFileSystem(fileSysCommand);
-            fakeFileSystem.AddFiles(inputFile);
-            var renameFileCommand = new FileRenameWithPatternCommand(inputFile, pattern, fileSysCommand);
+            fakeFileSystem.AddFiles(inputFile1);
+            var renameFileCommand = new MultiFileRenameWithPatternCommand(pattern, fileSysCommand, inputFile1);
 
             renameFileCommand.Do();
 
             var targetFile = @"C:\someDir\preText-someFile-postText-someFile.txt";
-            Assert.AreEqual(renameFileCommand.ComputedNewName, targetFile);
+            Assert.AreEqual(renameFileCommand.RenamedFiles[inputFile1], targetFile);
             Assert.IsTrue(fakeFileSystem.FileExists(targetFile));
         }
 
         [TestMethod]
         public void itShouldRenameUsingDateTimeToken() {
-            string inputFile = @"C:\someDir\someFile.txt";
-            string pattern = "preText-[d:MMdd]-postText.txt";
+            string inputFile1 = @"C:\someDir\someFile1.txt";
+            string inputFile2 = @"C:\someDir\someFile2.txt";
+
+            string pattern = "preText-[n]-[d:MMdd]-postText.txt";
             var fileSysCommand = new MockFileSystemCommand();
             var fakeFileSystem = new FakeFileSystem(fileSysCommand);
-            fakeFileSystem.AddFiles(inputFile);
-            var renameFileCommand = new FileRenameWithPatternCommand(inputFile, pattern, fileSysCommand);
+            fakeFileSystem.AddFiles(inputFile1, inputFile2);
+            var renameFileCommand = new MultiFileRenameWithPatternCommand(pattern, fileSysCommand, inputFile1, inputFile2);
 
             renameFileCommand.Do();
 
             var computedReplacement = renameFileCommand.DateTimeReference.ToString("MMdd");
-            var targetFile = $@"C:\someDir\preText-{computedReplacement}-postText.txt";
+            var targetFile1 = $@"C:\someDir\preText-someFile1-{computedReplacement}-postText.txt";
+            var targetFile2 = $@"C:\someDir\preText-someFile2-{computedReplacement}-postText.txt";
+
             Assert.IsTrue(renameFileCommand.DidCommandSucceed);
-            Assert.AreEqual(renameFileCommand.ComputedNewName, targetFile);
-            Assert.IsTrue(fakeFileSystem.FileExists(targetFile));
+            Assert.AreEqual(renameFileCommand.RenamedFiles[inputFile1], targetFile1);
+            Assert.AreEqual(renameFileCommand.RenamedFiles[inputFile2], targetFile2);
+
+            Assert.IsTrue(fakeFileSystem.FileExists(targetFile1));
+            Assert.IsTrue(fakeFileSystem.FileExists(targetFile2));
         }
 
         [TestMethod]
@@ -96,7 +116,7 @@ namespace CommandCenter.Tests.Commands {
             var fileSysCommand = new MockFileSystemCommand();
             var fakeFileSystem = new FakeFileSystem(fileSysCommand);
             fakeFileSystem.AddFiles(inputFile);
-            var renameFileCommand = new FileRenameWithPatternCommand(inputFile, pattern, fileSysCommand);
+            var renameFileCommand = new MultiFileRenameWithPatternCommand(pattern, fileSysCommand, inputFile);
 
             renameFileCommand.Do();
 
@@ -104,7 +124,7 @@ namespace CommandCenter.Tests.Commands {
             var computedReplacement1 = renameFileCommand.DateTimeReference.ToString("MMdd");
             var computedReplacement2 = renameFileCommand.DateTimeReference.ToString("yyyy");
             var outputFile = $@"C:\someDir\preText-{computedReplacement1}-postText-{computedReplacement2}.txt";
-            Assert.AreEqual(renameFileCommand.ComputedNewName, outputFile);
+            Assert.AreEqual(renameFileCommand.RenamedFiles[inputFile], outputFile);
             Assert.IsTrue(fakeFileSystem.FileExists(outputFile));
         }
 
@@ -115,14 +135,14 @@ namespace CommandCenter.Tests.Commands {
             var fileSysCommand = new MockFileSystemCommand();
             var fakeFileSystem = new FakeFileSystem(fileSysCommand);
             fakeFileSystem.AddFiles(inputFile);
-            var renameFileCommand = new FileRenameWithPatternCommand(inputFile, pattern, fileSysCommand);
+            var renameFileCommand = new MultiFileRenameWithPatternCommand(pattern, fileSysCommand, inputFile);
 
             renameFileCommand.Do();
 
             Assert.IsTrue(renameFileCommand.DidCommandSucceed);
             var computedReplacement = renameFileCommand.DateTimeReference.ToString("MMdd");
             var outputFile = $@"C:\someDir\preText-someFile-postText-{computedReplacement}.txt";
-            Assert.AreEqual(renameFileCommand.ComputedNewName, outputFile);
+            Assert.AreEqual(renameFileCommand.RenamedFiles[inputFile], outputFile);
             Assert.IsTrue(fakeFileSystem.FileExists(outputFile));
         }
 
@@ -133,7 +153,7 @@ namespace CommandCenter.Tests.Commands {
             var fileSysCommand = new MockFileSystemCommand();
             var fakeFileSystem = new FakeFileSystem(fileSysCommand);
             fakeFileSystem.AddFiles(inputFile);
-            var fileRenameCommand = new FileRenameWithPatternCommand(inputFile, pattern, fileSysCommand);
+            var fileRenameCommand = new MultiFileRenameWithPatternCommand(pattern, fileSysCommand, inputFile);
 
             fileRenameCommand.Do();
 
@@ -147,7 +167,7 @@ namespace CommandCenter.Tests.Commands {
             var fileSysCommand = new MockFileSystemCommand();
             var fakeFileSystem = new FakeFileSystem(fileSysCommand);
             fakeFileSystem.AddFiles(inputFile);
-            var fileRenameCommand = new FileRenameWithPatternCommand(inputFile, pattern, fileSysCommand);
+            var fileRenameCommand = new MultiFileRenameWithPatternCommand(pattern, fileSysCommand, inputFile);
 
             fileRenameCommand.Do();
 
@@ -161,7 +181,7 @@ namespace CommandCenter.Tests.Commands {
             var fileSysCommand = new MockFileSystemCommand();
             var fakeFileSystem = new FakeFileSystem(fileSysCommand);
             fakeFileSystem.AddFiles(inputFile);
-            var fileRenameCommand = new FileRenameWithPatternCommand(inputFile, pattern, fileSysCommand);
+            var fileRenameCommand = new MultiFileRenameWithPatternCommand(pattern, fileSysCommand, inputFile);
 
             fileRenameCommand.Do();
 
@@ -175,13 +195,13 @@ namespace CommandCenter.Tests.Commands {
             var fileSysCommand = new MockFileSystemCommand();
             var fakeFileSystem = new FakeFileSystem(fileSysCommand);
             fakeFileSystem.AddFiles(inputFile);
-            var fileRenameCommand = new FileRenameWithPatternCommand(inputFile, pattern, fileSysCommand);
+            var fileRenameCommand = new MultiFileRenameWithPatternCommand(pattern, fileSysCommand, inputFile);
 
             fileRenameCommand.Do();
 
             Assert.IsTrue(fileRenameCommand.DidCommandSucceed);
             var outputFile = @"C:\someDir\newFileName.txt";
-            Assert.AreEqual(fileRenameCommand.ComputedNewName, outputFile);
+            Assert.AreEqual(fileRenameCommand.RenamedFiles[inputFile], outputFile);
             Assert.IsTrue(fakeFileSystem.FileExists(outputFile));
         }
 
@@ -192,13 +212,13 @@ namespace CommandCenter.Tests.Commands {
             var fileSysCommand = new MockFileSystemCommand();
             var fakeFileSystem = new FakeFileSystem(fileSysCommand);
             fakeFileSystem.AddFiles(inputFile);
-            var fileRenameCommand = new FileRenameWithPatternCommand(inputFile, pattern, fileSysCommand);
+            var fileRenameCommand = new MultiFileRenameWithPatternCommand(pattern, fileSysCommand, inputFile);
 
             fileRenameCommand.Do();
 
             Assert.IsTrue(fileRenameCommand.DidCommandSucceed);
             var outputFile = @"C:\someDir\preText-someFile-postText.txt";
-            Assert.AreEqual(fileRenameCommand.ComputedNewName, outputFile);
+            Assert.AreEqual(fileRenameCommand.RenamedFiles[inputFile], outputFile);
             Assert.IsTrue(fakeFileSystem.FileExists(outputFile));
             Assert.IsFalse(fakeFileSystem.FileExists(inputFile));
 
@@ -215,7 +235,7 @@ namespace CommandCenter.Tests.Commands {
             var fileSysCommand = new MockFileSystemCommand();
             var fakeFileSystem = new FakeFileSystem(fileSysCommand);
             fakeFileSystem.AddFiles(inputFile);
-            var fileRenameCommand = new FileRenameWithPatternCommand(inputFile, pattern, fileSysCommand);
+            var fileRenameCommand = new MultiFileRenameWithPatternCommand(pattern, fileSysCommand, inputFile);
             var outputFile = @"C:\someDir\preText-someFile-postText.txt";
             fakeFileSystem.AddFiles(outputFile);
 
@@ -228,7 +248,22 @@ namespace CommandCenter.Tests.Commands {
             Assert.IsTrue(fakeFileSystem.FileExists(outputFile));
         }
 
-       
+        [TestMethod]
+        public void itShouldRenameUsingFileExtensionToken() {
+            string inputFile = @"C:\someDir\someFile.txt";
+            string pattern = "renamed-[n][e]";
+            var fileSysCommand = new MockFileSystemCommand();
+            var fakeFileSystem = new FakeFileSystem(fileSysCommand);
+            fakeFileSystem.AddFiles(inputFile);
+            var renameFileCommand = new MultiFileRenameWithPatternCommand(pattern, fileSysCommand, inputFile);
+
+            renameFileCommand.Do();
+
+            Assert.IsTrue(renameFileCommand.DidCommandSucceed);
+            var outputFile = $@"C:\someDir\renamed-someFile.txt";
+            Assert.AreEqual(renameFileCommand.RenamedFiles[inputFile], outputFile);
+            Assert.IsTrue(fakeFileSystem.FileExists(outputFile));
+        }
 
         [TestMethod]
         public void itShouldRenameUsingFileExtensionTokenEvenIfSourceHasNoExtension() {
@@ -237,14 +272,15 @@ namespace CommandCenter.Tests.Commands {
             var fileSysCommand = new MockFileSystemCommand();
             var fakeFileSystem = new FakeFileSystem(fileSysCommand);
             fakeFileSystem.AddFiles(inputFile);
-            var renameFileCommand = new FileRenameWithPatternCommand(inputFile, pattern, fileSysCommand);
+            var renameFileCommand = new MultiFileRenameWithPatternCommand(pattern, fileSysCommand, inputFile);
 
             renameFileCommand.Do();
 
             Assert.IsTrue(renameFileCommand.DidCommandSucceed);
             var outputFile = $@"C:\someDir\renamed-someFileNoExt";
-            Assert.AreEqual(renameFileCommand.ComputedNewName, outputFile);
+            Assert.AreEqual(renameFileCommand.RenamedFiles[inputFile], outputFile);
             Assert.IsTrue(fakeFileSystem.FileExists(outputFile));
         }
+
     }
 }

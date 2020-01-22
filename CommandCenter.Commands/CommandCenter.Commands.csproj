@@ -51,6 +51,7 @@
     <Compile Include="FileSystem\DirectoryDeleteCommand.cs" />
     <Compile Include="FileSystem\DirectoryDeleteContentsOnlyCommand.cs" />
     <Compile Include="FileSystem\FileRenameWithPatternCommand.cs" />
+    <Compile Include="FileSystem\MultiFileRenameWithPatternCommand.cs" />
     <Compile Include="FileZip\IFileCompressionStrategy.cs" />
     <Compile Include="FileZip\IFileUncompressionStrategy.cs" />
     <Compile Include="FileZip\Zip7CompressCommand.cs" />

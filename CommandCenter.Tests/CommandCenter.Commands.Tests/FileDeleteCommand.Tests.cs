@@ -40,7 +40,7 @@ namespace CommandCenter.Tests.Commands {
                 throw new ApplicationException("Exception raised by MockFileSystemCommand during FileCopy");
             };
             var source = @"c:\dummysourcefile.txt";
-            fakeFileSystem.AddFile(source);
+            fakeFileSystem.AddFiles(source);
 
             var fileDeleteCommand = new FileDeleteCommand(source, @"c:\dummybackupdir", fileSysCommand);
             var reports = new List<CommandReport>();
@@ -67,7 +67,7 @@ namespace CommandCenter.Tests.Commands {
                 throw new ApplicationException("Exception raised by MockFileSystemCommand during FileDelete");
             };
             var source = @"c:\dummysourcefile.txt";
-            fakeFileSystem.AddFile(source);
+            fakeFileSystem.AddFiles(source);
             var fileDeleteCommand = new FileDeleteCommand(source, @"c:\dummybackupdir", fileSysCommand);
             var reports = new List<CommandReport>();
             fileDeleteCommand.OnReportSent += (command, args) => {
@@ -90,7 +90,7 @@ namespace CommandCenter.Tests.Commands {
             var fakeFileSystem = new FakeFileSystem(fileSysCommand);
 
             var fileToDelete = @"c:\dummysourcefile.txt";
-            fakeFileSystem.AddFile(fileToDelete);
+            fakeFileSystem.AddFiles(fileToDelete);
             var fileDeleteCommand = new FileDeleteCommand(fileToDelete, @"c:\dummybackupdir", fileSysCommand);
 
             fileDeleteCommand.Do();
@@ -104,7 +104,7 @@ namespace CommandCenter.Tests.Commands {
             var fileSysCommand = new MockFileSystemCommand();
             var fakeFileSystem = new FakeFileSystem(fileSysCommand);
             var fileToDelete = @"c:\dummysourcefile.txt";
-            fakeFileSystem.AddFile(fileToDelete);
+            fakeFileSystem.AddFiles(fileToDelete);
             var fileDeleteCommand = new FileDeleteCommand(fileToDelete, @"c:\dummybackupdir", fileSysCommand);
 
             fileDeleteCommand.Do();

@@ -121,9 +121,13 @@ namespace CommandCenter.Tests.MockCommands.FileSystemCommand {
         public bool FileExists(string filename) {
             return _files.Contains(filename);
         }
-        public void AddFile(string filename) {
-            _files.Add(filename);
+        public void AddFiles(params string[] filenames) {
+            foreach (var file in filenames) { 
+               _files.Add(file);
+            }
         }
+
+   
 
         public void AddDirectory(string dirName) {
             _dirs.Add(dirName);

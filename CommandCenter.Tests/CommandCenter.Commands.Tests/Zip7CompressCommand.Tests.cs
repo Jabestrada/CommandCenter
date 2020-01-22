@@ -18,14 +18,14 @@ namespace CommandCenter.Tests.Commands {
             var mockFileSysCommand = new MockFileSystemCommand();
             zip7FileCompressionCommand.setFileSystemCommandsStrategy(mockFileSysCommand);
             var fakeFileSystem = new FakeFileSystem(mockFileSysCommand);
-            fakeFileSystem.AddFile(source1);
-            fakeFileSystem.AddFile(source2);
-            fakeFileSystem.AddFile(zipExe);
+            fakeFileSystem.AddFiles(source1);
+            fakeFileSystem.AddFiles(source2);
+            fakeFileSystem.AddFiles(zipExe);
 
             zip7FileCompressionCommand.Do();
             Assert.IsTrue(zip7FileCompressionCommand.DidCommandSucceed);
 
-            fakeFileSystem.AddFile(targetZipFile);
+            fakeFileSystem.AddFiles(targetZipFile);
 
             zip7FileCompressionCommand.Undo();
             Assert.IsFalse(fakeFileSystem.FileExists(targetZipFile));
@@ -43,7 +43,7 @@ namespace CommandCenter.Tests.Commands {
             zip7FileCompressionCommand.Do();
             Assert.IsFalse(zip7FileCompressionCommand.DidCommandSucceed);
 
-            fakeFileSystem.AddFile(targetZipFile);
+            fakeFileSystem.AddFiles(targetZipFile);
 
             zip7FileCompressionCommand.Undo();
 
@@ -58,7 +58,7 @@ namespace CommandCenter.Tests.Commands {
             var mockFileSysCommand = new MockFileSystemCommand();
             zip7FileCompressionCommand.setFileSystemCommandsStrategy(mockFileSysCommand);
             var fakeFileSystem = new FakeFileSystem(mockFileSysCommand);
-            fakeFileSystem.AddFile(targetZipFile);
+            fakeFileSystem.AddFiles(targetZipFile);
 
             zip7FileCompressionCommand.Do();
 
@@ -77,7 +77,7 @@ namespace CommandCenter.Tests.Commands {
             var mockFileSysCommand = new MockFileSystemCommand();
             zip7FileCompressionCommand.setFileSystemCommandsStrategy(mockFileSysCommand);
             var fakeFileSystem = new FakeFileSystem(mockFileSysCommand);
-            fakeFileSystem.AddFile(zipExe);
+            fakeFileSystem.AddFiles(zipExe);
 
             zip7FileCompressionCommand.Do();
 
@@ -95,9 +95,9 @@ namespace CommandCenter.Tests.Commands {
             var mockFileSysCommand = new MockFileSystemCommand();
             zip7FileCompressionCommand.setFileSystemCommandsStrategy(mockFileSysCommand);
             var fakeFileSystem = new FakeFileSystem(mockFileSysCommand);
-            fakeFileSystem.AddFile(zipExe);
-            fakeFileSystem.AddFile(source1);
-            fakeFileSystem.AddFile(source2);
+            fakeFileSystem.AddFiles(zipExe);
+            fakeFileSystem.AddFiles(source1);
+            fakeFileSystem.AddFiles(source2);
 
             zip7FileCompressionCommand.Do();
 

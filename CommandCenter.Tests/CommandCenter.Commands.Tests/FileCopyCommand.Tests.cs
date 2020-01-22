@@ -15,7 +15,7 @@ namespace CommandCenter.Tests.Commands {
 
             var fileToCopy = @"c:\dummysourcefile.txt";
             var targetFileCopy = @"c:\somefolder\dummysourcefile.doc";
-            fakeFileSystem.AddFile(fileToCopy);
+            fakeFileSystem.AddFiles(fileToCopy);
             var fileCopyCommand = new FileCopyCommand(fileToCopy, targetFileCopy, @"c:\dummybackupdir", fileSysCommand);
 
             fileCopyCommand.Do();
@@ -44,7 +44,7 @@ namespace CommandCenter.Tests.Commands {
             var fakeFileSystem = new FakeFileSystem(fileSysCommand);
             var fileToCopy = @"c:\dummysourcefile.txt";
             var targetFileCopy = @"c:\somefolder\dummysourcefile.doc";
-            fakeFileSystem.AddFile(fileToCopy);
+            fakeFileSystem.AddFiles(fileToCopy);
             var fileCopyCommand = new FileCopyCommand(fileToCopy, targetFileCopy, @"c:\dummybackupdir", fileSysCommand);
 
             fileCopyCommand.Do();
@@ -62,8 +62,8 @@ namespace CommandCenter.Tests.Commands {
             var fakeFileSystem = new FakeFileSystem(fileSysCommand);
             var fileToCopy = @"c:\dummysourcefile.txt";
             var targetFileCopy = @"c:\somefolder\dummysourcefile.doc";
-            fakeFileSystem.AddFile(fileToCopy);
-            fakeFileSystem.AddFile(targetFileCopy);
+            fakeFileSystem.AddFiles(fileToCopy);
+            fakeFileSystem.AddFiles(targetFileCopy);
             var fileCopyCommand = new FileCopyCommand(fileToCopy, targetFileCopy, @"c:\dummybackupdir", fileSysCommand);
 
             fileCopyCommand.Do();
@@ -81,8 +81,8 @@ namespace CommandCenter.Tests.Commands {
             var fakeFileSystem = new FakeFileSystem(fileSysCommand);
             var fileToCopy = @"c:\dummysourcefile.txt";
             var targetFileCopy = @"c:\somefolder\dummysourcefile.doc";
-            fakeFileSystem.AddFile(fileToCopy);
-            fakeFileSystem.AddFile(targetFileCopy);
+            fakeFileSystem.AddFiles(fileToCopy);
+            fakeFileSystem.AddFiles(targetFileCopy);
             var fileCopyCommand = new FileCopyCommand(fileToCopy, targetFileCopy, @"c:\dummybackupdir", fileSysCommand);
 
             fileCopyCommand.Do();

@@ -30,9 +30,9 @@ namespace CommandCenter.Tests.Commands {
             var dirCopyContentsCommand = new DirectoryCopyContentsCommand(sourceDir, targetDir, fileSysCommand);
             var fakeFileSystem = new FakeFileSystem(fileSysCommand);
             fakeFileSystem.AddDirectory(sourceDir);
-            fakeFileSystem.AddFile(sourceDirFile1);
+            fakeFileSystem.AddFiles(sourceDirFile1);
             fakeFileSystem.AddDirectory(targetDir);
-            fakeFileSystem.AddFile(targetDirFile1);
+            fakeFileSystem.AddFiles(targetDirFile1);
 
             dirCopyContentsCommand.Do();
 
@@ -51,11 +51,11 @@ namespace CommandCenter.Tests.Commands {
             var dirCopyContentsCommand = new DirectoryCopyContentsCommand(sourceDir, targetDir, fileSysCommand);
             var fakeFileSystem = new FakeFileSystem(fileSysCommand);
             fakeFileSystem.AddDirectory(sourceDir);
-            fakeFileSystem.AddFile(sourceDirFile1);
-            fakeFileSystem.AddFile(sourceDirFile2);
+            fakeFileSystem.AddFiles(sourceDirFile1);
+            fakeFileSystem.AddFiles(sourceDirFile2);
 
             fakeFileSystem.AddDirectory(targetDir);
-            fakeFileSystem.AddFile(targetDirFile1);
+            fakeFileSystem.AddFiles(targetDirFile1);
 
             dirCopyContentsCommand.Do();
 

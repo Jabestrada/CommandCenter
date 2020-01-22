@@ -18,8 +18,8 @@ namespace CommandCenter.Tests.Commands {
             var file1 = dirToDeleteContents +  @"\dummyfile1.txt";
             var file2 = dirToDeleteContents +  @"\dummyfile2.txt";
 
-            fakeFileSystem.AddFile(file1);
-            fakeFileSystem.AddFile(file2);
+            fakeFileSystem.AddFiles(file1);
+            fakeFileSystem.AddFiles(file2);
 
             dirDeleteDirContentsOnlyCommand.Do();
 
