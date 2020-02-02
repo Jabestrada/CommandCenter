@@ -67,11 +67,20 @@ namespace CommandCenter.Infrastructure {
         public readonly string TypeName;
 
         public FullTypeNameEntry(string fullTypeName) {
+            if (string.IsNullOrWhiteSpace(fullTypeName)) throw new MissingTypeNameException();
+
             var nameParts = fullTypeName.Split(',');
             if (nameParts.Length != 2) throw new InvalidTypeNameFormatException(fullTypeName, nameParts.Length);
 
             AssemblyName = nameParts[0].Trim();
             TypeName = nameParts[1].Trim();
+        }
+    }
+
+    public class MissingTypeNameException : ArgumentException {
+        public MissingTypeNameException() 
+            : base("TypeName should not be null or empty"){
+
         }
     }
 
