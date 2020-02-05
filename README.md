@@ -18,6 +18,13 @@ I was motivated to write this framework/application while working with the IT de
 3. MsPublishWebAppCommand: runs MsBuild.exe to publish web apps
 4. IisAppPoolStartCommand/IisAppPoolStartCommand: starts/stops an IIS App pool
 5. Zip7CompressCommand: runs 7-zip to compress files and folders
+6. File system manipulation commands:
+   * FileCopyCommand
+   * FileDeleteCommand
+   * MultiFileRenameWithPatternCommand
+   * DirectoryCopyContentsCommand
+   * DirectoryDeleteCommand
+   * DirectoryDeleteContentOnlyCommand
 <!--
 A rundown of the assemblies/projects in this repo is as follows:
 - CommandCenter.Infrastructure contains the building blocks of the framework and is responsible for configuration, orchestration and command definition/creation. At the heart of this project is the BaseCommand type from which all commands should inherit from. Therefore, any application that wishes to define new Command types should add a reference to this assembly.
