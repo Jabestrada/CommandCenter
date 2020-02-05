@@ -16,6 +16,7 @@ I was motivated to write this framework/application while working with the IT de
 -->
 
 ## Available Commands Out-of-the-Box
+<!-- While the Commands framework is extensible so that etc. -->
 1. SvnUpdateCommand: runs svn update command on a particular repo.
 2. MsCleanRebuildCommand: runs MsBuild.exe to clean and rebuild solutions
 3. MsPublishWebAppCommand: runs MsBuild.exe to publish web apps
