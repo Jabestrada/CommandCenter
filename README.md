@@ -11,6 +11,9 @@ I was motivated to write this framework/application while working with the IT de
    4. Zip the published web app.
 2. Launch the WinForms app under CommandCenter.UI.WinForms, and then load the configuration file. You can also use console client in CommandCenter.UI.Console.
 3. Run the commands and let them do their thing.
+<!--
+## Highlights
+-->
 
 ## Available Commands Out-of-the-Box
 1. SvnUpdateCommand: runs svn update command on a particular repo.
