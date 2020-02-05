@@ -1,7 +1,7 @@
 # CommandCenter
 Framework for automating commands that are mostly related to (but not limited to) DevOps tasks
 
-I was motivated to write this framework/application while working with the IT department of one of my remote clients. Their CI/CD infrastructure was at the nascent stages and their deployment procedures, while properly documented, were entirely manual. I figured it was a great opportunity and challenge to build something that will somehow automate the process. 
+I was motivated to write this framework/application while working with the IT department of one of my remote clients. Their CI/CD infrastructure was at the nascent stages and their deployment procedures, while properly documented, were entirely manual. I figured it was a great opportunity and mental exercise to build something that will somehow automate the process. 
 
 ## How It Works
 1. A configuration file contains an ordered list of commands that one wishes to automate. For instance, via the configuration file, one can assemble a series of commands that will:
