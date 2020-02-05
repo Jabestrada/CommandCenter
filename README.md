@@ -9,8 +9,8 @@ I was motivated to write this framework/application while working with the IT de
    2. Build the pertinent projects.
    3. Publish the web app.
    4. Zip the published web app.
-2. Launch the WinForms app under CommandCenter.UI.WinForms, and then load the configuration file. You can also use console client in CommandCenter.UI.Console.
-3. Run the commands and let them do their thing.
+2. A WinForms app runs and loads the configuration file. You can also use console client in CommandCenter.UI.Console.
+3. User clicks on a button to run the commands from the configuration file, and let them do their thing.
 <!--
 ## Highlights
 -->
