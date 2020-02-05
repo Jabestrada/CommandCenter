@@ -12,7 +12,13 @@ I was motivated to write this framework/application while working with the IT de
 2. Launch the WinForms app under CommandCenter.UI.WinForms, and then load the configuration file. You can also use console client in CommandCenter.UI.Console.
 3. Run the commands and let them do their thing.
 
-
+## Available Commands Out-of-the-Box
+1. SvnUpdateCommand: runs svn update command on a particular repo.
+2. MsCleanRebuildCommand: runs MsBuild.exe to clean and rebuild solutions
+3. MsPublishWebAppCommand: runs MsBuild.exe to publish web apps
+4. IisAppPoolStartCommand/IisAppPoolStartCommand: starts/stops an IIS App pool
+5. Zip7CompressCommand: runs 7-zip to compress files and folders
+<!--
 A rundown of the assemblies/projects in this repo is as follows:
 - CommandCenter.Infrastructure contains the building blocks of the framework and is responsible for configuration, orchestration and command definition/creation. At the heart of this project is the BaseCommand type from which all commands should inherit from. Therefore, any application that wishes to define new Command types should add a reference to this assembly.
 - CommandCenter.Commands contains BaseCommand implementations for commonly used tasks such as:
@@ -23,4 +29,5 @@ A rundown of the assemblies/projects in this repo is as follows:
   * IisAppPoolStartCommand/IisAppPoolStartCommand: starts/stops an IIS App pool
   * Commands under /FileSystem: various commands for common file system manipulation (dir/file copy, delete, etc.)  
 - CommandCenter.UI.Console and CommandCenter.UI.WinForms contains console-based/Windows Forms-based clients for invoking commands defined in a configuration file.
+-->
 
