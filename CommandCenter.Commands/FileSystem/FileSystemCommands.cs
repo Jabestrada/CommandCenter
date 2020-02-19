@@ -1,5 +1,6 @@
 ﻿using CommandCenter.Commands.FileSystem.BaseDefinitions;
 using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace CommandCenter.Commands.FileSystem {
@@ -111,6 +112,10 @@ namespace CommandCenter.Commands.FileSystem {
             }
 
 
+        }
+
+        public IEnumerable<string> DirectoryGetFiles(string sourceDir) {
+            return Directory.GetFiles(sourceDir);
         }
     }
 }

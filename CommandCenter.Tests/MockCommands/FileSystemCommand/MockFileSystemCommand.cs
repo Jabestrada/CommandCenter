@@ -1,10 +1,10 @@
 ﻿using CommandCenter.Commands.FileSystem;
 using CommandCenter.Commands.FileSystem.BaseDefinitions;
 using System;
+using System.Collections.Generic;
 
 namespace CommandCenter.Tests.MockCommands {
     public class MockFileSystemCommand : IFileSystemCommandsStrategy {
-
 
         public Func<string, bool> FileExistsFunc { get; set; }
         public Func<string, bool> DirectoryExistsFunc { get; set; }
@@ -111,6 +111,8 @@ namespace CommandCenter.Tests.MockCommands {
             throw new NotImplementedException();
         }
 
-
+        public IEnumerable<string> DirectoryGetFiles(string sourceDir) {
+            throw new NotImplementedException();
+        }
     }
 }

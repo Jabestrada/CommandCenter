@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace CommandCenter.Commands.FileSystem.BaseDefinitions {
     public interface IFileSystemCommandsStrategy {
@@ -14,6 +15,7 @@ namespace CommandCenter.Commands.FileSystem.BaseDefinitions {
         void DirectoryMove(string sourceDir, string targetDir);
 
         void DirectoryMoveContents(string sourceDir, string targetDir);
+        IEnumerable<string> DirectoryGetFiles(string sourceDir);
     }
 
     public enum FileSystemItemType {

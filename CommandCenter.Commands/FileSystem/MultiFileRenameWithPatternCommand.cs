@@ -4,14 +4,12 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CommandCenter.Commands.FileSystem {
     public class MultiFileRenameWithPatternCommand : BaseFileCommand {
 
         public string Pattern { get; protected set; }
-        public string[] SourceFiles { get; protected set; }
+        public List<string> SourceFiles { get; protected set; }
         public Dictionary<string, string> RenamedFiles { get; protected set; }
 
         protected Dictionary<string, Func<string, string, string, string>> Tokens;
@@ -19,7 +17,7 @@ namespace CommandCenter.Commands.FileSystem {
 
         public MultiFileRenameWithPatternCommand(string pattern, params string[] sourceFiles) {
             Pattern = pattern;
-            SourceFiles = sourceFiles;
+            SourceFiles = sourceFiles.ToList();
             RenamedFiles = new Dictionary<string, string>();
             initializeTokens();
         }
@@ -44,7 +42,7 @@ namespace CommandCenter.Commands.FileSystem {
             try {
                 doRename();
                 DidCommandSucceed = true;
-                SendReport($"Renamed {SourceFiles.Length} file(s) with pattern {Pattern}", ReportType.DoneTaskWithSuccess);
+                SendReport($"Renamed {SourceFiles.Count} file(s) with pattern {Pattern}", ReportType.DoneTaskWithSuccess);
             }
             catch (Exception exc) {
                 DidCommandSucceed = false;
