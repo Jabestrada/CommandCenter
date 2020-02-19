@@ -96,7 +96,7 @@
             this.commandsList.Location = new System.Drawing.Point(0, 0);
             this.commandsList.Name = "commandsList";
             this.commandsList.ShowRootLines = false;
-            this.commandsList.Size = new System.Drawing.Size(547, 271);
+            this.commandsList.Size = new System.Drawing.Size(547, 264);
             this.commandsList.TabIndex = 3;
             this.commandsList.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.commandsList_AfterCheck);
             this.commandsList.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.commandsList_AfterSelect);
@@ -160,7 +160,7 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.commandParametersList);
-            this.splitContainer1.Size = new System.Drawing.Size(1035, 271);
+            this.splitContainer1.Size = new System.Drawing.Size(1035, 264);
             this.splitContainer1.SplitterDistance = 547;
             this.splitContainer1.TabIndex = 4;
             // 
@@ -181,7 +181,7 @@
             this.commandParametersList.RowHeadersWidth = 102;
             this.commandParametersList.RowTemplate.Height = 40;
             this.commandParametersList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.commandParametersList.Size = new System.Drawing.Size(484, 271);
+            this.commandParametersList.Size = new System.Drawing.Size(484, 264);
             this.commandParametersList.TabIndex = 0;
             // 
             // Column1
@@ -208,7 +208,7 @@
             this.statusWindow.Name = "statusWindow";
             this.statusWindow.ReadOnly = true;
             this.statusWindow.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.statusWindow.Size = new System.Drawing.Size(1035, 184);
+            this.statusWindow.Size = new System.Drawing.Size(1035, 180);
             this.statusWindow.TabIndex = 5;
             // 
             // splitContainer2
@@ -225,17 +225,18 @@
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.statusWindow);
-            this.splitContainer2.Size = new System.Drawing.Size(1035, 459);
-            this.splitContainer2.SplitterDistance = 271;
+            this.splitContainer2.Size = new System.Drawing.Size(1035, 448);
+            this.splitContainer2.SplitterDistance = 264;
             this.splitContainer2.TabIndex = 6;
             // 
             // btnRun
             // 
             this.btnRun.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnRun.Enabled = false;
-            this.btnRun.Location = new System.Drawing.Point(942, 562);
+            this.btnRun.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnRun.Location = new System.Drawing.Point(900, 550);
             this.btnRun.Name = "btnRun";
-            this.btnRun.Size = new System.Drawing.Size(133, 26);
+            this.btnRun.Size = new System.Drawing.Size(175, 39);
             this.btnRun.TabIndex = 7;
             this.btnRun.Text = "Run";
             this.btnRun.UseVisualStyleBackColor = true;
@@ -244,9 +245,9 @@
             // btnBrowseConfig
             // 
             this.btnBrowseConfig.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnBrowseConfig.Location = new System.Drawing.Point(942, 37);
+            this.btnBrowseConfig.Location = new System.Drawing.Point(942, 34);
             this.btnBrowseConfig.Name = "btnBrowseConfig";
-            this.btnBrowseConfig.Size = new System.Drawing.Size(28, 20);
+            this.btnBrowseConfig.Size = new System.Drawing.Size(28, 26);
             this.btnBrowseConfig.TabIndex = 8;
             this.btnBrowseConfig.Text = "...";
             this.toolTip1.SetToolTip(this.btnBrowseConfig, "Browse for config file");
@@ -263,7 +264,7 @@
             this.tabControl1.Location = new System.Drawing.Point(26, 63);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1049, 491);
+            this.tabControl1.Size = new System.Drawing.Size(1049, 480);
             this.tabControl1.TabIndex = 9;
             // 
             // tabCommands
@@ -272,7 +273,7 @@
             this.tabCommands.Location = new System.Drawing.Point(4, 22);
             this.tabCommands.Name = "tabCommands";
             this.tabCommands.Padding = new System.Windows.Forms.Padding(3);
-            this.tabCommands.Size = new System.Drawing.Size(1041, 465);
+            this.tabCommands.Size = new System.Drawing.Size(1041, 454);
             this.tabCommands.TabIndex = 0;
             this.tabCommands.Text = "Commands";
             this.tabCommands.UseVisualStyleBackColor = true;
@@ -283,7 +284,7 @@
             this.tabTokens.Location = new System.Drawing.Point(4, 22);
             this.tabTokens.Name = "tabTokens";
             this.tabTokens.Padding = new System.Windows.Forms.Padding(3);
-            this.tabTokens.Size = new System.Drawing.Size(1041, 442);
+            this.tabTokens.Size = new System.Drawing.Size(1041, 465);
             this.tabTokens.TabIndex = 1;
             this.tabTokens.Text = "Tokens";
             this.tabTokens.UseVisualStyleBackColor = true;
@@ -306,7 +307,7 @@
             this.tokensList.RowHeadersWidth = 102;
             this.tokensList.RowTemplate.Height = 40;
             this.tokensList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.tokensList.Size = new System.Drawing.Size(1035, 436);
+            this.tokensList.Size = new System.Drawing.Size(1035, 459);
             this.tokensList.TabIndex = 0;
             // 
             // Key
