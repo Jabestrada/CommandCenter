@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace CommandCenter.Infrastructure.Orchestration {
@@ -11,6 +12,7 @@ namespace CommandCenter.Infrastructure.Orchestration {
 
         protected List<BaseCommand> Commands = new List<BaseCommand>();
 
+        public TimeSpan LastRunElapsedTime { get; protected set; }
         public CommandsRunner(List<BaseCommand> commands) {
             Commands = commands;
             Reports = new List<CommandReport>();
@@ -20,11 +22,17 @@ namespace CommandCenter.Infrastructure.Orchestration {
         public bool HasError => Commands.Any(c => c.WasCommandStarted && !c.DidCommandSucceed);
 
         public bool Run() {
+            var timer = new Stopwatch();
+            timer.Start();
+
             resetState();
             runCommands();
             undoCommandsIfNeeded();
             runCleanup();
 
+            timer.Stop();
+            LastRunElapsedTime = timer.Elapsed;
+            
             return !HasError;
         }
 

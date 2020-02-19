@@ -9,6 +9,7 @@ using System.Xml;
 
 namespace CommandCenter.UI.WinForms {
     public class CommandsControllerWinForms {
+        public TimeSpan LastRunElapsedTime { get; protected set; }
         private CommandsRunner _commandsRunner;
         private readonly Action<BaseCommand, CommandReportArgs> _reportReceiver;
         public CommandsControllerWinForms(Action<BaseCommand, CommandReportArgs> reportReceiver) {
@@ -31,6 +32,7 @@ namespace CommandCenter.UI.WinForms {
             _commandsRunner = new CommandsRunner(commands);
             _commandsRunner.OnReportSent += CommandsRunner_OnReportSent;
             DidCommandsSucceed = _commandsRunner.Run();
+            LastRunElapsedTime = _commandsRunner.LastRunElapsedTime;
             return DidCommandsSucceed;
         }
 

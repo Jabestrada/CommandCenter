@@ -164,7 +164,8 @@ namespace CommandCenter.UI.WinForms {
                 }
                 var status = _controller.DidCommandsSucceed ? "SUCCEEDED" : "FAILED";
                 appendStatusText($"FINAL RESULT => Commands {status}");
-                
+                var elapsed = _controller.LastRunElapsedTime.ToString(@"hh\:mm\:ss");
+                appendStatusText($"Time elapsed: {elapsed}");
                 enableRunButton();
             };
             var thread = new Thread(starter);
