@@ -21,11 +21,11 @@ namespace CommandCenter.UI.WinForms {
         public Main() {
             InitializeComponent();
             _controller = new CommandsControllerWinForms(_reportReceiver);
-            var defaultConfig = Path.Combine(Application.StartupPath, "CommandCenter.config");
-            if (string.IsNullOrWhiteSpace(txtConfigFile.Text) && File.Exists(defaultConfig)) {
-                txtConfigFile.Text = defaultConfig;
-            }
-            loadCommands();
+            //var defaultConfig = Path.Combine(Application.StartupPath, "CommandCenter.config");
+            //if (string.IsNullOrWhiteSpace(txtConfigFile.Text) && File.Exists(defaultConfig)) {
+            //    txtConfigFile.Text = defaultConfig;
+            //}
+            //loadCommands();
             if (IsAnAdministrator()) {
                 this.Text = this.Text + " - launched as Admin";
             }

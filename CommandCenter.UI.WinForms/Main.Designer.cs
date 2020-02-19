@@ -28,8 +28,8 @@
             this.btnLoadConfig = new System.Windows.Forms.Button();
             this.commandsList = new System.Windows.Forms.TreeView();
             this.commandsListContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.checkAllButThisMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.uncheckAllButThisMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.checkAllButThisMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.checkAllMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.uncheckAllMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -71,7 +71,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtConfigFile.Location = new System.Drawing.Point(194, 37);
             this.txtConfigFile.Name = "txtConfigFile";
-            this.txtConfigFile.Size = new System.Drawing.Size(545, 38);
+            this.txtConfigFile.Size = new System.Drawing.Size(545, 20);
             this.txtConfigFile.TabIndex = 1;
             this.txtConfigFile.TextChanged += new System.EventHandler(this.txtConfigFile_TextChanged);
             // 
@@ -80,7 +80,7 @@
             this.btnLoadConfig.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnLoadConfig.Location = new System.Drawing.Point(828, 31);
             this.btnLoadConfig.Name = "btnLoadConfig";
-            this.btnLoadConfig.Size = new System.Drawing.Size(241, 57);
+            this.btnLoadConfig.Size = new System.Drawing.Size(241, 33);
             this.btnLoadConfig.TabIndex = 2;
             this.btnLoadConfig.Text = "Load";
             this.btnLoadConfig.UseVisualStyleBackColor = true;
@@ -96,7 +96,7 @@
             this.commandsList.Location = new System.Drawing.Point(0, 0);
             this.commandsList.Name = "commandsList";
             this.commandsList.ShowRootLines = false;
-            this.commandsList.Size = new System.Drawing.Size(541, 182);
+            this.commandsList.Size = new System.Drawing.Size(547, 258);
             this.commandsList.TabIndex = 3;
             this.commandsList.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.commandsList_AfterCheck);
             this.commandsList.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.commandsList_AfterSelect);
@@ -112,38 +112,38 @@
             this.checkAllMenuItem,
             this.uncheckAllMenuItem});
             this.commandsListContextMenu.Name = "commandsListContextMenu";
-            this.commandsListContextMenu.Size = new System.Drawing.Size(361, 257);
-            // 
-            // checkAllButThisMenuItem
-            // 
-            this.checkAllButThisMenuItem.Name = "checkAllButThisMenuItem";
-            this.checkAllButThisMenuItem.Size = new System.Drawing.Size(360, 48);
-            this.checkAllButThisMenuItem.Text = "Check all but this";
-            this.checkAllButThisMenuItem.Click += new System.EventHandler(this.checkAllButThisMenuItem_Click);
+            this.commandsListContextMenu.Size = new System.Drawing.Size(166, 98);
             // 
             // uncheckAllButThisMenuItem
             // 
             this.uncheckAllButThisMenuItem.Name = "uncheckAllButThisMenuItem";
-            this.uncheckAllButThisMenuItem.Size = new System.Drawing.Size(360, 48);
+            this.uncheckAllButThisMenuItem.Size = new System.Drawing.Size(165, 22);
             this.uncheckAllButThisMenuItem.Text = "Check this only";
             this.uncheckAllButThisMenuItem.Click += new System.EventHandler(this.uncheckAllButThisMenuItem_Click);
+            // 
+            // checkAllButThisMenuItem
+            // 
+            this.checkAllButThisMenuItem.Name = "checkAllButThisMenuItem";
+            this.checkAllButThisMenuItem.Size = new System.Drawing.Size(165, 22);
+            this.checkAllButThisMenuItem.Text = "Check all but this";
+            this.checkAllButThisMenuItem.Click += new System.EventHandler(this.checkAllButThisMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(357, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(162, 6);
             // 
             // checkAllMenuItem
             // 
             this.checkAllMenuItem.Name = "checkAllMenuItem";
-            this.checkAllMenuItem.Size = new System.Drawing.Size(360, 48);
+            this.checkAllMenuItem.Size = new System.Drawing.Size(165, 22);
             this.checkAllMenuItem.Text = "Check all";
             this.checkAllMenuItem.Click += new System.EventHandler(this.checkAllMenuItem_Click);
             // 
             // uncheckAllMenuItem
             // 
             this.uncheckAllMenuItem.Name = "uncheckAllMenuItem";
-            this.uncheckAllMenuItem.Size = new System.Drawing.Size(360, 48);
+            this.uncheckAllMenuItem.Size = new System.Drawing.Size(165, 22);
             this.uncheckAllMenuItem.Text = "Uncheck all";
             this.uncheckAllMenuItem.Click += new System.EventHandler(this.uncheckAllMenuItem_Click);
             // 
@@ -160,8 +160,8 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.commandParametersList);
-            this.splitContainer1.Size = new System.Drawing.Size(1023, 182);
-            this.splitContainer1.SplitterDistance = 541;
+            this.splitContainer1.Size = new System.Drawing.Size(1035, 258);
+            this.splitContainer1.SplitterDistance = 547;
             this.splitContainer1.TabIndex = 4;
             // 
             // commandParametersList
@@ -181,7 +181,7 @@
             this.commandParametersList.RowHeadersWidth = 102;
             this.commandParametersList.RowTemplate.Height = 40;
             this.commandParametersList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.commandParametersList.Size = new System.Drawing.Size(478, 182);
+            this.commandParametersList.Size = new System.Drawing.Size(484, 258);
             this.commandParametersList.TabIndex = 0;
             // 
             // Column1
@@ -208,7 +208,7 @@
             this.statusWindow.Name = "statusWindow";
             this.statusWindow.ReadOnly = true;
             this.statusWindow.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.statusWindow.Size = new System.Drawing.Size(1023, 121);
+            this.statusWindow.Size = new System.Drawing.Size(1035, 174);
             this.statusWindow.TabIndex = 5;
             // 
             // splitContainer2
@@ -225,17 +225,17 @@
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.statusWindow);
-            this.splitContainer2.Size = new System.Drawing.Size(1023, 307);
-            this.splitContainer2.SplitterDistance = 182;
+            this.splitContainer2.Size = new System.Drawing.Size(1035, 436);
+            this.splitContainer2.SplitterDistance = 258;
             this.splitContainer2.TabIndex = 6;
             // 
             // btnRun
             // 
             this.btnRun.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnRun.Enabled = false;
-            this.btnRun.Location = new System.Drawing.Point(757, 515);
+            this.btnRun.Location = new System.Drawing.Point(942, 545);
             this.btnRun.Name = "btnRun";
-            this.btnRun.Size = new System.Drawing.Size(318, 57);
+            this.btnRun.Size = new System.Drawing.Size(133, 35);
             this.btnRun.TabIndex = 7;
             this.btnRun.Text = "Run";
             this.btnRun.UseVisualStyleBackColor = true;
@@ -246,7 +246,7 @@
             this.btnBrowseConfig.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnBrowseConfig.Location = new System.Drawing.Point(748, 31);
             this.btnBrowseConfig.Name = "btnBrowseConfig";
-            this.btnBrowseConfig.Size = new System.Drawing.Size(75, 57);
+            this.btnBrowseConfig.Size = new System.Drawing.Size(48, 33);
             this.btnBrowseConfig.TabIndex = 8;
             this.btnBrowseConfig.Text = "...";
             this.toolTip1.SetToolTip(this.btnBrowseConfig, "Browse for config file");
@@ -260,19 +260,19 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControl1.Controls.Add(this.tabCommands);
             this.tabControl1.Controls.Add(this.tabTokens);
-            this.tabControl1.Location = new System.Drawing.Point(26, 112);
+            this.tabControl1.Location = new System.Drawing.Point(26, 63);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1049, 371);
+            this.tabControl1.Size = new System.Drawing.Size(1049, 468);
             this.tabControl1.TabIndex = 9;
             // 
             // tabCommands
             // 
             this.tabCommands.Controls.Add(this.splitContainer2);
-            this.tabCommands.Location = new System.Drawing.Point(10, 48);
+            this.tabCommands.Location = new System.Drawing.Point(4, 22);
             this.tabCommands.Name = "tabCommands";
             this.tabCommands.Padding = new System.Windows.Forms.Padding(3);
-            this.tabCommands.Size = new System.Drawing.Size(1029, 313);
+            this.tabCommands.Size = new System.Drawing.Size(1041, 442);
             this.tabCommands.TabIndex = 0;
             this.tabCommands.Text = "Commands";
             this.tabCommands.UseVisualStyleBackColor = true;
@@ -280,10 +280,10 @@
             // tabTokens
             // 
             this.tabTokens.Controls.Add(this.tokensList);
-            this.tabTokens.Location = new System.Drawing.Point(10, 48);
+            this.tabTokens.Location = new System.Drawing.Point(4, 22);
             this.tabTokens.Name = "tabTokens";
             this.tabTokens.Padding = new System.Windows.Forms.Padding(3);
-            this.tabTokens.Size = new System.Drawing.Size(1029, 313);
+            this.tabTokens.Size = new System.Drawing.Size(1041, 345);
             this.tabTokens.TabIndex = 1;
             this.tabTokens.Text = "Tokens";
             this.tabTokens.UseVisualStyleBackColor = true;
@@ -306,7 +306,7 @@
             this.tokensList.RowHeadersWidth = 102;
             this.tokensList.RowTemplate.Height = 40;
             this.tokensList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.tokensList.Size = new System.Drawing.Size(1023, 307);
+            this.tokensList.Size = new System.Drawing.Size(1035, 339);
             this.tokensList.TabIndex = 0;
             // 
             // Key
@@ -330,7 +330,7 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(36, 40);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(152, 32);
+            this.label1.Size = new System.Drawing.Size(56, 13);
             this.label1.TabIndex = 10;
             this.label1.Text = "Config File";
             // 
