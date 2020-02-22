@@ -13,6 +13,23 @@ using System.Windows.Forms;
 namespace CommandCenter.UI.WinForms {
     public partial class Main : Form {
 
+        private enum FormModeEnum {
+            Ready,
+            RunningCommands
+        }
+
+        private FormModeEnum _formMode;
+
+        private FormModeEnum FormMode {
+            get {
+                return _formMode;
+            }
+            set {
+                _formMode = value;
+                didChangeFormMode(value);
+            }
+        }
+
         private CommandsControllerWinForms _controller;
 
         private List<CommandConfiguration> _loadedCommandConfigurations;
@@ -32,6 +49,8 @@ namespace CommandCenter.UI.WinForms {
             else {
                 this.Text = this.Text + " - not launched as Admin";
             }
+
+            FormMode = FormModeEnum.Ready;
         }
 
         bool IsAnAdministrator() {
@@ -53,6 +72,21 @@ namespace CommandCenter.UI.WinForms {
             }
         }
 
+        private void didChangeFormMode(FormModeEnum value) {
+            setEnabled(this, value == FormModeEnum.Ready);
+        }
+
+        delegate void EnableControlCallback(Control control, bool enabled);
+        private void setEnabled(Control control, bool enabled) {
+            if (control.InvokeRequired) {
+                var cb = new EnableControlCallback(setEnabled);
+                Invoke(cb, control, enabled);
+            }
+            else {
+                control.Enabled = enabled;
+            }
+        }
+
         delegate void SetTextCallback(string message);
 
         private void appendStatusText(string message) {
@@ -63,17 +97,6 @@ namespace CommandCenter.UI.WinForms {
             else {
                 statusWindow.AppendText(message);
                 statusWindow.AppendText(Environment.NewLine);
-            }
-        }
-
-        delegate void EnableRunButtonCallback();
-        private void enableRunButton() {
-            if (this.btnRun.InvokeRequired) {
-                var cb = new EnableRunButtonCallback(enableRunButton);
-                this.Invoke(cb);
-            }
-            else {
-                btnRun.Enabled = true;
             }
         }
 
@@ -152,9 +175,11 @@ namespace CommandCenter.UI.WinForms {
                 return;
             }
 
-            btnRun.Enabled = false;
             statusWindow.Clear();
-            ThreadStart starter = new ThreadStart(() => _controller.Run(commandConfigList));
+            ThreadStart starter = new ThreadStart(() => {
+                FormMode = FormModeEnum.RunningCommands;
+                _controller.Run(commandConfigList);
+            });
             starter += () => {
                 appendStatusText(Environment.NewLine);
                 appendStatusText("================== SUMMARY ==================");
@@ -166,7 +191,7 @@ namespace CommandCenter.UI.WinForms {
                 appendStatusText($"FINAL RESULT => Commands {status}");
                 var elapsed = _controller.LastRunElapsedTime.ToString(@"hh\:mm\:ss");
                 appendStatusText($"Time elapsed: {elapsed}");
-                enableRunButton();
+                FormMode = FormModeEnum.Ready;
             };
             var thread = new Thread(starter);
             thread.Start();
