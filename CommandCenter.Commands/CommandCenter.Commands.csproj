@@ -53,6 +53,7 @@
     <Compile Include="FileSystem\DirectoryDeleteContentsOnlyCommand.cs" />
     <Compile Include="FileSystem\FileRenameWithPatternCommand.cs" />
     <Compile Include="FileSystem\MultiFileRenameWithPatternCommand.cs" />
+    <Compile Include="FileSystem\OpenExplorerCommand.cs" />
     <Compile Include="FileSystem\RenameFilesInDirectoryWithPatternCommand.cs" />
     <Compile Include="FileZip\IFileCompressionStrategy.cs" />
     <Compile Include="FileZip\IFileUncompressionStrategy.cs" />
