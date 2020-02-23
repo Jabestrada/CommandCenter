@@ -73,7 +73,12 @@ namespace CommandCenter.UI.WinForms {
         }
 
         private void didChangeFormMode(FormModeEnum value) {
-            setEnabled(this, value == FormModeEnum.Ready);
+            var isFormReady = value == FormModeEnum.Ready;
+            setEnabled(txtConfigFile, isFormReady);
+            setEnabled(btnBrowseConfig, isFormReady);
+            setEnabled(btnLoadConfig, isFormReady);
+            setEnabled(tabControl1, isFormReady);
+            setEnabled(btnRun, isFormReady);
         }
 
         delegate void EnableControlCallback(Control control, bool enabled);
