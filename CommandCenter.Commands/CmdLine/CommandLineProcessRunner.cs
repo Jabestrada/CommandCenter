@@ -12,9 +12,11 @@ namespace CommandCenter.Commands.CmdLine {
         private Process _process;
         private readonly object Locker = new object();
 
-        public CommandLineProcessRunner(string path, string arguments) {
+        public CommandLineProcessRunner(string path, bool validateExePath, string arguments) {
             Path = path ?? throw new ArgumentNullException(nameof(path));
-            if (!File.Exists(path)) throw new ArgumentException($"Executable not found: {path}");
+            if (validateExePath) {
+                if (!File.Exists(path)) throw new ArgumentException($"Executable not found: {path}");
+            }
             Arguments = arguments;
         }
 

@@ -96,7 +96,7 @@ namespace CommandCenter.Commands.FileZip {
         }
 
         private int runCompression(string arguments, Action<string> outputStreamReceiver, Action<string> errorStreamReceiver) {
-            using (var cmdLine = new CommandLineProcessRunner(ExeLocation, arguments)) {
+            using (var cmdLine = new CommandLineProcessRunner(ExeLocation, true, arguments)) {
                 SendReport($"Running command {ExeLocation} {arguments} ...", ReportType.Progress);
                 return cmdLine.Run(outputStreamReceiver, errorStreamReceiver);
             }

@@ -4,6 +4,11 @@ using System.Collections.Generic;
 namespace CommandCenter.Commands.CmdLine {
     public abstract class BaseCmdLineCommand : BaseCommand {
         public override bool IsUndoable => false;
+
+        public virtual bool ValidateExePath => true;
+
+        protected virtual int SuccessExitCode => 0;
+
         public List<string> CommandLineArguments { get; protected set; }
         public string Executable { get; protected set; }
         public int ExitCode { get; protected set; }
@@ -24,10 +29,10 @@ namespace CommandCenter.Commands.CmdLine {
         }
 
         private void runCommand() {
-            using (CommandLineProcessRunner cmd = new CommandLineProcessRunner(Executable, string.Join(" ", CommandLineArguments))) {
+            using (CommandLineProcessRunner cmd = new CommandLineProcessRunner(Executable, ValidateExePath, string.Join(" ", CommandLineArguments))) {
                 OnCommandWillRun();
                 ExitCode = cmd.Run(outputStreamReceiver, errorStreamReceiver);
-                DidCommandSucceed = ExitCode == 0;
+                DidCommandSucceed = ExitCode == SuccessExitCode;
                 OnCommandDidRun();
             }
         }
