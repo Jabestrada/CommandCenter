@@ -51,7 +51,6 @@
     <Compile Include="FileSystem\DirectoryCopyContentsCommand.cs" />
     <Compile Include="FileSystem\DirectoryDeleteCommand.cs" />
     <Compile Include="FileSystem\DirectoryDeleteContentsOnlyCommand.cs" />
-    <Compile Include="FileSystem\FileRenameWithPatternCommand.cs" />
     <Compile Include="FileSystem\MultiFileRenameWithPatternCommand.cs" />
     <Compile Include="FileSystem\OpenExplorerCommand.cs" />
     <Compile Include="FileSystem\RenameFilesInDirectoryWithPatternCommand.cs" />

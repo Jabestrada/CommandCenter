@@ -53,7 +53,6 @@
     <Compile Include="CommandCenter.Commands.Tests\DirectoryDeleteCommand.Tests.cs" />
     <Compile Include="CommandCenter.Commands.Tests\DirectoryDeleteContentsOnly.Tests.cs" />
     <Compile Include="CommandCenter.Commands.Tests\FileDeleteCommand.Tests.cs" />
-    <Compile Include="CommandCenter.Commands.Tests\FileRenameWithPatternCommand.Tests.cs" />
     <Compile Include="CommandCenter.Commands.Tests\MultiFileRenameWithPatternCommandTests.cs" />
     <Compile Include="CommandCenter.Commands.Tests\Zip7CompressCommand.Tests.cs" />
     <Compile Include="CommandCenter.Infrastructure.Tests\CommandsBuilder.Tests.cs" />
