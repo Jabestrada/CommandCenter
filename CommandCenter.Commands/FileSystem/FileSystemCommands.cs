@@ -105,6 +105,7 @@ namespace CommandCenter.Commands.FileSystem {
 
             DirectoryInfo[] dirs = sourceDir.GetDirectories();
             foreach (var dir in dirs) {
+                DirectoryDeleteContentsOnly(dir.FullName, progressCallback);
                 DirectoryDelete(dir.FullName);
                 if (progressCallback != null) {
                     progressCallback(dir.FullName, FileSystemItemType.Directory);
