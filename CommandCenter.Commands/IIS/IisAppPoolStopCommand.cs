@@ -1,8 +1,10 @@
 ﻿using CommandCenter.Commands.CmdLine;
 using CommandCenter.Infrastructure.Orchestration;
+using System.Linq;
 
 namespace CommandCenter.Commands.IIS {
     public class IisAppPoolStopCommand : BaseCmdLineCommand {
+        public override bool IsUndoable => true;
         public string AppPoolName { get; protected set; }
         public bool AlreadyStoppedPrior { get; protected set; }
         public IisAppPoolStopCommand(string cmdPath, string appPoolName) {
@@ -38,6 +40,27 @@ namespace CommandCenter.Commands.IIS {
                     AlreadyStoppedPrior = true;
                 }
                 SendReport($"IisAppPoolStopCommand => {data}", ReportType.Progress);
+            }
+        }
+
+        public override void Undo() {
+            if (AlreadyStoppedPrior) {
+                SendReport($"IisAppPoolStopCommand => Not restarting app pool {AppPoolName} on Undo because it wasn't running before", ReportType.UndoneTaskWithSuccess);
+            }
+            else {
+                SendReport($"IisAppPoolStopCommand => Attempting to restart app pool {AppPoolName} on Undo...", ReportType.Progress);
+                var startArgs = CommandLineArguments;
+                startArgs[0] = "start";
+                using (CommandLineProcessRunner cmd = new CommandLineProcessRunner(Executable, true, string.Join(" ", startArgs))) {
+                    var exitCode = cmd.Run(outputStreamReceiver, errorStreamReceiver);
+                    if (exitCode == SuccessExitCode) {
+                        SendReport($"IisAppPoolStopCommand => Successfully restarted app pool {AppPoolName} on Undo", ReportType.UndoneTaskWithSuccess);
+                    }
+                    else {
+                        SendReport($"IisAppPoolStopCommand => Failed to restart app pool {AppPoolName} on Undo", ReportType.UndoneTaskWithFailure);
+
+                    }
+                }
             }
         }
     }

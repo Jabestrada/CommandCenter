@@ -37,11 +37,11 @@ namespace CommandCenter.Commands.CmdLine {
             }
         }
 
-        private void errorStreamReceiver(string data) {
+        protected void errorStreamReceiver(string data) {
             OnErrorStreamDataIn(data);
         }
 
-        private void outputStreamReceiver(string data) {
+        protected void outputStreamReceiver(string data) {
             OnOutputStreamDataIn(data);
         }
     }
