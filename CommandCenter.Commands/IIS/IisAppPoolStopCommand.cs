@@ -44,6 +44,11 @@ namespace CommandCenter.Commands.IIS {
         }
 
         public override void Undo() {
+            if (!DidCommandSucceed) {
+                SendReport($"IisAppPoolStopCommand => Not restarting app pool {AppPoolName} on Undo because Do failed", ReportType.UndoneTaskWithSuccess);
+                return;
+            }
+
             if (AlreadyStoppedPrior) {
                 SendReport($"IisAppPoolStopCommand => Not restarting app pool {AppPoolName} on Undo because it wasn't running before", ReportType.UndoneTaskWithSuccess);
             }
