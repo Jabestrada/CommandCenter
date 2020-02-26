@@ -13,7 +13,7 @@ namespace CommandCenter.Commands.FileSystem {
         }
 
         protected override void SetArguments() {
-            CommandLineArguments.Add($"/select, {SelectArg}");
+            CommandLineArguments.Add($"/open, {SelectArg}");
         }
         protected override void OnCommandDidRun() {
             var result = DidCommandSucceed ? "SUCCEEDED" : "FAILED";
