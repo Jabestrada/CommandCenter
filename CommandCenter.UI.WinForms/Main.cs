@@ -77,7 +77,7 @@ namespace CommandCenter.UI.WinForms {
             setEnabled(txtConfigFile, isFormReady);
             setEnabled(btnBrowseConfig, isFormReady);
             setEnabled(btnLoadConfig, isFormReady);
-            setEnabled(tabControl1, isFormReady);
+            setEnabled(commandsList, isFormReady);
             setEnabled(btnRun, isFormReady);
         }
 
