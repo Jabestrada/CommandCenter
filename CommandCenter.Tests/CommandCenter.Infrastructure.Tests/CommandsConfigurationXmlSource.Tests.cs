@@ -50,6 +50,32 @@ namespace CommandCenter.Infrastructure.Tests {
             Assert.AreEqual(1, cmdConfigs.Count);
         }
 
+
+        [TestMethod]
+        public void itShouldNotLoadCommentedOutCommandConfigurations() {
+            var xmlConfig = @"
+                <commandCenter>
+                    <commands>
+                        <command>
+                            <typeName>CommandCenter.Infrastructure.Tests, CommandCenter.Infrastructure.Tests.MockCommands.MockCommandWithNonDefaultConstructor</typeName>
+                        </command>
+                        <!--
+                        <command>
+                            <typeName>CommandCenter.Infrastructure.Tests, CommandCenter.Infrastructure.Tests.MockCommands.MockCommandWithNonDefaultConstructor</typeName>
+                        </command>
+                        -->
+                    </commands>
+                </commandCenter>
+                ";
+            XmlDocument xmlDoc = new XmlDocument();
+            xmlDoc.LoadXml(xmlConfig);
+            var xmlConfigSource = new CommandsConfigurationXmlSource(xmlDoc);
+
+            var cmdConfigs = xmlConfigSource.GetCommandConfigurations();
+
+            Assert.AreEqual(1, cmdConfigs.Count);
+        }
+
         [TestMethod]
         [ExpectedException(typeof(CommandNodeNotFoundException))]
         public void itShouldRaiseExceptionWhenCommandNodeNotFound() {
