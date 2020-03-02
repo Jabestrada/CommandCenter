@@ -9,7 +9,7 @@ I was motivated to write this framework/application while working with the IT de
    2. Build the pertinent projects.
    3. Publish the web app.
    4. Zip the published web app.
-2. A WinForms app runs and loads the configuration file; a console client is also available.
+2. A WinForms app (console client also available) runs from which the user selects and loads the configuration file from the file system.
 3. User clicks on a button to run the commands from the configuration file, and let them do their thing.
 <!--
 ## Highlights
