@@ -20,6 +20,7 @@ I was motivated to write this framework/application while working with the IT de
    * Undo
    * IsUndoable
    * Cleanup
+<br/>
 Each command can be injected primitive constructor parameters via configuration.
 
 ## Available Commands Out-of-the-Box
