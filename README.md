@@ -11,9 +11,16 @@ I was motivated to write this framework/application while working with the IT de
    4. Zip the published web app.
 2. User runs the WinForms app (console client also available) from which the user selects and loads the configuration file from the file system.
 3. User clicks on a button to run the commands, and let them do their thing.
-<!--
+
 ## Highlights
--->
+1. Undo/rollback support. Part of the core interface is an Undo method that gets invoked if one of the commands in the chain were t o signal failure. For instance, if a command chain uses the FileDeleteCommand and then a subsequent command fails, the file deleted by the FileDeleteCommand is restored as part of the rollback process.
+2. Several commands available out-of-the-box such as MsPublishWebAppCommand, IisAppPoolStartCommand/IisAppPoolStopCommand and common file system commands to copy, delete and rename files using patterns.
+3. Extensible Command framework. Developers can build their own commands and plug them into the application using a self-explanatory interface:
+   * Do
+   * Undo
+   * IsUndoable
+   * Cleanup
+Each command can be injected primitive constructor parameters via configuration.
 
 ## Available Commands Out-of-the-Box
 <!-- While the Commands framework is extensible so that etc. -->
@@ -29,6 +36,7 @@ I was motivated to write this framework/application while working with the IT de
    * DirectoryCopyContentsCommand
    * DirectoryDeleteCommand
    * DirectoryDeleteContentOnlyCommand
+7. ConditionalPauseCommand: suspends the command chain while displaying a modal message box with customizable lines of text for the user (useful for manual interventions in the middle of the command chain). User can then opt to continue or cancel execution, the latter of which will trigger the undo/rollback process. 
 <!--
 A rundown of the assemblies/projects in this repo is as follows:
 - CommandCenter.Infrastructure contains the building blocks of the framework and is responsible for configuration, orchestration and command definition/creation. At the heart of this project is the BaseCommand type from which all commands should inherit from. Therefore, any application that wishes to define new Command types should add a reference to this assembly.
