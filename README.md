@@ -38,6 +38,9 @@ I was motivated to write this framework/application while working with the IT de
    * DirectoryDeleteCommand
    * DirectoryDeleteContentOnlyCommand
 7. ConditionalPauseCommand: suspends the command chain while displaying a modal message box with customizable lines of text for the user (useful for manual interventions in the middle of the command chain). User can then opt to continue or cancel execution, the latter of which will trigger the undo/rollback process. 
+
+Detailed documentation on how to create the configuration file is still in-progress but inspecting OOBCommandsReference.config will give you a quick idea of how things work.
+
 <!--
 A rundown of the assemblies/projects in this repo is as follows:
 - CommandCenter.Infrastructure contains the building blocks of the framework and is responsible for configuration, orchestration and command definition/creation. At the heart of this project is the BaseCommand type from which all commands should inherit from. Therefore, any application that wishes to define new Command types should add a reference to this assembly.
