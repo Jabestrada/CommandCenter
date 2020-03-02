@@ -19,8 +19,7 @@ I was motivated to write this framework/application while working with the IT de
    * Do
    * Undo
    * IsUndoable
-   * Cleanup
-<br/>
+   * Cleanup<br/>
 Each command can be injected primitive constructor parameters via configuration.
 
 ## Available Commands Out-of-the-Box
