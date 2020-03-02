@@ -13,7 +13,7 @@ I was motivated to write this framework/application while working with the IT de
 3. User clicks on a button to run the commands, and let them do their thing.
 
 ## Highlights
-1. Undo/rollback support. Part of the core interface is an Undo method that gets invoked if one of the commands in the chain were t o signal failure. For instance, if a command chain uses the FileDeleteCommand and then a subsequent command fails, the file deleted by the FileDeleteCommand is restored as part of the rollback process.
+1. Undo/rollback support. Part of the core interface is an Undo method that gets invoked if one of the commands in the chain were to fail. For instance, if a command chain uses the FileDeleteCommand and then a subsequent command fails, the file deleted by the FileDeleteCommand is restored as part of the rollback process.
 2. Several commands available out-of-the-box such as MsPublishWebAppCommand, IisAppPoolStartCommand/IisAppPoolStopCommand and common file system commands to copy, delete and rename files using patterns.
 3. Extensible Command framework. Developers can build their own commands and plug them into the application using a self-explanatory interface:
    * Do
