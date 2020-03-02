@@ -23,6 +23,11 @@ I was motivated to write this framework/application while working with the IT de
 4. Support for primitive type constructor arguments to commands via configuration. Commands can be made more flexible and reusable via configuration values that are passed as constructor parameters during command instantiation by the framework.
 5. Token support in configuration file. Instead of repetitively using long command typenames or file/folder locations in the configuration file, you can define a token once and then reference that token anywhere the token value is used in the configuration file.
 
+## Getting Started
+1. Download this repo.
+2. Open CommandCenter.sln (tested on Visual Studio 2019 only) and set startup project to CommandCenter.UI.WinForms.
+3. Build and run the solution.
+
 ## Available Commands Out-of-the-Box
 <!-- While the Commands framework is extensible so that etc. -->
 1. SvnUpdateCommand: runs svn update command on a particular repo.
