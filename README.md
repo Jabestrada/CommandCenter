@@ -39,7 +39,7 @@ I was motivated to write this framework/application while working with the IT de
    * DirectoryDeleteContentOnlyCommand
 7. ConditionalPauseCommand: suspends the command chain while displaying a modal message box with customizable lines of text for the user (useful for manual interventions in the middle of the command chain). User can then opt to continue or cancel execution, the latter of which will trigger the undo/rollback process. 
 
-Detailed documentation on how to create the configuration file is still in-progress but inspecting [OOBCommandsReference.config] (https://github.com/Jabestrada/CommandCenter/blob/master/CommandCenter.UI.WinForms/OOBCommandsReference.config) will give you a quick idea of how things work.
+Detailed documentation on how to create the configuration file is still in-progress but inspecting [OOBCommandsReference.config](https://github.com/Jabestrada/CommandCenter/blob/master/CommandCenter.UI.WinForms/OOBCommandsReference.config) will give you a quick idea of how things work.
 
 <!--
 A rundown of the assemblies/projects in this repo is as follows:
