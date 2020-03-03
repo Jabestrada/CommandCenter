@@ -180,6 +180,10 @@ namespace CommandCenter.UI.WinForms {
                 return;
             }
 
+            if (!confirmContinueWithUndoables(commandConfigList)) {
+                return;
+            }
+
             statusWindow.Clear();
             ThreadStart starter = new ThreadStart(() => {
                 FormMode = FormModeEnum.RunningCommands;
@@ -200,6 +204,19 @@ namespace CommandCenter.UI.WinForms {
             };
             var thread = new Thread(starter);
             thread.Start();
+        }
+
+        private bool confirmContinueWithUndoables(List<CommandConfiguration> commandConfigList) {
+            var undoableCommands = _controller.GetUndoableCommmands(commandConfigList);
+            if (!undoableCommands.Any()) return true;
+
+            Func<BaseCommand, string> getTypeName = c => {
+                var fullTypeName = c.GetType().ToString();
+                return fullTypeName.Substring(fullTypeName.LastIndexOf('.') + 1);
+            };
+            var commandList = string.Join(Environment.NewLine, undoableCommands.Select(c => $"* {getTypeName(c)} - {c.ShortDescription}").ToArray());
+            var message = $"The following selected command(s) cannot be undone:{Environment.NewLine}{commandList}{Environment.NewLine}{Environment.NewLine}Continue?";
+            return MessageBox.Show(message, "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes;
         }
 
         private bool isDoneTaskReport(ReportType r) {

@@ -55,5 +55,11 @@ namespace CommandCenter.UI.WinForms {
         private void CommandsRunner_OnReportSent(BaseCommand command, CommandReportArgs args) {
             _reportReceiver(command, args);
         }
+
+        public List<BaseCommand> GetUndoableCommmands(List<CommandConfiguration> commandsConfiguration) {
+            var commandsBuilder = new CommandsBuilder(commandsConfiguration);
+            var commands = commandsBuilder.BuildCommands();
+            return commands.Where(c => !c.IsUndoable).ToList();
+        }
     }
 }
