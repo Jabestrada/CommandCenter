@@ -167,19 +167,12 @@ namespace CommandCenter.UI.WinForms {
         }
 
         private void runCommands() {
-            var commandConfigList = new List<CommandConfiguration>();
-            TreeNodeCollection nodes = commandsList.Nodes;
-            foreach (TreeNode commandNode in nodes) {
-                if (commandNode.Checked) {
-                    commandConfigList.Add(commandNode.Tag as CommandConfiguration);
-                }
-            }
+            var commandConfigList = getSelectedCommands();
             if (!commandConfigList.Any()) {
                 MessageBox.Show("At least 1 command has to be checked", "No command selected",
                                 MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
-
             if (!confirmContinueWithUndoables(commandConfigList)) {
                 return;
             }
@@ -190,20 +183,35 @@ namespace CommandCenter.UI.WinForms {
                 _controller.Run(commandConfigList);
             });
             starter += () => {
-                appendStatusText(Environment.NewLine);
-                appendStatusText("================== SUMMARY ==================");
-                var finalReports = _controller.Reports.Where(r => isDoneTaskReport(r.ReportType));
-                foreach (var finalReport in finalReports) {
-                    appendStatusText($"{finalReport.Reporter.ShortDescription}: {finalReport.Message}");
-                }
-                var status = _controller.DidCommandsSucceed ? "SUCCEEDED" : "FAILED";
-                appendStatusText($"FINAL RESULT => Commands {status}");
-                var elapsed = _controller.LastRunElapsedTime.ToString(@"hh\:mm\:ss");
-                appendStatusText($"Time elapsed: {elapsed}");
+                writeSummary();
                 FormMode = FormModeEnum.Ready;
             };
             var thread = new Thread(starter);
             thread.Start();
+        }
+
+        private void writeSummary() {
+            appendStatusText(Environment.NewLine);
+            appendStatusText("================== SUMMARY ==================");
+            var finalReports = _controller.Reports.Where(r => isDoneTaskReport(r.ReportType));
+            foreach (var finalReport in finalReports) {
+                appendStatusText($"{finalReport.Reporter.ShortDescription}: {finalReport.Message}");
+            }
+            var status = _controller.DidCommandsSucceed ? "SUCCEEDED" : "FAILED";
+            appendStatusText($"FINAL RESULT => Commands {status}");
+            var elapsed = _controller.LastRunElapsedTime.ToString(@"hh\:mm\:ss");
+            appendStatusText($"Time elapsed: {elapsed}");
+        }
+
+        private List<CommandConfiguration> getSelectedCommands() {
+            var commandConfigList = new List<CommandConfiguration>();
+            TreeNodeCollection nodes = commandsList.Nodes;
+            foreach (TreeNode commandNode in nodes) {
+                if (commandNode.Checked) {
+                    commandConfigList.Add(commandNode.Tag as CommandConfiguration);
+                }
+            }
+            return commandConfigList;
         }
 
         private bool confirmContinueWithUndoables(List<CommandConfiguration> commandConfigList) {
