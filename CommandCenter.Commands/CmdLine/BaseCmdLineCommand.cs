@@ -13,6 +13,12 @@ namespace CommandCenter.Commands.CmdLine {
         public string Executable { get; protected set; }
         public int ExitCode { get; protected set; }
 
+        public string ConstructedCommand {
+            get {
+                return $"{Executable} {string.Join(" ", CommandLineArguments)}";
+            }
+        }
+
         protected virtual void SetArguments() { }
         protected virtual void OnCommandWillRun() { }
         protected virtual void OnCommandDidRun() { }
