@@ -22,6 +22,7 @@ I was motivated to write this framework/application while working with the IT de
    * Cleanup
 4. Support for primitive type constructor arguments to commands via configuration. Commands can be made more flexible and reusable via configuration values that are passed as constructor parameters during command instantiation by the framework.
 5. Token support in configuration file. Instead of repetitively using long command typenames or file/folder locations in the configuration file, you can define a token once and then reference that token anywhere the token value is used in the configuration file.
+6. Pre-flight check. One can trigger a pre-flight check to verify if the selected commands are likely to succeed when actually run. 
 
 ## Getting Started
 1. Download this repo.
