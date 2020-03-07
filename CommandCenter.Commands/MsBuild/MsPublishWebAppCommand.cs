@@ -7,7 +7,7 @@ namespace CommandCenter.Commands.MsBuild {
         public string Configuration { get; protected set; }
         public string PublishProfile { get; protected set; }
         public override bool IsUndoable => false;
-
+        public override bool HasPreFlightCheck => true;
         public MsPublishWebAppCommand(string msBuildExe, string sourceFile, string configuration, string publishProfile) {
             Executable = msBuildExe;
             Source = sourceFile;        // must be .csproj
@@ -15,6 +15,12 @@ namespace CommandCenter.Commands.MsBuild {
             PublishProfile = publishProfile;
         }
 
+        public override bool PreflightCheck() {
+            var preFlightCheck = base.PreflightCheck();
+            if (!preFlightCheck) return false;
+
+            return DefaultPreflightCheckSuccess();
+        }
         protected override void SetArguments() {
             CommandLineArguments.Add($"/nologo");
             CommandLineArguments.Add($"\"{Source}\"");

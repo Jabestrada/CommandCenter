@@ -43,8 +43,10 @@ namespace CommandCenter.Commands.CmdLine {
                 SendReport(this, $"{ShortName} will FAIL because executable {Executable} was not found", ReportType.DonePreFlightWithFailure);
                 return false;
             }
-            return base.PreflightCheck();
+            return true;
         }
+
+
 
         private void runCommand() {
             using (CommandLineProcessRunner cmd = new CommandLineProcessRunner(Executable, ValidateExePath, string.Join(" ", CommandLineArguments))) {

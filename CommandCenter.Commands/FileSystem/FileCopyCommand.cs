@@ -66,7 +66,7 @@ namespace CommandCenter.Commands.FileSystem {
                 SendReport($"{ShortName} will FAIL because destination file {TargetFilename} already exists", ReportType.DonePreFlightWithFailure);
                 return false;
             }
-            return base.PreflightCheck();
+            return DefaultPreflightCheckSuccess();
         }
 
         public override void Cleanup() {

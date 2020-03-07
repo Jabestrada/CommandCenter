@@ -66,7 +66,7 @@ namespace CommandCenter.Commands.FileSystem {
                     return false;
                 }
             }
-            return base.PreflightCheck();
+            return DefaultPreflightCheckSuccess();
         }
 
         #region Private

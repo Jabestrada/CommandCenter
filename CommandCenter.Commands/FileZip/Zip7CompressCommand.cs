@@ -63,7 +63,7 @@ namespace CommandCenter.Commands.FileZip {
                     return false;
                 }
             }
-            return base.PreflightCheck();
+            return DefaultPreflightCheckSuccess();
         }
 
         public override void Undo() {

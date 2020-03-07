@@ -22,10 +22,10 @@ namespace CommandCenter.Commands.FileSystem {
             foreach (var dir in SourceDirectories) {
                 if (!FileSystemCommands.DirectoryExists(dir)) {
                     SendReport(this, $"{ShortName} is likely to fail because at least one of its source directories {dir} was not found", ReportType.DonePreFlightWithFailure);
-                    return false;        
+                    return false;
                 }
             }
-            return base.PreflightCheck();
+            return DefaultPreflightCheckSuccess();
         }
     }
 }

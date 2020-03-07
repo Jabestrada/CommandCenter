@@ -43,6 +43,12 @@ namespace CommandCenter.Commands.MsBuild {
                 SendReport($"MsCleanRebuildCommand info => {data}", ReportType.Progress);
             }
         }
+        public override bool PreflightCheck() {
+            var preFlightCheck = base.PreflightCheck();
+            if (!preFlightCheck) return false;
+
+            return DefaultPreflightCheckSuccess();
+        }
 
         private void captureFailedProject(string message) {
             var regEx = new Regex(FAILED_PROJECT_BUILD_PATTERN, RegexOptions.IgnoreCase);

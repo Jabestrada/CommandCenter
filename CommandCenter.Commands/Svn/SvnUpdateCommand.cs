@@ -52,7 +52,7 @@ namespace CommandCenter.Commands.Svn {
                 return false;
             }
 
-            return base.PreflightCheck();
+            return DefaultPreflightCheckSuccess();
         }
 
         private StringBuilder _svnInfoStreamOutput;

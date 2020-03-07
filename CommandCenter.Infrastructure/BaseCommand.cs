@@ -33,10 +33,14 @@ namespace CommandCenter.Infrastructure {
         public virtual void Undo() {
             throw new NotImplementedException();
         }
-        public virtual void Cleanup() { 
+        public virtual void Cleanup() {
             // Empty default implementation
         }
-        public virtual bool PreflightCheck() { 
+        public virtual bool PreflightCheck() {
+            throw new NotImplementedException();
+        }
+
+        public bool DefaultPreflightCheckSuccess() {
             SendReport(this, $"{ShortName} pre-flight checks done and it is likely to succeed", ReportType.DonePreflightWithSuccess);
             return true;
         }
@@ -49,14 +53,14 @@ namespace CommandCenter.Infrastructure {
         public string ShortDescription { get; set; }
 
         private string _shortName;
-        public virtual string ShortName { 
+        public virtual string ShortName {
             get {
                 if (_shortName == null) {
                     var typeName = GetType().ToString();
                     _shortName = typeName.Substring(typeName.LastIndexOf('.') + 1);
                 }
                 return _shortName;
-            } 
+            }
         }
         public BaseCommand() {
             Id = Guid.NewGuid().ToString();
@@ -77,7 +81,7 @@ namespace CommandCenter.Infrastructure {
             SendReport(this, new CommandReportArgs(message, reportType));
         }
 
-       protected bool IsCurrentUserAdmin {
+        protected bool IsCurrentUserAdmin {
             get {
                 try {
                     WindowsIdentity identity = WindowsIdentity.GetCurrent();
