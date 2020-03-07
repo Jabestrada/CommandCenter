@@ -29,7 +29,7 @@ namespace CommandCenter.Commands.FileSystem {
         }
 
         public override bool IsUndoable => true;
-
+        public override bool HasPreFlightCheck => true;
         public override void Do() {
             foreach (var file in SourceFiles) {
                 if (!FileExists(file)) {
@@ -49,6 +49,27 @@ namespace CommandCenter.Commands.FileSystem {
                 SendReport($"FAILED to rename all files using pattern {Pattern}. {exc.Message}.", ReportType.DoneTaskWithFailure);
             }
         }
+
+        public override void Undo() {
+            foreach (var file in RenamedFiles) {
+                FileMove(file.Value, file.Key);
+                SendReport($"Reverting file {file.Value} to its original name {file.Key}", ReportType.Progress);
+            }
+        }
+
+        public override bool PreflightCheck() {
+            foreach (var file in SourceFiles) {
+                if (FileSystemCommands.DirectoryExists(file)) continue;
+
+                if (!FileExists(file)) {
+                    SendReport($"{ShortName} is likely to FAIL because at least one of its sources ({file}) does not exist.", ReportType.DonePreFlightWithFailure);
+                    return false;
+                }
+            }
+            return base.PreflightCheck();
+        }
+
+        #region Private
         private void doRename() {
             List<string> parsedTokens = parseTokensFromPattern();
             DateTimeReference = DateTime.Now;
@@ -71,13 +92,6 @@ namespace CommandCenter.Commands.FileSystem {
                 FileSystemCommands.FileMove(file, computedNewName);
                 SendReport($"Renamed {file} to {computedNewName} using pattern {Pattern}", ReportType.Progress);
                 RenamedFiles.Add(file, computedNewName);
-            }
-        }
-
-        public override void Undo() {
-            foreach (var file in RenamedFiles) {
-                FileMove(file.Value, file.Key);
-                SendReport($"Reverting file {file.Value} to its original name {file.Key}", ReportType.Progress);
             }
         }
 
@@ -134,6 +148,9 @@ namespace CommandCenter.Commands.FileSystem {
             return currentName.Replace($"[{replacerToken}]", Path.GetFileNameWithoutExtension(sourceFileName));
         }
 
+        #endregion
+
+        #region Exception types
         public class UnrecognizedReplacementToken : ApplicationException {
             public UnrecognizedReplacementToken(string token)
                 : base($"Unrecognized filename replacement token {token}") {
@@ -150,6 +167,7 @@ namespace CommandCenter.Commands.FileSystem {
 
             }
         }
+        #endregion
     }
 
 

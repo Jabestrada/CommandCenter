@@ -32,8 +32,21 @@ namespace CommandCenter.Infrastructure.Orchestration {
 
             timer.Stop();
             LastRunElapsedTime = timer.Elapsed;
-            
+
             return !HasError;
+        }
+
+        public bool RunPreflight() {
+            var timer = new Stopwatch();
+            timer.Start();
+
+            resetState();
+            var preFlightResult = runPreflightCheck();
+
+            timer.Stop();
+            LastRunElapsedTime = timer.Elapsed;
+
+            return preFlightResult;
         }
 
         #region Non-public methods
@@ -59,7 +72,7 @@ namespace CommandCenter.Infrastructure.Orchestration {
 
                 InvokedCommandsStackForUndo.Push(command);
                 InvokedCommandsStackForCleanup.Push(command);
-                
+
                 command.WasCommandStarted = true;
                 try {
                     command.Do();
@@ -71,6 +84,29 @@ namespace CommandCenter.Infrastructure.Orchestration {
                 if (!command.DidCommandSucceed) break;
             }
         }
+
+        private bool runPreflightCheck() {
+            bool preFlightResult = true;
+            foreach (var command in Commands) {
+                try {
+                    if (command.HasPreFlightCheck) {
+                        var currentPreFlightResult = command.PreflightCheck();
+                        if (!currentPreFlightResult) preFlightResult = false;
+                    }
+                    else {
+
+                        reportCommand(command, ReportType.DonePreflightWithSuccess, $"{command.ShortName} has no preflight checks");
+                    }
+                }
+                catch (Exception e) {
+                    reportCommand(command, ReportType.DonePreFlightWithFailure, $"{command.ShortName}: Exception thrown while running PreflightCheck(): {e.Message}");
+                    preFlightResult = false;
+
+                }
+            }
+            return preFlightResult;
+        }
+
         private void undoCommandsIfNeeded() {
             if (!HasError) return;
 
@@ -83,7 +119,7 @@ namespace CommandCenter.Infrastructure.Orchestration {
         }
 
         private void runCleanup() {
-            while (InvokedCommandsStackForCleanup.Any()) { 
+            while (InvokedCommandsStackForCleanup.Any()) {
                 var invokedCommand = InvokedCommandsStackForCleanup.Pop();
                 try {
                     invokedCommand.Cleanup();

@@ -12,7 +12,7 @@ namespace CommandCenter.Commands.FileSystem {
         private bool _atLeastOneTargetFileExists;
 
         public DirectoryCopyContentsCommand(string sourceDirectory, string targetDirectory, IFileSystemCommandsStrategy fileSysCommand)
-            : this(sourceDirectory, targetDirectory) {        
+            : this(sourceDirectory, targetDirectory) {
             FileSystemCommands = fileSysCommand;
         }
         public DirectoryCopyContentsCommand(string sourceDirectory, string targetDirectory) {
@@ -53,7 +53,20 @@ namespace CommandCenter.Commands.FileSystem {
             SendReport($"Deleted {filesDeleted} file(s) on undo", ReportType.UndoneTaskWithSuccess);
         }
 
-          private bool preFileCopyCallback(string sourceFile, string targetFile) {
+        public override bool HasPreFlightCheck => true;
+
+        public override bool PreflightCheck() {
+            if (!FileSystemCommands.DirectoryExists(SourceDirectory)) {
+                SendReport(this, $"DirectoryCopyContentsCommand is likely to FAIL because source directory {SourceDirectory} does not exist",
+                            ReportType.DonePreFlightWithFailure);
+                return false;
+            }
+            SendReport(this, $"DirectoryCopyContentsCommand is likely to succeed as long as none of the files from {SourceDirectory} already exist in {TargetDirectory}",
+                            ReportType.DonePreflightWithSuccess);
+            return true;
+        }
+
+        private bool preFileCopyCallback(string sourceFile, string targetFile) {
             if (FileSystemCommands.FileExists(targetFile)) {
                 _atLeastOneTargetFileExists = true;
                 SendReport($"Aborted copy of files from {SourceDirectory} to {TargetDirectory} because target file {targetFile} already exists", ReportType.DoneTaskWithFailure);

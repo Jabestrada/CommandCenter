@@ -16,7 +16,7 @@ namespace CommandCenter.Commands.FileSystem {
         }
 
         public override bool IsUndoable => true;
-
+        public override bool HasPreFlightCheck => true;
         public override void Do() {
             if (!sourceFileExists() || destinationFileExists()) return;
 
@@ -33,7 +33,7 @@ namespace CommandCenter.Commands.FileSystem {
 
         private bool destinationFileExists() {
             if (FileExists(TargetFilename)) {
-                SendReport("FileCopyCommand failed because destination file {SourceFilename} already exists", ReportType.DoneTaskWithFailure);
+                SendReport($"{ShortName} failed because destination file {TargetFilename} already exists", ReportType.DoneTaskWithFailure);
                 DidCommandSucceed = false;
                 return true;
             }
@@ -42,7 +42,7 @@ namespace CommandCenter.Commands.FileSystem {
 
         private bool sourceFileExists() {
             if (!FileExists(SourceFilename)) {
-                SendReport("FileCopyCommand failed because source file {SourceFilename} does not exist", ReportType.DoneTaskWithFailure);
+                SendReport($"{ShortName} failed because source file {SourceFilename} does not exist", ReportType.DoneTaskWithFailure);
                 DidCommandSucceed = false;
                 return false;
             }
@@ -55,6 +55,18 @@ namespace CommandCenter.Commands.FileSystem {
                 SendReport($"Task undone by deleting file {TargetFilename}", ReportType.DoneCleanupWithSuccess);
                 return;
             }
+        }
+
+        public override bool PreflightCheck() {
+            if (!FileExists(SourceFilename)) {
+                SendReport($"{ShortName} will FAIL because source file {SourceFilename} does not exist", ReportType.DonePreFlightWithFailure);
+                return false;
+            }
+            if (FileExists(TargetFilename)) {
+                SendReport($"{ShortName} will FAIL because destination file {TargetFilename} already exists", ReportType.DonePreFlightWithFailure);
+                return false;
+            }
+            return base.PreflightCheck();
         }
 
         public override void Cleanup() {

@@ -1,5 +1,6 @@
 ﻿using CommandCenter.Infrastructure.Orchestration;
 using System;
+using System.Security.Principal;
 
 namespace CommandCenter.Infrastructure {
     public interface ICommand {
@@ -9,6 +10,11 @@ namespace CommandCenter.Infrastructure {
         bool IsUndoable { get; }
 
         void Cleanup();
+
+        bool HasPreFlightCheck { get; }
+
+        bool PreflightCheck();
+
 
         // Feature candidate
         //bool IsCancellable { get; }
@@ -20,6 +26,9 @@ namespace CommandCenter.Infrastructure {
 
     public abstract class BaseCommand : ICommand {
         #region ICommand
+        public virtual bool HasPreFlightCheck => false;
+        public abstract bool IsUndoable { get; }
+
         public abstract void Do();
         public virtual void Undo() {
             throw new NotImplementedException();
@@ -27,7 +36,10 @@ namespace CommandCenter.Infrastructure {
         public virtual void Cleanup() { 
             // Empty default implementation
         }
-        public abstract bool IsUndoable { get; }
+        public virtual bool PreflightCheck() { 
+            SendReport(this, $"{ShortName} pre-flight checks done and it is likely to succeed", ReportType.DonePreflightWithSuccess);
+            return true;
+        }
         #endregion
 
         public readonly string Id;
@@ -35,6 +47,17 @@ namespace CommandCenter.Infrastructure {
         public bool WasCommandStarted { get; internal set; }
         public bool Enabled { get; set; }
         public string ShortDescription { get; set; }
+
+        private string _shortName;
+        public virtual string ShortName { 
+            get {
+                if (_shortName == null) {
+                    var typeName = GetType().ToString();
+                    _shortName = typeName.Substring(typeName.LastIndexOf('.') + 1);
+                }
+                return _shortName;
+            } 
+        }
         public BaseCommand() {
             Id = Guid.NewGuid().ToString();
             Enabled = true;
@@ -52,6 +75,20 @@ namespace CommandCenter.Infrastructure {
         }
         protected void SendReport(string message, ReportType reportType) {
             SendReport(this, new CommandReportArgs(message, reportType));
+        }
+
+       protected bool IsCurrentUserAdmin {
+            get {
+                try {
+                    WindowsIdentity identity = WindowsIdentity.GetCurrent();
+                    WindowsPrincipal principal = new WindowsPrincipal(identity);
+                    return principal.IsInRole(WindowsBuiltInRole.Administrator);
+                }
+                catch {
+                    return false;
+                }
+
+            }
         }
     }
 

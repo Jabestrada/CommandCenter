@@ -11,6 +11,7 @@ namespace CommandCenter.Commands.MsBuild {
         public string Configuration { get; protected set; }
         public List<string> FailedProjectBuildResults { get; protected set; }
         public override bool IsUndoable => false;
+        public override bool HasPreFlightCheck => true;
         public MsCleanRebuildCommand(string msBuildExe, string sourceFile, string configuration) {
             Executable = msBuildExe;
             Source = sourceFile;        // can be .sln or .csproj
@@ -42,6 +43,7 @@ namespace CommandCenter.Commands.MsBuild {
                 SendReport($"MsCleanRebuildCommand info => {data}", ReportType.Progress);
             }
         }
+
         private void captureFailedProject(string message) {
             var regEx = new Regex(FAILED_PROJECT_BUILD_PATTERN, RegexOptions.IgnoreCase);
             var matches = regEx.Matches(message);

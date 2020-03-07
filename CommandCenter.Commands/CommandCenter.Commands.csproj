@@ -64,6 +64,7 @@
     <Compile Include="Git\GitPullCommand.cs" />
     <Compile Include="IIS\IisAppPoolStartCommand.cs" />
     <Compile Include="IIS\IisAppPoolStopCommand.cs" />
+    <Compile Include="IIS\BaseIisCommand.cs" />
     <Compile Include="MsBuild\MsCleanRebuildCommand.cs" />
     <Compile Include="MsBuild\MsPublishWebAppCommand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

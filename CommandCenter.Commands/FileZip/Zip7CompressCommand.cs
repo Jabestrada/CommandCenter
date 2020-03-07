@@ -37,13 +37,33 @@ namespace CommandCenter.Commands.FileZip {
         }
 
         public override bool IsUndoable => true;
-
+        public override bool HasPreFlightCheck => true;
         public override void Do() {
             if (targetFileExists()) return;
             if (!allSourcesExist()) return;
 
             var result = FileCompressionStrategy.DoCompression(TargetZipfilename, SourcesToZip);
             reportResult(result);
+        }
+
+        public override bool PreflightCheck() {
+            if (!FileSystemCommandsStrategy.FileExists(ExeLocation)) {
+                SendReport($"{ShortName} will FAIL because executable {ExeLocation} was not found", ReportType.DonePreFlightWithFailure);
+                return false;
+            }
+
+            if (FileSystemCommandsStrategy.FileExists(TargetZipfilename)) {
+                SendReport($"{ShortName} will likely FAIL because target {TargetZipfilename} already exists", ReportType.DonePreFlightWithFailure);
+                return false;
+            }
+
+            foreach (var source in SourcesToZip) {
+                if (!FileSystemCommandsStrategy.FileExists(source) && !FileSystemCommandsStrategy.DirectoryExists(source)) {
+                    SendReport($"{ShortName} is likely to FAIL because source {source} does not exist", ReportType.DonePreFlightWithFailure);
+                    return false;
+                }
+            }
+            return base.PreflightCheck();
         }
 
         public override void Undo() {
@@ -56,6 +76,7 @@ namespace CommandCenter.Commands.FileZip {
             return result;
         }
 
+        #region private methods
         private void outputStreamReceiver(string message) {
             if (!string.IsNullOrWhiteSpace(message)) {
                 SendReport($"7zip info => {message}", ReportType.Progress);
@@ -68,7 +89,7 @@ namespace CommandCenter.Commands.FileZip {
             }
         }
 
-        #region private methods
+
         private void reportResult(int result) {
             DidCommandSucceed = result == 0;
             SendReport($"{ExeLocation} exit code {result}",

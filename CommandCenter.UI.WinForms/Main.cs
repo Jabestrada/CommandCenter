@@ -15,7 +15,8 @@ namespace CommandCenter.UI.WinForms {
 
         private enum FormModeEnum {
             Ready,
-            RunningCommands
+            RunningCommands,
+            RunningPreflight
         }
 
         private FormModeEnum _formMode;
@@ -33,6 +34,8 @@ namespace CommandCenter.UI.WinForms {
         private CommandsControllerWinForms _controller;
 
         private List<CommandConfiguration> _loadedCommandConfigurations;
+        private List<CommandConfiguration> _selectedCommandConfigurations;
+
         private List<Token> _loadedTokens;
         private string _lastLoadedConfig = string.Empty;
         public Main() {
@@ -74,11 +77,14 @@ namespace CommandCenter.UI.WinForms {
 
         private void didChangeFormMode(FormModeEnum value) {
             var isFormReady = value == FormModeEnum.Ready;
+            var hasSelectedCommand = isAnyCommandSelected();
+
             setEnabled(txtConfigFile, isFormReady);
             setEnabled(btnBrowseConfig, isFormReady);
             setEnabled(btnLoadConfig, isFormReady);
             setEnabled(commandsList, isFormReady);
-            setEnabled(btnRun, isFormReady);
+            setEnabled(btnRun, isFormReady && hasSelectedCommand);
+            setEnabled(btnPreflight, isFormReady && hasSelectedCommand);
         }
 
         delegate void EnableControlCallback(Control control, bool enabled);
@@ -90,6 +96,15 @@ namespace CommandCenter.UI.WinForms {
             else {
                 control.Enabled = enabled;
             }
+        }
+
+        private bool isAnyCommandSelected() {
+            foreach (TreeNode commandNode in commandsList.Nodes) {
+                if (commandNode.Checked) {
+                    return true;
+                }
+            }
+            return false;
         }
 
         delegate void SetTextCallback(string message);
@@ -104,6 +119,7 @@ namespace CommandCenter.UI.WinForms {
                 statusWindow.AppendText(Environment.NewLine);
             }
         }
+
 
         private void btnLoadConfig_Click(object sender, EventArgs e) {
             loadCommands();
@@ -167,20 +183,16 @@ namespace CommandCenter.UI.WinForms {
         }
 
         private void runCommands() {
-            var commandConfigList = getSelectedCommands();
-            if (!commandConfigList.Any()) {
-                MessageBox.Show("At least 1 command has to be checked", "No command selected",
-                                MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
-            }
-            if (!confirmContinueWithUndoables(commandConfigList)) {
+            if (!tryGetSelectedCommands()) return;
+
+            if (!confirmContinueWithUndoables(_selectedCommandConfigurations)) {
                 return;
             }
 
             statusWindow.Clear();
             ThreadStart starter = new ThreadStart(() => {
                 FormMode = FormModeEnum.RunningCommands;
-                _controller.Run(commandConfigList);
+                _controller.Run(_selectedCommandConfigurations);
             });
             starter += () => {
                 writeSummary();
@@ -188,6 +200,16 @@ namespace CommandCenter.UI.WinForms {
             };
             var thread = new Thread(starter);
             thread.Start();
+        }
+
+        private bool tryGetSelectedCommands() {
+            _selectedCommandConfigurations = getSelectedCommands();
+            if (!_selectedCommandConfigurations.Any()) {
+                MessageBox.Show("At least 1 command has to be checked", "No command selected",
+                                MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return false;
+            }
+            return true;
         }
 
         private void writeSummary() {
@@ -199,6 +221,20 @@ namespace CommandCenter.UI.WinForms {
             }
             var status = _controller.DidCommandsSucceed ? "SUCCEEDED" : "FAILED";
             appendStatusText($"FINAL RESULT => Commands {status}");
+            var elapsed = _controller.LastRunElapsedTime.ToString(@"hh\:mm\:ss");
+            appendStatusText($"Time elapsed: {elapsed}");
+        }
+
+        private void writePreflightSummary() {
+            appendStatusText(Environment.NewLine);
+            appendStatusText("================== PRE-FLIGHT CHECK SUMMARY ==================");
+
+            var finalReports = _controller.Reports.Where(r => isDonePreflightTaskReport(r.ReportType));
+            foreach (var finalReport in finalReports) {
+                appendStatusText($"{finalReport.Reporter.ShortDescription}: {finalReport.Message}");
+            }
+            var status = _controller.DidCommandsSucceed ? "SUCCEEDED" : "FAILED";
+            appendStatusText($"FINAL PRE-FLIGHT CHECK RESULT => {status}");
             var elapsed = _controller.LastRunElapsedTime.ToString(@"hh\:mm\:ss");
             appendStatusText($"Time elapsed: {elapsed}");
         }
@@ -231,6 +267,10 @@ namespace CommandCenter.UI.WinForms {
             return r == ReportType.DoneTaskWithFailure || r == ReportType.DoneTaskWithSuccess;
         }
 
+        private bool isDonePreflightTaskReport(ReportType r) {
+            return r == ReportType.DonePreFlightWithFailure || r == ReportType.DonePreflightWithSuccess;
+        }
+
         private void btnBrowseConfig_Click(object sender, EventArgs e) {
             browseForConfigFile();
         }
@@ -248,6 +288,28 @@ namespace CommandCenter.UI.WinForms {
         private void txtConfigFile_TextChanged(object sender, EventArgs e) {
             btnLoadConfig.Enabled = txtConfigFile.Text.Length > 0;
         }
+
+        private void preFlight_Click(object sender, EventArgs e) {
+            if (!tryGetSelectedCommands()) return;
+
+            statusWindow.Clear();
+            ThreadStart starter = new ThreadStart(() => {
+                FormMode = FormModeEnum.RunningPreflight;
+                _controller.RunPreflight(_selectedCommandConfigurations);
+            });
+            starter += () => {
+                writePreflightSummary();
+                FormMode = FormModeEnum.Ready;
+            };
+
+            var thread = new Thread(starter);
+            thread.Start();
+
+            //FormMode = FormModeEnum.RunningPreflight;
+
+            //FormMode = FormModeEnum.Ready;
+        }
+
         #region commandsList Treeview-related
         private void commandsList_AfterSelect(object sender, TreeViewEventArgs e) {
             var selectedCommand = e.Node.Tag as CommandConfiguration;
@@ -256,13 +318,7 @@ namespace CommandCenter.UI.WinForms {
             }
         }
         private void commandsList_AfterCheck(object sender, TreeViewEventArgs e) {
-            foreach (TreeNode commandNode in commandsList.Nodes) {
-                if (commandNode.Checked) {
-                    btnRun.Enabled = true;
-                    return;
-                }
-            }
-            btnRun.Enabled = false;
+            FormMode = FormModeEnum.Ready;
         }
 
         private void commandsList_MouseDown(object sender, MouseEventArgs e) {
@@ -296,5 +352,7 @@ namespace CommandCenter.UI.WinForms {
             }
         }
         #endregion
+
+
     }
 }

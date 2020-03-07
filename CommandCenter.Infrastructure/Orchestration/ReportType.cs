@@ -8,6 +8,8 @@
         UndoneTaskWithFailure,
         DoneCleanupWithSuccess,
         DoneCleanupWithFailure,
+        DonePreflightWithSuccess,
+        DonePreFlightWithFailure,
         Error,
         Warning,
         Info

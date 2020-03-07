@@ -49,6 +49,7 @@
             this.Key = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Value = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label1 = new System.Windows.Forms.Label();
+            this.btnPreflight = new System.Windows.Forms.Button();
             this.commandsListContextMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -284,7 +285,7 @@
             this.tabTokens.Location = new System.Drawing.Point(4, 22);
             this.tabTokens.Name = "tabTokens";
             this.tabTokens.Padding = new System.Windows.Forms.Padding(3);
-            this.tabTokens.Size = new System.Drawing.Size(1041, 465);
+            this.tabTokens.Size = new System.Drawing.Size(1041, 454);
             this.tabTokens.TabIndex = 1;
             this.tabTokens.Text = "Tokens";
             this.tabTokens.UseVisualStyleBackColor = true;
@@ -307,7 +308,7 @@
             this.tokensList.RowHeadersWidth = 102;
             this.tokensList.RowTemplate.Height = 40;
             this.tokensList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.tokensList.Size = new System.Drawing.Size(1035, 459);
+            this.tokensList.Size = new System.Drawing.Size(1035, 448);
             this.tokensList.TabIndex = 0;
             // 
             // Key
@@ -335,10 +336,24 @@
             this.label1.TabIndex = 10;
             this.label1.Text = "Config File";
             // 
+            // btnPreflight
+            // 
+            this.btnPreflight.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnPreflight.Enabled = false;
+            this.btnPreflight.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnPreflight.Location = new System.Drawing.Point(719, 550);
+            this.btnPreflight.Name = "btnPreflight";
+            this.btnPreflight.Size = new System.Drawing.Size(175, 39);
+            this.btnPreflight.TabIndex = 11;
+            this.btnPreflight.Text = "Pre-flight Check";
+            this.btnPreflight.UseVisualStyleBackColor = true;
+            this.btnPreflight.Click += new System.EventHandler(this.preFlight_Click);
+            // 
             // Main
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(1101, 597);
+            this.Controls.Add(this.btnPreflight);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.btnBrowseConfig);
@@ -394,6 +409,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Key;
         private System.Windows.Forms.DataGridViewTextBoxColumn Value;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button btnPreflight;
     }
 }
 

@@ -1,4 +1,6 @@
-﻿namespace CommandCenter.Commands.FileSystem {
+﻿using CommandCenter.Infrastructure.Orchestration;
+
+namespace CommandCenter.Commands.FileSystem {
     public class RenameFilesInDirectoryWithPatternCommand : MultiFileRenameWithPatternCommand {
         public string[] SourceDirectories;
 
@@ -15,6 +17,15 @@
             }
 
             base.Do();
+        }
+        public override bool PreflightCheck() {
+            foreach (var dir in SourceDirectories) {
+                if (!FileSystemCommands.DirectoryExists(dir)) {
+                    SendReport(this, $"{ShortName} is likely to fail because at least one of its source directories {dir} was not found", ReportType.DonePreFlightWithFailure);
+                    return false;        
+                }
+            }
+            return base.PreflightCheck();
         }
     }
 }

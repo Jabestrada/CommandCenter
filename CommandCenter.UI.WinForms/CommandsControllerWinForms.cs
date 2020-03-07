@@ -35,6 +35,16 @@ namespace CommandCenter.UI.WinForms {
             LastRunElapsedTime = _commandsRunner.LastRunElapsedTime;
             return DidCommandsSucceed;
         }
+        public bool RunPreflight(List<CommandConfiguration> commandsConfiguration) {
+            var commandsBuilder = new CommandsBuilder(commandsConfiguration);
+            var commands = commandsBuilder.BuildCommands();
+
+            _commandsRunner = new CommandsRunner(commands);
+            _commandsRunner.OnReportSent += CommandsRunner_OnReportSent;
+            DidCommandsSucceed = _commandsRunner.RunPreflight();
+            LastRunElapsedTime = _commandsRunner.LastRunElapsedTime;
+            return DidCommandsSucceed;
+        }
 
         public List<CommandConfiguration> GetCommands(string configFile) {
             XmlDocument xmlDoc = new XmlDocument();

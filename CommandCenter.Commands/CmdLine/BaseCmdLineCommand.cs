@@ -1,4 +1,7 @@
-﻿using CommandCenter.Infrastructure;
+﻿using CommandCenter.Commands.FileSystem;
+using CommandCenter.Commands.FileSystem.BaseDefinitions;
+using CommandCenter.Infrastructure;
+using CommandCenter.Infrastructure.Orchestration;
 using System.Collections.Generic;
 
 namespace CommandCenter.Commands.CmdLine {
@@ -9,6 +12,7 @@ namespace CommandCenter.Commands.CmdLine {
 
         protected virtual int SuccessExitCode => 0;
 
+        protected IFileSystemCommandsStrategy FileSystemCommand = new FileSystemCommands();
         public List<string> CommandLineArguments { get; protected set; }
         public string Executable { get; protected set; }
         public int ExitCode { get; protected set; }
@@ -32,6 +36,14 @@ namespace CommandCenter.Commands.CmdLine {
         public sealed override void Do() {
             SetArguments();
             runCommand();
+        }
+
+        public override bool PreflightCheck() {
+            if (ValidateExePath && !FileSystemCommand.FileExists(Executable)) {
+                SendReport(this, $"{ShortName} will FAIL because executable {Executable} was not found", ReportType.DonePreFlightWithFailure);
+                return false;
+            }
+            return base.PreflightCheck();
         }
 
         private void runCommand() {
