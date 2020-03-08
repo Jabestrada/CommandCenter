@@ -29,35 +29,5 @@ I was motivated to write this framework/application while working with the IT de
 2. Open CommandCenter.sln (tested on Visual Studio 2019 only) and set startup project to CommandCenter.UI.WinForms.
 3. Build and run the solution.
 4. Try out the [walkthrough](https://github.com/Jabestrada/CommandCenter/blob/master/Documentation/Walkthrough.pdf). 
-
-## Available Commands Out-of-the-Box
-<!-- While the Commands framework is extensible so that etc. -->
-1. SvnUpdateCommand/GitPullCommand: runs `svn update`/`git pull` respectively on a particular repo.
-2. MsCleanRebuildCommand: runs MsBuild.exe to clean and rebuild solutions
-3. MsPublishWebAppCommand: runs MsBuild.exe to publish web apps
-4. IisAppPoolStartCommand/IisAppPoolStartCommand: starts/stops an IIS App pool
-5. Zip7CompressCommand: runs 7-zip to compress files and folders
-6. File system manipulation commands:
-   * FileCopyCommand
-   * FileDeleteCommand
-   * MultiFileRenameWithPatternCommand
-   * DirectoryCopyContentsCommand
-   * DirectoryDeleteCommand
-   * DirectoryDeleteContentOnlyCommand
-7. ConditionalPauseCommand: suspends the command chain while displaying a modal message box with customizable lines of text for the user (useful for manual interventions in the middle of the command chain). User can then opt to continue or cancel execution, the latter of which will trigger the undo/rollback process. 
-
-Detailed documentation on how to create the configuration file is still in-progress but inspecting [OOBCommandsReference.config](https://github.com/Jabestrada/CommandCenter/blob/master/CommandCenter.UI.WinForms/OOBCommandsReference.config) will give you a quick idea of how things work.
-
-<!--
-A rundown of the assemblies/projects in this repo is as follows:
-- CommandCenter.Infrastructure contains the building blocks of the framework and is responsible for configuration, orchestration and command definition/creation. At the heart of this project is the BaseCommand type from which all commands should inherit from. Therefore, any application that wishes to define new Command types should add a reference to this assembly.
-- CommandCenter.Commands contains BaseCommand implementations for commonly used tasks such as:
-  * SvnUpdateCommand: runs svn update command on a particular repo.
-  * Zip7CompressCommand: runs 7-zip to compress files and folders
-  * MsCleanRebuildCommand: runs MsBuild.exe to clean and rebuild solutions
-  * MsPublishWebAppCommand: runs MsBuild.exe to publish web apps
-  * IisAppPoolStartCommand/IisAppPoolStartCommand: starts/stops an IIS App pool
-  * Commands under /FileSystem: various commands for common file system manipulation (dir/file copy, delete, etc.)  
-- CommandCenter.UI.Console and CommandCenter.UI.WinForms contains console-based/Windows Forms-based clients for invoking commands defined in a configuration file.
--->
+5. Learn more by reading the [wiki](https://github.com/Jabestrada/CommandCenter/wiki)
 
