@@ -4,7 +4,7 @@ Framework for automating commands that are mostly related to (but not limited to
 I was motivated to write this framework/application while working with the IT department of a remote client. Their CI/CD infrastructure was at the nascent stages and their deployment procedures, while properly documented, were entirely manual. I figured it was a great opportunity and mental exercise to build something that will somehow automate the process. 
 
 ## How It Works
-1. A configuration file contains an ordered list of commands that one wishes to automate. For instance, via the configuration file, one can assemble a series of commands that will:
+1. User creates a configuration file that contains an ordered list of commands that one wishes to automate. For instance, via the configuration file, one can assemble a series of commands that will:
    1. Update a local repository copy in preparation for a build.
    2. Build the pertinent projects.
    3. Publish the web app.
