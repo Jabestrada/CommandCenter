@@ -1,6 +1,7 @@
 ﻿using CommandCenter.Commands.FileSystem.BaseDefinitions;
 using CommandCenter.Infrastructure.Orchestration;
 using System;
+using System.IO;
 
 namespace CommandCenter.Commands.FileSystem {
     public class FileCopyCommand : BaseFileCommand {
@@ -59,13 +60,18 @@ namespace CommandCenter.Commands.FileSystem {
 
         public override bool PreflightCheck() {
             if (!FileExists(SourceFilename)) {
-                SendReport($"{ShortName} will FAIL because source file {SourceFilename} does not exist", ReportType.DonePreFlightWithFailure);
+                SendReport($"{ShortName} will FAIL because source file {SourceFilename} was not found, or application does not have sufficient permissions", ReportType.DonePreFlightWithFailure);
                 return false;
             }
             if (FileExists(TargetFilename)) {
                 SendReport($"{ShortName} will FAIL because destination file {TargetFilename} already exists", ReportType.DonePreFlightWithFailure);
                 return false;
             }
+
+            if (!PreflightCheckReadAccessFromDirectory(Path.GetDirectoryName(SourceFilename))) return false;
+
+            if (!PreflightCheckWriteAccessToDirectory(Path.GetDirectoryName(TargetFilename))) return false;
+
             return DefaultPreflightCheckSuccess();
         }
 

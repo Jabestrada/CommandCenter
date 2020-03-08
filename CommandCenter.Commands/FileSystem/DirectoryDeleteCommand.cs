@@ -13,6 +13,16 @@ namespace CommandCenter.Commands.FileSystem {
             : base(dirToDelete, backupDir) {
         }
 
+        public override bool HasPreFlightCheck => true;
+        
+        public override bool PreflightCheck() {
+            if (FileSystemCommands.DirectoryExists(SourceDirectory) && !PreflightCheckWriteAccessToDirectory(SourceDirectory)) {
+                return false;
+            }
+
+            return DefaultPreflightCheckSuccess();
+        }
+
         protected override void Delete() {
             try {
                 SendReport($"Deleting directory {SourceDirectory} ...", ReportType.Progress);

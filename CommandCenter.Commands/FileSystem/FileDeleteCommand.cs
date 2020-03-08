@@ -33,19 +33,8 @@ namespace CommandCenter.Commands.FileSystem {
 
         public override bool PreflightCheck() {
             var sourceDir = Path.GetDirectoryName(SourceFilename);
-            if (!FileSystemCommands.DirectoryExists(sourceDir)) {
-                return DefaultPreflightCheckSuccess();
-            }
-
-            try {
-                var tempFile = CreateTempFile(sourceDir);
-                FileDelete(tempFile);
-            }
-            catch(Exception exc) {
-                SendReport(this, $"{ShortName} will likely FAIL because it seems to lack permissions to {sourceDir}: {exc.Message}",
-                                ReportType.DonePreFlightWithFailure);
-                return false;
-            }
+            if (FileSystemCommands.DirectoryExists(sourceDir) && !PreflightCheckWriteAccessToDirectory(sourceDir)) return false;
+            
             return DefaultPreflightCheckSuccess();
         }
 

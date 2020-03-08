@@ -21,10 +21,12 @@ namespace CommandCenter.Commands.FileSystem {
         public override bool PreflightCheck() {
             foreach (var dir in SourceDirectories) {
                 if (!FileSystemCommands.DirectoryExists(dir)) {
-                    SendReport(this, $"{ShortName} is likely to fail because at least one of its source directories {dir} was not found", ReportType.DonePreFlightWithFailure);
+                    SendReport(this, $"{ShortName} is likely to fail because at least one of its source directories {dir} was not found, or application does not have sufficient permissions", ReportType.DonePreFlightWithFailure);
                     return false;
                 }
+                if (!PreflightCheckDirectoryReadWriteAccess(dir)) return false;
             }
+
             return DefaultPreflightCheckSuccess();
         }
     }

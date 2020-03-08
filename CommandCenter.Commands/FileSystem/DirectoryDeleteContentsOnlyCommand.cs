@@ -12,6 +12,7 @@ namespace CommandCenter.Commands.FileSystem {
             : base(dirToDelete, backupDir) {
         }
 
+        public override bool HasPreFlightCheck => true;
         protected override void Delete() {
             try {
                 SendReport($"Deleting contents of folder {SourceDirectory} ...", ReportType.Progress);
@@ -19,15 +20,23 @@ namespace CommandCenter.Commands.FileSystem {
                 DidCommandSucceed = true;
                 SendReport($"Deleted contents of folder {SourceDirectory}", ReportType.DoneTaskWithSuccess);
             }
-            catch (Exception exc) { 
+            catch (Exception exc) {
                 DidCommandSucceed = false;
                 SendReport($"Failed to delete contents of folder {SourceDirectory}. {exc.Message}", ReportType.DoneTaskWithFailure);
             }
         }
 
+        public override bool PreflightCheck() {
+            if (FileSystemCommands.DirectoryExists(SourceDirectory) && !PreflightCheckWriteAccessToDirectory(SourceDirectory)) {
+                return false;
+            }
+
+            return DefaultPreflightCheckSuccess();
+        }
+
         private void deleteProgress(string deletedItem, FileSystemItemType type) {
             string deletedWhatType = type == FileSystemItemType.File ? "file" : "directory";
-            SendReport($"Deleted {deletedWhatType} {deletedItem}", ReportType.Progress); 
+            SendReport($"Deleted {deletedWhatType} {deletedItem}", ReportType.Progress);
         }
 
         protected override void RunUndo() {

@@ -61,9 +61,13 @@ namespace CommandCenter.Commands.FileSystem {
                             ReportType.DonePreFlightWithFailure);
                 return false;
             }
-            SendReport(this, $"DirectoryCopyContentsCommand is likely to succeed as long as none of the files from {SourceDirectory} already exist in {TargetDirectory}",
-                            ReportType.DonePreflightWithSuccess);
-            return true;
+
+            if (!PreflightCheckReadAccessFromDirectory(SourceDirectory)) return false;
+            
+
+            if (!PreflightCheckWriteAccessToDirectory(TargetDirectory)) return false;
+
+            return DefaultPreflightCheckSuccess();
         }
 
         private bool preFileCopyCallback(string sourceFile, string targetFile) {

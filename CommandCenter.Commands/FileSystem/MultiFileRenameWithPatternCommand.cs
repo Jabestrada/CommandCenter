@@ -34,7 +34,7 @@ namespace CommandCenter.Commands.FileSystem {
             foreach (var file in SourceFiles) {
                 if (!FileExists(file)) {
                     DidCommandSucceed = false;
-                    SendReport($"Failed to rename {file} because it does not exist", ReportType.DoneTaskWithFailure);
+                    SendReport($"Failed to rename {file} because it does not exist, or application does not have sufficient permissions", ReportType.DoneTaskWithFailure);
                     return;
                 }
             }
@@ -59,10 +59,12 @@ namespace CommandCenter.Commands.FileSystem {
 
         public override bool PreflightCheck() {
             foreach (var file in SourceFiles) {
-                if (FileSystemCommands.DirectoryExists(file)) continue;
+                if (FileSystemCommands.DirectoryExists(file)) {
+                    if (!PreflightCheckDirectoryReadWriteAccess(file)) return false;
+                }
 
                 if (!FileExists(file)) {
-                    SendReport($"{ShortName} is likely to FAIL because at least one of its sources ({file}) does not exist.", ReportType.DonePreFlightWithFailure);
+                    SendReport($"{ShortName} is likely to FAIL because at least one of its sources ({file}) does not exist, or application does not have sufficient permissions.", ReportType.DonePreFlightWithFailure);
                     return false;
                 }
             }
