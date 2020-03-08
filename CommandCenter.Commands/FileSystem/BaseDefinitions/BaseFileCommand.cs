@@ -1,5 +1,6 @@
 ﻿using CommandCenter.Infrastructure;
 using System;
+using System.IO;
 
 namespace CommandCenter.Commands.FileSystem.BaseDefinitions {
     public abstract class BaseFileCommand : BaseCommand {
@@ -42,6 +43,17 @@ namespace CommandCenter.Commands.FileSystem.BaseDefinitions {
                 return;
             }
             throw new NullFileSystemCommandsStrategyException();
+        }
+
+        public string CreateTempFile(string destinationDirectory) {
+            int counter = 0;
+            var tempFileName = Path.Combine(destinationDirectory, $"cc_test_file{counter}.tmp");
+            while (FileExists(tempFileName)) {
+                counter++;
+                tempFileName = Path.Combine(destinationDirectory, $"cc_test_file{counter}.tmp");
+            }
+            FileSystemCommands.FileCreate(tempFileName);
+            return tempFileName;
         }
     }
 

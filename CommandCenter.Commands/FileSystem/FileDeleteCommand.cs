@@ -16,6 +16,7 @@ namespace CommandCenter.Commands.FileSystem {
         }
 
         public override bool IsUndoable => true;
+        public override bool HasPreFlightCheck => true;
         public override void Do() {
             if (!sourceFileExists() || !createBackup()) return;
 
@@ -28,6 +29,24 @@ namespace CommandCenter.Commands.FileSystem {
 
         public override void Cleanup() {
             doCleanup();
+        }
+
+        public override bool PreflightCheck() {
+            var sourceDir = Path.GetDirectoryName(SourceFilename);
+            if (!FileSystemCommands.DirectoryExists(sourceDir)) {
+                return DefaultPreflightCheckSuccess();
+            }
+
+            try {
+                var tempFile = CreateTempFile(sourceDir);
+                FileDelete(tempFile);
+            }
+            catch(Exception exc) {
+                SendReport(this, $"{ShortName} will likely FAIL because it seems to lack permissions to {sourceDir}: {exc.Message}",
+                                ReportType.DonePreFlightWithFailure);
+                return false;
+            }
+            return DefaultPreflightCheckSuccess();
         }
 
         #region private methods
@@ -63,7 +82,7 @@ namespace CommandCenter.Commands.FileSystem {
                 FileDelete(BackupFilename);
                 SendReport($"Deleted backup file {BackupFilename}", ReportType.DoneCleanupWithSuccess);
             }
-            catch (Exception exc) { 
+            catch (Exception exc) {
                 SendReport($"Failed to delete backup file {BackupFilename}. {exc.Message}", ReportType.DoneCleanupWithFailure);
             }
         }
