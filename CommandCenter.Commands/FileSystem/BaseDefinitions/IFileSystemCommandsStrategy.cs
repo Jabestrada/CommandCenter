@@ -7,7 +7,7 @@ namespace CommandCenter.Commands.FileSystem.BaseDefinitions {
         void FileCopy(string sourceFilename, string destinationFilename);
         void FileDelete(string filename);
         void FileMove(string sourceFilename, string destinationFilename);
-
+        void FileCreate(string fileName);
         bool DirectoryExists(string dirName);
         void DirectoryCopyContents(string sourceDirName, string destinationDirName, Func<string, string, bool> preCopyCallback, Action<string, string> postCopyCallback);
         void DirectoryDelete(string dirName);

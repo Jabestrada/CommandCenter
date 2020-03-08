@@ -16,6 +16,12 @@ namespace CommandCenter.Commands.FileSystem {
             return File.Exists(filename);
         }
 
+        public void FileCreate(string fileName) {
+            using (var stream = File.Create(fileName)) {
+                stream.Close();
+            }
+        }
+
         public void FileMove(string sourceFilename, string destinationFilename) {
             File.Move(sourceFilename, destinationFilename);
         }
@@ -118,5 +124,7 @@ namespace CommandCenter.Commands.FileSystem {
         public IEnumerable<string> DirectoryGetFiles(string sourceDir) {
             return Directory.GetFiles(sourceDir);
         }
+
+        
     }
 }

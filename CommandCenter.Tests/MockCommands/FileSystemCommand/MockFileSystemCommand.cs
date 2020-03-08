@@ -114,5 +114,9 @@ namespace CommandCenter.Tests.MockCommands {
         public IEnumerable<string> DirectoryGetFiles(string sourceDir) {
             throw new NotImplementedException();
         }
+
+        public void FileCreate(string fileName) {
+            throw new NotImplementedException();
+        }
     }
 }
