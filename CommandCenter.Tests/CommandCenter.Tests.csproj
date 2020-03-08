@@ -57,7 +57,7 @@
     <Compile Include="CommandCenter.Commands.Tests\Zip7CompressCommand.Tests.cs" />
     <Compile Include="CommandCenter.Infrastructure.Tests\CommandsBuilder.Tests.cs" />
     <Compile Include="CommandCenter.Infrastructure.Tests\CommandsConfigurationXmlSource.Tests.cs" />
-    <Compile Include="CommandCenter.Infrastructure.Tests\CommandsRunner.Tests..cs" />
+    <Compile Include="CommandCenter.Infrastructure.Tests\CommandsRunner.Tests.cs" />
     <Compile Include="CommandCenter.Infrastructure.Tests\TokensConfiguration.Tests.cs" />
     <Compile Include="MockCommands\FileSystemCommand\FakeFileSystem.cs" />
     <Compile Include="MockCommands\FileZip\MockFileCompressionStrategy.cs" />
@@ -74,11 +74,17 @@
     <Compile Include="MockCommands\MockUndoableCommand.cs" />
     <Compile Include="MockCommands\MockUndoableCommandWithDelay.cs" />
     <Compile Include="MockCommands\MockUndoThrowingExceptionCommand.cs" />
+    <Compile Include="MockCommands\PreFlightCheck\MockCommandHasPreflightCheckButFlagNotSet.cs" />
+    <Compile Include="MockCommands\PreFlightCheck\MockCommandPreflightFailing.cs" />
+    <Compile Include="MockCommands\PreFlightCheck\MockCommandPreflightSucceeding.cs" />
+    <Compile Include="MockCommands\PreFlightCheck\MockCommandThrowingExceptionAtPreflightCheck.cs" />
+    <Compile Include="MockCommands\PreFlightCheck\BaseMockPreflightCommand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommandCenter.Commands.Tests\FileCopyCommand.Tests.cs" />
     <Compile Include="CommandCenter.Commands.Tests\DirectoryCopyContentsCommand.Tests.cs" />
+    <Compile Include="CommandCenter.Infrastructure.Tests\CommandsRunner.PreflightCheck.Tests.cs" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

@@ -94,7 +94,6 @@ namespace CommandCenter.Infrastructure.Orchestration {
                         if (!currentPreFlightResult) preFlightResult = false;
                     }
                     else {
-
                         reportCommand(command, ReportType.DonePreflightWithSuccess, $"{command.ShortName} has no preflight checks");
                     }
                 }
