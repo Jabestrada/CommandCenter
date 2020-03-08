@@ -28,6 +28,6 @@ I was motivated to write this framework/application while working with the IT de
 1. Download this repo.
 2. Open CommandCenter.sln (tested on Visual Studio 2019 only) and set startup project to CommandCenter.UI.WinForms.
 3. Build and run the solution.
-4. Try out the [walkthrough](https://github.com/Jabestrada/CommandCenter/blob/master/Documentation/Walkthrough.pdf). 
+4. Follow along a basic [walkthrough](https://github.com/Jabestrada/CommandCenter/blob/master/Documentation/Walkthrough.pdf). 
 5. Learn more by reading the [wiki](https://github.com/Jabestrada/CommandCenter/wiki)
 
