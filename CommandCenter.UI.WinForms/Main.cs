@@ -295,7 +295,13 @@ namespace CommandCenter.UI.WinForms {
             statusWindow.Clear();
             ThreadStart starter = new ThreadStart(() => {
                 FormMode = FormModeEnum.RunningPreflight;
-                _controller.RunPreflight(_selectedCommandConfigurations);
+                try {
+                    _controller.RunPreflight(_selectedCommandConfigurations);
+                }
+                catch (Exception exc) {
+                    MessageBox.Show("Error occurred while attempting to run Preflight Check. " + exc.Message, "Error", 
+                                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             });
             starter += () => {
                 writePreflightSummary();
