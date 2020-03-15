@@ -61,6 +61,7 @@
     <Compile Include="FileSystem\FileDeleteCommand.cs" />
     <Compile Include="FileSystem\FileSystemCommands.cs" />
     <Compile Include="FileSystem\BaseDefinitions\IFileSystemCommandsStrategy.cs" />
+    <Compile Include="Git\GitCloneCommand.cs" />
     <Compile Include="Git\GitPullCommand.cs" />
     <Compile Include="IIS\IisAppPoolStartCommand.cs" />
     <Compile Include="IIS\IisAppPoolStopCommand.cs" />
