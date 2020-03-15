@@ -24,10 +24,5 @@ I was motivated to write this framework/application while working with the IT de
 5. Token support in configuration file. Instead of repetitively using long command typenames or file/folder locations in the configuration file, you can define a token once and then reference that token anywhere the token value is used in the configuration file.
 6. Pre-flight check. One can trigger a pre-flight check to verify if the selected commands are likely to succeed when actually run. 
 
-## Getting Started
-1. Download this repo.
-2. Open CommandCenter.sln (tested on Visual Studio 2019 only) and set startup project to CommandCenter.UI.WinForms.
-3. Build and run the solution.
-4. Follow along a basic [walkthrough](https://github.com/Jabestrada/CommandCenter/blob/master/Documentation/Walkthrough.pdf). 
-5. Learn more by reading the [wiki](https://github.com/Jabestrada/CommandCenter/wiki).
+### Learn more by reading the [wiki](https://github.com/Jabestrada/CommandCenter/wiki).
 
