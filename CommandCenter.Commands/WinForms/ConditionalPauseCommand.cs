@@ -11,11 +11,11 @@ namespace CommandCenter.Commands.WinForms {
             PromptTexts = linesOfText;
         }
         public override void Do() {
-            SendReport(this, $"ConditionalPause => User dialog displayed. Awaiting user input...", ReportType.Progress);
+            SendReport($"{ShortName} => User dialog displayed. Awaiting user input...", ReportType.Progress);
             var userReply = MessageBox.Show(string.Join(Environment.NewLine, PromptTexts), "User Input Needed", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             DidCommandSucceed = userReply == DialogResult.Yes;
             var cmdResult = DidCommandSucceed ? "succeeded" : "failed";
-            SendReport(this, $"ConditionalPause => Command {cmdResult} because user responded with {userReply}",
+            SendReport($"{ShortName}=> Command {cmdResult} because user responded with {userReply}",
                        DidCommandSucceed ? ReportType.DoneTaskWithSuccess : ReportType.DoneTaskWithFailure);
         }
     }
