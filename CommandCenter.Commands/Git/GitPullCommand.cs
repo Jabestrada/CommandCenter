@@ -57,7 +57,7 @@ namespace CommandCenter.Commands.Git {
                 return false;
             }
 
-            return DefaultPreflightCheckSuccess();
+            return DefaultPreFlightCheckSuccess();
         }
 
         private StringBuilder _gitInfoStreamOutput;

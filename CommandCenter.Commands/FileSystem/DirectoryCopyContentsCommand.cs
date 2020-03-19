@@ -67,7 +67,7 @@ namespace CommandCenter.Commands.FileSystem {
 
             if (!PreflightCheckWriteAccessToDirectory(TargetDirectory)) return false;
 
-            return DefaultPreflightCheckSuccess();
+            return DefaultPreFlightCheckSuccess();
         }
 
         private bool preFileCopyCallback(string sourceFile, string targetFile) {

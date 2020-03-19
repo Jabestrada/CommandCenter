@@ -40,7 +40,7 @@ namespace CommandCenter.Infrastructure {
             throw new NotImplementedException();
         }
 
-        public bool DefaultPreflightCheckSuccess() {
+        public bool DefaultPreFlightCheckSuccess() {
             SendReport(this, $"{ShortName} pre-flight checks done and it is likely to succeed", ReportType.DonePreflightWithSuccess);
             return true;
         }

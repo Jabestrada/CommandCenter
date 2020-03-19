@@ -47,7 +47,7 @@ namespace CommandCenter.Commands.MsBuild {
             var preFlightCheck = base.PreFlightCheck();
             if (!preFlightCheck) return false;
 
-            return DefaultPreflightCheckSuccess();
+            return DefaultPreFlightCheckSuccess();
         }
 
         private void captureFailedProject(string message) {

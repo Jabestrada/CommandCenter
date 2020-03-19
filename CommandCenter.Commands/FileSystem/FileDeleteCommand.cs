@@ -35,7 +35,7 @@ namespace CommandCenter.Commands.FileSystem {
             var sourceDir = Path.GetDirectoryName(SourceFilename);
             if (FileSystemCommands.DirectoryExists(sourceDir) && !PreflightCheckWriteAccessToDirectory(sourceDir)) return false;
             
-            return DefaultPreflightCheckSuccess();
+            return DefaultPreFlightCheckSuccess();
         }
 
         #region private methods

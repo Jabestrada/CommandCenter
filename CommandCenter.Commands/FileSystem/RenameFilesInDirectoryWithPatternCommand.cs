@@ -27,7 +27,7 @@ namespace CommandCenter.Commands.FileSystem {
                 if (!PreflightCheckDirectoryReadWriteAccess(dir)) return false;
             }
 
-            return DefaultPreflightCheckSuccess();
+            return DefaultPreFlightCheckSuccess();
         }
     }
 }

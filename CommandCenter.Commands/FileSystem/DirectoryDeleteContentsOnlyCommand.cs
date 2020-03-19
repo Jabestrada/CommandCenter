@@ -31,7 +31,7 @@ namespace CommandCenter.Commands.FileSystem {
                 return false;
             }
 
-            return DefaultPreflightCheckSuccess();
+            return DefaultPreFlightCheckSuccess();
         }
 
         private void deleteProgress(string deletedItem, FileSystemItemType type) {

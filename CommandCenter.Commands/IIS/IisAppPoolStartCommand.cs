@@ -71,7 +71,7 @@ namespace CommandCenter.Commands.IIS {
                 SendReport(this, $"{ShortName} => App pool \"{AppPoolName}\" exists", ReportType.Progress);
             }
 
-            return DefaultPreflightCheckSuccess();
+            return DefaultPreFlightCheckSuccess();
         }
     }
 }

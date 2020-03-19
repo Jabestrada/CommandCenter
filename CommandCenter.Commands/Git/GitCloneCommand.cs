@@ -49,7 +49,7 @@ namespace CommandCenter.Commands.Git {
                 SendReport($"{ShortName} will likely FAIL because target directory {LocalCloneDirectory} is not empty", ReportType.DonePreFlightWithFailure);
                 return false;
             }
-            return DefaultPreflightCheckSuccess();
+            return DefaultPreFlightCheckSuccess();
         }
     }
 }

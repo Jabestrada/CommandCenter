@@ -72,7 +72,7 @@ namespace CommandCenter.Commands.FileSystem {
 
             if (!PreflightCheckWriteAccessToDirectory(Path.GetDirectoryName(TargetFilename))) return false;
 
-            return DefaultPreflightCheckSuccess();
+            return DefaultPreFlightCheckSuccess();
         }
 
         public override void Cleanup() {

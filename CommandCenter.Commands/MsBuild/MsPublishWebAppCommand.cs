@@ -19,7 +19,7 @@ namespace CommandCenter.Commands.MsBuild {
             var preFlightCheck = base.PreFlightCheck();
             if (!preFlightCheck) return false;
 
-            return DefaultPreflightCheckSuccess();
+            return DefaultPreFlightCheckSuccess();
         }
         protected override void SetArguments() {
             CommandLineArguments.Add($"/nologo");

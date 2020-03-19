@@ -20,7 +20,7 @@ namespace CommandCenter.Commands.FileSystem {
                 return false;
             }
 
-            return DefaultPreflightCheckSuccess();
+            return DefaultPreFlightCheckSuccess();
         }
 
         protected override void Delete() {
