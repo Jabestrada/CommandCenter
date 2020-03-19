@@ -58,7 +58,7 @@ namespace CommandCenter.Commands.FileSystem {
             }
         }
 
-        public override bool PreflightCheck() {
+        public override bool PreFlightCheck() {
             if (!FileExists(SourceFilename)) {
                 SendReport($"{ShortName} will FAIL because source file {SourceFilename} was not found, or application does not have sufficient permissions", ReportType.DonePreFlightWithFailure);
                 return false;

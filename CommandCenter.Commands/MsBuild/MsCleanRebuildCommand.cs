@@ -43,8 +43,8 @@ namespace CommandCenter.Commands.MsBuild {
                 SendReport($"MsCleanRebuildCommand info => {data}", ReportType.Progress);
             }
         }
-        public override bool PreflightCheck() {
-            var preFlightCheck = base.PreflightCheck();
+        public override bool PreFlightCheck() {
+            var preFlightCheck = base.PreFlightCheck();
             if (!preFlightCheck) return false;
 
             return DefaultPreflightCheckSuccess();

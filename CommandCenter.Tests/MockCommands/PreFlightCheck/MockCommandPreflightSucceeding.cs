@@ -7,7 +7,7 @@ namespace CommandCenter.Tests.MockCommands.PreFlightCheck {
         public override void Do() {
             throw new NotImplementedException();
         }
-        public override bool PreflightCheck() {
+        public override bool PreFlightCheck() {
             PreflightCheckRan = true;
             return true;
         }

@@ -55,7 +55,7 @@ namespace CommandCenter.Commands.FileSystem {
 
         public override bool HasPreFlightCheck => true;
 
-        public override bool PreflightCheck() {
+        public override bool PreFlightCheck() {
             if (!FileSystemCommands.DirectoryExists(SourceDirectory)) {
                 SendReport(this, $"DirectoryCopyContentsCommand is likely to FAIL because source directory {SourceDirectory} does not exist",
                             ReportType.DonePreFlightWithFailure);

@@ -13,7 +13,7 @@ namespace CommandCenter.Infrastructure {
 
         bool HasPreFlightCheck { get; }
 
-        bool PreflightCheck();
+        bool PreFlightCheck();
 
 
         // Feature candidate
@@ -36,7 +36,7 @@ namespace CommandCenter.Infrastructure {
         public virtual void Cleanup() {
             // Empty default implementation
         }
-        public virtual bool PreflightCheck() {
+        public virtual bool PreFlightCheck() {
             throw new NotImplementedException();
         }
 

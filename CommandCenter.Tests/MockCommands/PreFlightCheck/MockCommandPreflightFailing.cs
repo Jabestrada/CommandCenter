@@ -9,7 +9,7 @@ namespace CommandCenter.Tests.MockCommands.PreFlightCheck {
         }
 
         public override bool HasPreFlightCheck => true;
-        public override bool PreflightCheck() {
+        public override bool PreFlightCheck() {
             PreflightCheckRan = true;
             return false;
         }

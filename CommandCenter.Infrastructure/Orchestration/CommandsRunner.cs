@@ -94,7 +94,7 @@ namespace CommandCenter.Infrastructure.Orchestration {
             foreach (var command in Commands) {
                 try {
                     if (command.HasPreFlightCheck) {
-                        var currentPreFlightResult = command.PreflightCheck();
+                        var currentPreFlightResult = command.PreFlightCheck();
                         if (!currentPreFlightResult) preFlightResult = false;
                     }
                     else {

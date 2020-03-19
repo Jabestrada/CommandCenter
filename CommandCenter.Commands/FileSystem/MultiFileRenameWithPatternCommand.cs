@@ -57,7 +57,7 @@ namespace CommandCenter.Commands.FileSystem {
             }
         }
 
-        public override bool PreflightCheck() {
+        public override bool PreFlightCheck() {
             foreach (var file in SourceFiles) {
                 if (FileSystemCommands.DirectoryExists(file)) {
                     if (!PreflightCheckDirectoryReadWriteAccess(file)) return false;

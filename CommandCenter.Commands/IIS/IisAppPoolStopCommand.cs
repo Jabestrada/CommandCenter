@@ -69,7 +69,7 @@ namespace CommandCenter.Commands.IIS {
             }
         }
         public override bool HasPreFlightCheck => true;
-        public override bool PreflightCheck() {
+        public override bool PreFlightCheck() {
             if (!IsCurrentUserAdmin) {
                 SendReport(this, $"{ShortName} will FAIL because application is not running with Administrator privileges", ReportType.DonePreFlightWithFailure);
                 return false;

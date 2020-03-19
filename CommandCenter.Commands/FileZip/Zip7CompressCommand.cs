@@ -46,7 +46,7 @@ namespace CommandCenter.Commands.FileZip {
             reportResult(result);
         }
 
-        public override bool PreflightCheck() {
+        public override bool PreFlightCheck() {
             if (!FileSystemCommandsStrategy.FileExists(ExeLocation)) {
                 SendReport($"{ShortName} will FAIL because executable {ExeLocation} was not found", ReportType.DonePreFlightWithFailure);
                 return false;

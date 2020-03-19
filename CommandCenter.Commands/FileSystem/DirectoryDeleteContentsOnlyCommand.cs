@@ -26,7 +26,7 @@ namespace CommandCenter.Commands.FileSystem {
             }
         }
 
-        public override bool PreflightCheck() {
+        public override bool PreFlightCheck() {
             if (FileSystemCommands.DirectoryExists(SourceDirectory) && !PreflightCheckWriteAccessToDirectory(SourceDirectory)) {
                 return false;
             }

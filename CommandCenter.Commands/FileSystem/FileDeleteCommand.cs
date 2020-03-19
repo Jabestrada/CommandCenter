@@ -31,7 +31,7 @@ namespace CommandCenter.Commands.FileSystem {
             doCleanup();
         }
 
-        public override bool PreflightCheck() {
+        public override bool PreFlightCheck() {
             var sourceDir = Path.GetDirectoryName(SourceFilename);
             if (FileSystemCommands.DirectoryExists(sourceDir) && !PreflightCheckWriteAccessToDirectory(sourceDir)) return false;
             

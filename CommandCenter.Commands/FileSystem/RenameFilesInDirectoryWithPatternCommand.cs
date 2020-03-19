@@ -18,7 +18,7 @@ namespace CommandCenter.Commands.FileSystem {
 
             base.Do();
         }
-        public override bool PreflightCheck() {
+        public override bool PreFlightCheck() {
             foreach (var dir in SourceDirectories) {
                 if (!FileSystemCommands.DirectoryExists(dir)) {
                     SendReport(this, $"{ShortName} is likely to fail because at least one of its source directories {dir} was not found, or application does not have sufficient permissions", ReportType.DonePreFlightWithFailure);

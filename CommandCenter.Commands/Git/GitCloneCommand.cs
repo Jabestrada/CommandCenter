@@ -44,7 +44,7 @@ namespace CommandCenter.Commands.Git {
                 SendReport($"{ShortName} info => {data}", ReportType.Progress);
             }
         }
-        public override bool PreflightCheck() {
+        public override bool PreFlightCheck() {
             if (FileSystemCommand.DirectoryGetFiles(LocalCloneDirectory).Any()) {
                 SendReport($"{ShortName} will likely FAIL because target directory {LocalCloneDirectory} is not empty", ReportType.DonePreFlightWithFailure);
                 return false;

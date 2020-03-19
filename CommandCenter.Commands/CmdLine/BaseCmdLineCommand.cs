@@ -38,7 +38,7 @@ namespace CommandCenter.Commands.CmdLine {
             runCommand();
         }
 
-        public override bool PreflightCheck() {
+        public override bool PreFlightCheck() {
             if (ValidateExePath && !FileSystemCommand.FileExists(Executable)) {
                 SendReport(this, $"{ShortName} will FAIL because executable {Executable} was not found", ReportType.DonePreFlightWithFailure);
                 return false;
