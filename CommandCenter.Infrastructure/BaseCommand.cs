@@ -48,7 +48,6 @@ namespace CommandCenter.Infrastructure {
 
         public readonly string Id;
         public bool DidCommandSucceed { get; protected set; }
-        public bool WasCommandStarted { get; internal set; }
         public bool Enabled { get; set; }
         public string ShortDescription { get; set; }
 

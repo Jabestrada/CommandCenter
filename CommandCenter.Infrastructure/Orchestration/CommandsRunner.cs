@@ -7,9 +7,9 @@ namespace CommandCenter.Infrastructure.Orchestration {
     public class CommandsRunner : BaseCommand {
         public readonly List<CommandReport> Reports;
 
+        protected List<BaseCommand> StartedCommands = new List<BaseCommand>();
         protected Stack<BaseCommand> InvokedCommandsStackForUndo = new Stack<BaseCommand>();
         protected Stack<BaseCommand> InvokedCommandsStackForCleanup = new Stack<BaseCommand>();
-
         protected List<BaseCommand> Commands = new List<BaseCommand>();
 
         public TimeSpan LastRunElapsedTime { get; protected set; }
@@ -19,7 +19,7 @@ namespace CommandCenter.Infrastructure.Orchestration {
             registerCommands();
         }
 
-        public bool HasError => Commands.Any(c => c.WasCommandStarted && !c.DidCommandSucceed);
+        public bool HasError => Commands.Any(c => WasCommandStarted(c) && !c.DidCommandSucceed);
 
         public bool Run() {
             var timer = new Stopwatch();
@@ -49,6 +49,10 @@ namespace CommandCenter.Infrastructure.Orchestration {
             return preFlightResult;
         }
 
+        public bool WasCommandStarted(BaseCommand command) {
+            return StartedCommands.Any(c => c == command);
+        }
+
         #region Non-public methods
         private void registerCommands() {
             foreach (var command in Commands) {
@@ -72,8 +76,8 @@ namespace CommandCenter.Infrastructure.Orchestration {
 
                 InvokedCommandsStackForUndo.Push(command);
                 InvokedCommandsStackForCleanup.Push(command);
-
-                command.WasCommandStarted = true;
+                StartedCommands.Add(command);
+                
                 try {
                     command.Do();
                 }
@@ -160,6 +164,7 @@ namespace CommandCenter.Infrastructure.Orchestration {
 
         private void resetState() {
             Reports.Clear();
+            StartedCommands.Clear();
             InvokedCommandsStackForUndo.Clear();
             InvokedCommandsStackForCleanup.Clear();
         }

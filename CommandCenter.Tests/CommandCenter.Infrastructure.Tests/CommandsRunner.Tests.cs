@@ -83,7 +83,7 @@ namespace CommandCenter.Infrastructure.Tests {
             Assert.IsFalse(result);
 
             // There should be no report from successfulCmd2 whatsoever because of failingCmd.
-            Assert.IsFalse(successfulCmd2.WasCommandStarted);
+            Assert.IsFalse(runner.WasCommandStarted(successfulCmd2));
         }
 
         [TestMethod]
@@ -159,9 +159,9 @@ namespace CommandCenter.Infrastructure.Tests {
             var result = runner.Run();
 
             Assert.IsFalse(result);
-            Assert.IsTrue(command1.WasCommandStarted);
-            Assert.IsTrue(failingCmd.WasCommandStarted);
-            Assert.IsFalse(command2.WasCommandStarted);
+            Assert.IsTrue(runner.WasCommandStarted(command1));
+            Assert.IsTrue(runner.WasCommandStarted(failingCmd));
+            Assert.IsFalse(runner.WasCommandStarted(command2));
         }
 
         [TestMethod]
@@ -280,11 +280,11 @@ namespace CommandCenter.Infrastructure.Tests {
             var result = runner.Run();
 
             Assert.IsFalse(result);
-            Assert.IsTrue(command1.WasCommandStarted);
+            Assert.IsTrue(runner.WasCommandStarted(command1));
             Assert.IsTrue(runner.Reports.Any(r => isCleanupReport(r.ReportType) && r.Reporter.Id == command1.Id));
 
 
-            Assert.IsTrue(!command3.WasCommandStarted);
+            Assert.IsTrue(!runner.WasCommandStarted(command3));
             Assert.IsFalse(runner.Reports.Any(r => isCleanupReport(r.ReportType) && r.Reporter.Id == command3.Id));
 
 
@@ -347,8 +347,8 @@ namespace CommandCenter.Infrastructure.Tests {
             var result = runner.Run();
 
             Assert.IsTrue(result);
-            Assert.IsTrue(command1.WasCommandStarted);
-            Assert.IsFalse(command2.WasCommandStarted);
+            Assert.IsTrue(runner.WasCommandStarted(command1));
+            Assert.IsFalse(runner.WasCommandStarted(command2));
         }
 
         #region Helper methods
