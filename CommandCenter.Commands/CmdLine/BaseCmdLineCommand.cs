@@ -33,7 +33,7 @@ namespace CommandCenter.Commands.CmdLine {
             CommandLineArguments = new List<string>();
         }
         
-        public sealed override void Do() {
+        public override void Do() {
             SetArguments();
             runCommand();
         }
@@ -46,9 +46,7 @@ namespace CommandCenter.Commands.CmdLine {
             return true;
         }
 
-
-
-        private void runCommand() {
+        protected void runCommand() {
             using (CommandLineProcessRunner cmd = new CommandLineProcessRunner(Executable, ValidateExePath, string.Join(" ", CommandLineArguments))) {
                 OnCommandWillRun();
                 ExitCode = cmd.Run(outputStreamReceiver, errorStreamReceiver);
