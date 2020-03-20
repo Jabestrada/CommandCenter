@@ -16,7 +16,7 @@ namespace CommandCenter.Tests.Commands {
             var fileSysCommand = new MockFileSystemCommand();
             var fakeFileSystem = new FakeFileSystem(fileSysCommand);
             var fileToDelete = @"c:\dummysourcefile.txt";
-            var fileDeleteCommand = new FileDeleteCommand(fileToDelete, @"c:\dummybackupdir", fileSysCommand);
+            var fileDeleteCommand = new FileDeleteCommand(@"c:\dummybackupdir", fileSysCommand, fileToDelete);
             var reports = new List<CommandReport>();
             fileDeleteCommand.OnReportSent += (command, args) => {
                 reports.Add(new CommandReport {
@@ -42,7 +42,7 @@ namespace CommandCenter.Tests.Commands {
             var source = @"c:\dummysourcefile.txt";
             fakeFileSystem.AddFiles(source);
 
-            var fileDeleteCommand = new FileDeleteCommand(source, @"c:\dummybackupdir", fileSysCommand);
+            var fileDeleteCommand = new FileDeleteCommand(@"c:\dummybackupdir", fileSysCommand, source);
             var reports = new List<CommandReport>();
             fileDeleteCommand.OnReportSent += (command, args) => {
                 reports.Add(new CommandReport {
@@ -68,7 +68,7 @@ namespace CommandCenter.Tests.Commands {
             };
             var source = @"c:\dummysourcefile.txt";
             fakeFileSystem.AddFiles(source);
-            var fileDeleteCommand = new FileDeleteCommand(source, @"c:\dummybackupdir", fileSysCommand);
+            var fileDeleteCommand = new FileDeleteCommand(@"c:\dummybackupdir", fileSysCommand, source);
             var reports = new List<CommandReport>();
             fileDeleteCommand.OnReportSent += (command, args) => {
                 reports.Add(new CommandReport {
@@ -91,7 +91,7 @@ namespace CommandCenter.Tests.Commands {
 
             var fileToDelete = @"c:\dummysourcefile.txt";
             fakeFileSystem.AddFiles(fileToDelete);
-            var fileDeleteCommand = new FileDeleteCommand(fileToDelete, @"c:\dummybackupdir", fileSysCommand);
+            var fileDeleteCommand = new FileDeleteCommand(@"c:\dummybackupdir", fileSysCommand, fileToDelete);
 
             fileDeleteCommand.Do();
             fileDeleteCommand.Cleanup();
@@ -105,7 +105,7 @@ namespace CommandCenter.Tests.Commands {
             var fakeFileSystem = new FakeFileSystem(fileSysCommand);
             var fileToDelete = @"c:\dummysourcefile.txt";
             fakeFileSystem.AddFiles(fileToDelete);
-            var fileDeleteCommand = new FileDeleteCommand(fileToDelete, @"c:\dummybackupdir", fileSysCommand);
+            var fileDeleteCommand = new FileDeleteCommand(@"c:\dummybackupdir", fileSysCommand, fileToDelete);
 
             fileDeleteCommand.Do();
             Assert.IsFalse(fakeFileSystem.FileExists(fileToDelete));
