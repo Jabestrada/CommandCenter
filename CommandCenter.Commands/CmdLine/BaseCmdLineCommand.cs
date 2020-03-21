@@ -9,7 +9,7 @@ namespace CommandCenter.Commands.CmdLine {
         public override bool IsUndoable => false;
 
         public virtual bool ValidateExePath => true;
-
+        public string WorkingDirectory { get; set; }
         protected virtual int SuccessExitCode => 0;
 
         protected IFileSystemCommandsStrategy FileSystemCommand = new FileSystemCommands();
@@ -47,7 +47,7 @@ namespace CommandCenter.Commands.CmdLine {
         }
 
         protected void runCommand() {
-            using (CommandLineProcessRunner cmd = new CommandLineProcessRunner(Executable, ValidateExePath, string.Join(" ", CommandLineArguments))) {
+            using (CommandLineProcessRunner cmd = new CommandLineProcessRunner(Executable, ValidateExePath, string.Join(" ", CommandLineArguments), WorkingDirectory)) {
                 OnCommandWillRun();
                 ExitCode = cmd.Run(outputStreamReceiver, errorStreamReceiver);
                 DidCommandSucceed = ExitCode == SuccessExitCode;

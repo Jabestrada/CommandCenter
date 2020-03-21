@@ -7,12 +7,12 @@ using System.Text;
 using System.Text.RegularExpressions;
 
 namespace CommandCenter.Commands.Git {
-    public class GitPullCommand : BaseCmdLineCommand {
+    public class GitUpdateCommand : BaseCmdLineCommand {
         public string GitTargetDirectory { get; protected set; }
         public string RemoteName { get; protected set; }
         public string BranchName { get; set; }
         public override bool HasPreFlightCheck => true;
-        public GitPullCommand(string exePath, string gitDirectory, string remoteName, string branchName) {
+        public GitUpdateCommand(string exePath, string gitDirectory, string remoteName, string branchName) {
             Executable = exePath;
             GitTargetDirectory = gitDirectory;
             RemoteName = remoteName;
@@ -26,12 +26,27 @@ namespace CommandCenter.Commands.Git {
             CommandLineArguments.Add(BranchName);
         }
 
+        public override void Do() {
+            base.Do();
+            if (DidCommandSucceed) {
+                runGitResetHard();
+            }
+        }
+
+        private void runGitResetHard() {
+            using (CommandLineProcessRunner cmd = new CommandLineProcessRunner(Executable, true, "reset --hard", GitTargetDirectory)) {
+                SendReport($"Running git reset --hard on {GitTargetDirectory}...", ReportType.Progress);
+                var exitCode = cmd.Run(OnOutputStreamDataIn, OnErrorStreamDataIn);
+                DidCommandSucceed = exitCode == SuccessExitCode;
+            }
+        }
+
         protected override void OnCommandWillRun() {
-            SendReport($"GitPullCommand => Running \"{ConstructedCommand}\" ...", ReportType.Progress);
+            SendReport($"Running \"{ConstructedCommand}\" ...", ReportType.Progress);
         }
         protected override void OnCommandDidRun() {
             var result = DidCommandSucceed ? "SUCCEEDED" : "FAILED";
-            SendReport($"GitPullCommand {result} with exit code {ExitCode} for directory {GitTargetDirectory}",
+            SendReport($"Command {result} with exit code {ExitCode} for directory {GitTargetDirectory}",
                        DidCommandSucceed ? ReportType.DoneTaskWithSuccess : ReportType.DoneTaskWithFailure);
         }
 
@@ -39,13 +54,13 @@ namespace CommandCenter.Commands.Git {
             if (!string.IsNullOrWhiteSpace(data)) {
                 var hadError = Regex.IsMatch(data, "error|fatal", RegexOptions.IgnoreCase);
                 var reportType = hadError ? "ERROR" : "info";
-                SendReport($"GitPullCommand {reportType} => {data}", ReportType.Progress);
+                SendReport($"{reportType} => {data}", ReportType.Progress);
             }
         }
 
         protected override void OnOutputStreamDataIn(string data) {
             if (!string.IsNullOrWhiteSpace(data)) {
-                SendReport($"GitPullCommand info => {data}", ReportType.Progress);
+                SendReport($"info => {data}", ReportType.Progress);
             }
         }
         public override bool PreFlightCheck() {
@@ -53,7 +68,7 @@ namespace CommandCenter.Commands.Git {
             if (!preFlightCheck) return false;
 
             if (!isValidGitRepo()) {
-                SendReport($"{ShortName} will FAIL because target directory {GitTargetDirectory} does not seem to be a valid Git repo", ReportType.DonePreFlightWithFailure);
+                SendReport($"Command will FAIL because target directory {GitTargetDirectory} does not seem to be a valid Git repo", ReportType.DonePreFlightWithFailure);
                 return false;
             }
 

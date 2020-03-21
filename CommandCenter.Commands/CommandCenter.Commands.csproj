@@ -62,7 +62,7 @@
     <Compile Include="FileSystem\FileSystemCommands.cs" />
     <Compile Include="FileSystem\BaseDefinitions\IFileSystemCommandsStrategy.cs" />
     <Compile Include="Git\GitCloneCommand.cs" />
-    <Compile Include="Git\GitPullCommand.cs" />
+    <Compile Include="Git\GitUpdateCommand.cs" />
     <Compile Include="IIS\IisAppPoolStartCommand.cs" />
     <Compile Include="IIS\IisAppPoolStopCommand.cs" />
     <Compile Include="IIS\BaseIisCommand.cs" />

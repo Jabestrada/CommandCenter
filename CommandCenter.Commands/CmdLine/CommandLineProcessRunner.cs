@@ -4,6 +4,7 @@ using System.IO;
 
 namespace CommandCenter.Commands.CmdLine {
     public sealed class CommandLineProcessRunner : IDisposable {
+        public string WorkingDirectory { get; set; }
         public string Path { get; }
         public string Arguments { get; }
         public bool IsRunning { get; private set; }
@@ -12,12 +13,13 @@ namespace CommandCenter.Commands.CmdLine {
         private Process _process;
         private readonly object Locker = new object();
 
-        public CommandLineProcessRunner(string path, bool validateExePath, string arguments) {
+        public CommandLineProcessRunner(string path, bool validateExePath, string arguments, string workingDirectory = null) {
             Path = path ?? throw new ArgumentNullException(nameof(path));
             if (validateExePath) {
                 if (!File.Exists(path)) throw new ArgumentException($"Executable not found: {path}");
             }
             Arguments = arguments;
+            WorkingDirectory = workingDirectory;
         }
 
         public int Run(Action<string> outputStreamCallback, Action<string> errorStreamCallback) {
@@ -33,6 +35,7 @@ namespace CommandCenter.Commands.CmdLine {
                         RedirectStandardOutput = true,
                         RedirectStandardError = true,
                         CreateNoWindow = true,
+                        WorkingDirectory = this.WorkingDirectory ?? string.Empty
                     },
                 };
 
@@ -47,7 +50,7 @@ namespace CommandCenter.Commands.CmdLine {
 
                 _process.BeginOutputReadLine();
                 _process.BeginErrorReadLine();
-                
+
                 _process.WaitForExit();
                 try { _process.Refresh(); } catch { }
                 return (ExitCode = _process.ExitCode).Value;
