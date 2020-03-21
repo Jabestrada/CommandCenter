@@ -20,7 +20,7 @@ namespace CommandCenter.Commands.FileSystem {
             foreach (var folder in FoldersToOpen) {
                 if (!FileSystemCommand.DirectoryExists(folder)) {
                     DidCommandSucceed = false;
-                    SendReport($"{ShortName} => Explorer.exe cannot open directory {folder} because it doesn't exist",
+                    SendReport($"Windows Explorer cannot open directory {folder} because it doesn't exist",
                            ReportType.DoneTaskWithFailure);
                     return;
                 }
@@ -32,18 +32,18 @@ namespace CommandCenter.Commands.FileSystem {
                     CommandLineArguments.Add($"/open, {folder}");
                 }
                 runCommand();
-                SendReport($"{ShortName} => Explorer.exe exited with code {ExitCode} for directory {folder}",
+                SendReport($"Windows Explorer exited with code {ExitCode} for directory {folder}",
                            ReportType.Progress);
             }
             DidCommandSucceed = true;
-            SendReport($"{ShortName} => Explorer.exe opened all requested folders successfully",
+            SendReport($"Windows Explorer opened all requested folders successfully",
                            ReportType.DoneTaskWithSuccess);
         }
 
         public override bool PreFlightCheck() {
             foreach (var folder in FoldersToOpen) {
                 if (!FileSystemCommand.DirectoryExists(folder)) {
-                    SendReport($"{ShortName} will likely fail because folder \"{folder}\" doesn't exist", ReportType.DoneTaskWithFailure);
+                    SendReport($"Command will likely fail because folder \"{folder}\" doesn't exist", ReportType.DoneTaskWithFailure);
                     return false;
                 }
             }
