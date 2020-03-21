@@ -179,7 +179,12 @@ namespace CommandCenter.UI.WinForms {
 
 
         private void btnRun_Click(object sender, EventArgs e) {
-            runCommands();
+            try {
+                runCommands();
+            }
+            catch (Exception exc) {
+                MessageBox.Show($"Error running command(s):{Environment.NewLine}{exc.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void runCommands() {
@@ -299,8 +304,8 @@ namespace CommandCenter.UI.WinForms {
                     _controller.RunPreflight(_selectedCommandConfigurations);
                 }
                 catch (Exception exc) {
-                    MessageBox.Show("Error occurred while attempting to run Preflight Check. " + exc.Message, "Error", 
-                                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"Error occurred while attempting to run Preflight Check: {exc.Message}", 
+                                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             });
             starter += () => {

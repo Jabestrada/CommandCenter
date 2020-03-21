@@ -42,7 +42,7 @@ namespace CommandCenter.Infrastructure {
                                constructorArgs, null, null) as T;
             }
             catch (Exception exc) {
-                throw new TypeLoadFailedException(typeName, assemblyName, exc.Message);
+                throw new TypeLoadFailedException(typeName, assemblyName, (exc.InnerException ?? exc).Message);
             }
 
             if (targetObject == null) throw new TypeLoadFailedException(typeName, assemblyName);
