@@ -68,10 +68,10 @@ namespace CommandCenter.UI.WinForms {
         }
         private void _reportReceiver(BaseCommand command, CommandReportArgs e) {
             if (e.ReportType == ReportType.Progress) {
-                appendStatusText($"{e.Message}");
+                appendStatusText($"{command.ShortName} => {e.Message}");
             }
             else {
-                appendStatusText($"{e.ReportType}: {e.Message}");
+                appendStatusText($"{command.ShortName}::{e.ReportType} => {e.Message}");
             }
         }
 
@@ -217,7 +217,7 @@ namespace CommandCenter.UI.WinForms {
             appendStatusText("================== SUMMARY ==================");
             var finalReports = _controller.Reports.Where(r => isDoneTaskReport(r.ReportType));
             foreach (var finalReport in finalReports) {
-                appendStatusText($"{finalReport.Reporter.ShortDescription}: {finalReport.Message}");
+                appendStatusText($"{finalReport.Reporter.ShortDescription} ({finalReport.Reporter.ShortName}): {finalReport.Message}");
             }
             var status = _controller.DidCommandsSucceed ? "SUCCEEDED" : "FAILED";
             appendStatusText($"FINAL RESULT => Commands {status}");
@@ -231,7 +231,7 @@ namespace CommandCenter.UI.WinForms {
 
             var finalReports = _controller.Reports.Where(r => isDonePreflightTaskReport(r.ReportType));
             foreach (var finalReport in finalReports) {
-                appendStatusText($"{finalReport.Reporter.ShortDescription}: {finalReport.Message}");
+                appendStatusText($"{finalReport.Reporter.ShortDescription} ({finalReport.Reporter.ShortName}): {finalReport.Message}");
             }
             var status = _controller.DidCommandsSucceed ? "SUCCEEDED" : "FAILED";
             appendStatusText($"FINAL PRE-FLIGHT CHECK RESULT => {status}");
