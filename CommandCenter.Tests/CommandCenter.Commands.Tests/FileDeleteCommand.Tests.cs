@@ -113,5 +113,26 @@ namespace CommandCenter.Tests.Commands {
             fileDeleteCommand.Undo();
             Assert.IsTrue(fakeFileSystem.FileExists(fileToDelete));
         }
+
+        [TestMethod]
+        public void itShouldDeleteMultipleFiles() {
+            var fileSysCommand = new MockFileSystemCommand();
+            var fakeFileSystem = new FakeFileSystem(fileSysCommand);
+            var fileToDelete1 = @"c:\dummysourcefile1.txt";
+            var fileToDelete2 = @"c:\dummysourcefile2.txt";
+            var fileToDelete3 = @"c:\dummysourcefile3.txt";
+            
+            fakeFileSystem.AddFiles(fileToDelete1, fileToDelete2, fileToDelete3);
+            Assert.IsTrue(fakeFileSystem.FileExists(fileToDelete1));
+            Assert.IsTrue(fakeFileSystem.FileExists(fileToDelete2));
+            Assert.IsTrue(fakeFileSystem.FileExists(fileToDelete3));
+
+            var fileDeleteCommand = new FileDeleteCommand(@"c:\dummybackupdir", fileSysCommand, fileToDelete1, fileToDelete2, fileToDelete3);
+            fileDeleteCommand.Do();
+
+            Assert.IsFalse(fakeFileSystem.FileExists(fileToDelete1));
+            Assert.IsFalse(fakeFileSystem.FileExists(fileToDelete2));
+            Assert.IsFalse(fakeFileSystem.FileExists(fileToDelete3));
+        }
     }
 }
