@@ -11,7 +11,7 @@ namespace CommandCenter.Tests.Commands {
         public void itMustDeleteDirectoryContentsOnly() {
             var fileSysCommand = new MockFileSystemCommand();
             var dirToDeleteContents = @"c:\maindir\subdir";
-            var dirDeleteDirContentsOnlyCommand = new DirectoryDeleteContentsOnlyCommand(dirToDeleteContents, @"c:\dummybackupdir", fileSysCommand);
+            var dirDeleteDirContentsOnlyCommand = new DirectoryDeleteContentsOnlyCommandInternal(dirToDeleteContents, @"c:\dummybackupdir", fileSysCommand);
             var fakeFileSystem = new FakeFileSystem(fileSysCommand);
 
             fakeFileSystem.AddDirectory(dirToDeleteContents);

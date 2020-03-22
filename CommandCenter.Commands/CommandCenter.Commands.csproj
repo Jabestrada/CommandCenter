@@ -50,6 +50,7 @@
     <Compile Include="FileSystem\BaseDefinitions\BaseDirectoryDeleteCommand.cs" />
     <Compile Include="FileSystem\DirectoryCopyContentsCommand.cs" />
     <Compile Include="FileSystem\DirectoryDeleteCommand.cs" />
+    <Compile Include="FileSystem\DirectoryDeleteContentsOnlyCommandInternal.cs" />
     <Compile Include="FileSystem\DirectoryDeleteContentsOnlyCommand.cs" />
     <Compile Include="FileSystem\MultiFileRenameWithPatternCommand.cs" />
     <Compile Include="FileSystem\OpenExplorerCommand.cs" />
