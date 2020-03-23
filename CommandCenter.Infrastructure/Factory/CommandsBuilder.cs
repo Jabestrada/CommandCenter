@@ -30,7 +30,7 @@ namespace CommandCenter.Infrastructure.Factory {
             return CommandConfigurations.Select(c => new CommandConfiguration { 
                                                          TypeActivationName = expandTokens(c.TypeActivationName),
                                                          Enabled = c.Enabled,
-                                                         ShortDescription = c.ShortDescription,
+                                                         ShortDescription = expandTokens(c.ShortDescription),
                                                          ConstructorArgs = c.ConstructorArgs
                                                                             .ToDictionary(p => p.Key,
                                                                                           p => expandTokens(p.Value))
