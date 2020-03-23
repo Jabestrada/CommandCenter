@@ -57,16 +57,15 @@ namespace CommandCenter.Commands.FileSystem {
                     if (!sourceFileExists(file)) continue;
 
                     currentFile = file;
-                    SendReport($"{ShortName} => Deleting file {file}...", ReportType.Progress);
                     FileDelete(file);
-                    SendReport($"{ShortName} => Deleted file {file}", ReportType.Progress);
+                    SendReport($"Deleted file {file}", ReportType.Progress);
                 }
-                SendReport($"{ShortName} => Deleted all files successfully", ReportType.DoneTaskWithSuccess);
+                SendReport($"Deleted all files successfully", ReportType.DoneTaskWithSuccess);
                 DidCommandSucceed = true;
             }
             catch (Exception exc) {
                 DidCommandSucceed = false;
-                SendReport($"{ShortName} => Failed to delete {currentFile}: {exc.Message}", ReportType.DoneTaskWithFailure);
+                SendReport($"Failed to delete {currentFile}: {exc.Message}", ReportType.DoneTaskWithFailure);
             }
         }
 
@@ -79,12 +78,12 @@ namespace CommandCenter.Commands.FileSystem {
                         continue;
                     }
                     FileMove(entry.Value, entry.Key);
-                    SendReport($"{ShortName} => File {entry.Key} restored from backup {entry.Value}", ReportType.Progress);
+                    SendReport($"File {entry.Key} restored from backup {entry.Value}", ReportType.Progress);
                 }
-                SendReport($"{ShortName} => Successfully restored deleted files from backups", ReportType.UndoneTaskWithSuccess);
+                SendReport($"Successfully restored deleted files from backups", ReportType.UndoneTaskWithSuccess);
             }
             catch (Exception exc) {
-                SendReport($"{ShortName} => Failed to restore backups: {exc.Message}", ReportType.UndoneTaskWithFailure);
+                SendReport($"Failed to restore backups: {exc.Message}", ReportType.UndoneTaskWithFailure);
             }
         }
 
@@ -93,19 +92,19 @@ namespace CommandCenter.Commands.FileSystem {
                 foreach (var backupFile in SourceFiles.Values) {
                     if (!FileExists(backupFile)) continue;
                     FileDelete(backupFile);
-                    SendReport($"{ShortName} => Deleted backup file {backupFile}", ReportType.Progress);
+                    SendReport($"Deleted backup file {backupFile}", ReportType.Progress);
                 }
-                SendReport($"{ShortName} => Deleted all backup files", ReportType.DoneCleanupWithSuccess);
+                SendReport($"Deleted all backup files", ReportType.DoneCleanupWithSuccess);
             }
             catch (Exception exc) {
-                SendReport($"{ShortName} => Failed to delete all backup files: {exc.Message}", ReportType.DoneCleanupWithFailure);
+                SendReport($"Failed to delete all backup files: {exc.Message}", ReportType.DoneCleanupWithFailure);
             }
         }
 
         private bool createBackup() {
             foreach (var file in SourceFiles.Keys.ToList()) {
                 if (!FileExists(file)) {
-                    SendReport($"{ShortName} => Skipping backup of file {file} because it doesn't exist", ReportType.Progress);
+                    SendReport($"Skipping backup of file {file} because it doesn't exist", ReportType.Progress);
                     continue;
                 }
 
@@ -118,11 +117,11 @@ namespace CommandCenter.Commands.FileSystem {
                 }
                 try {
                     FileCopy(file, backupFilename);
-                    SendReport($"{ShortName} => Created backup of file {file} to {backupFilename }", ReportType.Progress);
+                    SendReport($"Created backup of file {file} to {backupFilename }", ReportType.Progress);
                     SourceFiles[file] = backupFilename;
                 }
                 catch (Exception exc) {
-                    SendReport($"{ShortName} => File delete aborted because attempt to backup file {file} to {backupFilename} failed: {exc.Message}", ReportType.DoneTaskWithFailure);
+                    SendReport($"File delete aborted because attempt to backup file {file} to {backupFilename} failed: {exc.Message}", ReportType.DoneTaskWithFailure);
                     return false;
                 }
             }
@@ -132,7 +131,7 @@ namespace CommandCenter.Commands.FileSystem {
 
         private bool sourceFileExists(string file) {
             if (!FileExists(file)) {
-                SendReport($"{ShortName} => Cannot delete {file} because it doesn't exist", ReportType.Progress);
+                SendReport($"Cannot delete {file} because it doesn't exist", ReportType.Progress);
                 return false;
             }
             return true;
