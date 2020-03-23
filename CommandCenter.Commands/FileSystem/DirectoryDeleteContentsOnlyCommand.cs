@@ -73,7 +73,15 @@ namespace CommandCenter.Commands.FileSystem {
             });
             SendReport($"Undo completed", allOk ? ReportType.UndoneTaskWithSuccess : ReportType.UndoneTaskWithFailure);
         }
-
+        public override bool PreFlightCheck() {
+            foreach (var cmd in DeleteCommands) {
+                var result = cmd.PreFlightCheck();
+                if (!result) {
+                    return false;
+                }
+            }
+            return DefaultPreFlightCheckSuccess();
+        }
         private void forwardReports(BaseCommand command, CommandReportArgs args) {
             SendReport(this, args);
         }
