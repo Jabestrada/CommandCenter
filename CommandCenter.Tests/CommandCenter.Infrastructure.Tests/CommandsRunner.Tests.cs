@@ -3,6 +3,7 @@ using CommandCenter.Tests.MockCommands;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 
 namespace CommandCenter.Infrastructure.Tests {
     [TestClass]
@@ -342,13 +343,51 @@ namespace CommandCenter.Infrastructure.Tests {
             var command2 = new MockSucceedingCommand();
             command2.Enabled = false;
             commands.Add(command2);
-            
+
             var runner = new CommandsRunner(commands);
             var result = runner.Run();
 
             Assert.IsTrue(result);
             Assert.IsTrue(runner.WasCommandStarted(command1));
             Assert.IsFalse(runner.WasCommandStarted(command2));
+        }
+
+        [TestMethod]
+        public void itShouldSupportCancellation() {
+            var commands = new List<BaseCommand>();
+            var command1 = new MockSucceedingCommand();
+            commands.Add(command1);
+
+            var command2 = new MockSleepingCommand(2000);
+            commands.Add(command2);
+
+            var command3 = new MockSucceedingCommand();
+            commands.Add(command3);
+
+            var runner = new CommandsRunner(commands);
+            bool result = true;
+
+            ThreadStart starter = new ThreadStart(() => {
+                result = runner.Run();
+            });
+
+            var thread = new Thread(starter);
+            thread.Start();
+            // Sleep to give time for command1 to succeed.
+            Thread.Sleep(500);
+            // Cancel before command2 completes
+            runner.Cancel();
+
+            thread.Join();
+
+            // Cancelled means failed result
+            Assert.IsFalse(result);
+            Assert.IsTrue(runner.WasCommandStarted(command1));
+            // Cancellation should trigger Undo
+            Assert.IsTrue(runner.Reports.Any(r => r.Reporter == command1 && isUndoReport(r.ReportType)));
+            Assert.IsTrue(runner.WasCommandStarted(command2));
+            // Cancellation should not run next command in the chain.
+            Assert.IsFalse(runner.WasCommandStarted(command3));
         }
 
         #region Helper methods

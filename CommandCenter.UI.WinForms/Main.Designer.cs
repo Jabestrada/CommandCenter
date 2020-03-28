@@ -51,6 +51,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.btnPreflight = new System.Windows.Forms.Button();
             this.statusLabel = new System.Windows.Forms.Label();
+            this.cancelButton = new System.Windows.Forms.Button();
             this.commandsListContextMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -360,10 +361,21 @@
             this.statusLabel.TabIndex = 12;
             this.statusLabel.Text = "label2";
             // 
+            // cancelButton
+            // 
+            this.cancelButton.Location = new System.Drawing.Point(538, 550);
+            this.cancelButton.Name = "cancelButton";
+            this.cancelButton.Size = new System.Drawing.Size(175, 39);
+            this.cancelButton.TabIndex = 13;
+            this.cancelButton.Text = "Cancel";
+            this.cancelButton.UseVisualStyleBackColor = true;
+            this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
+            // 
             // Main
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(1101, 597);
+            this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.statusLabel);
             this.Controls.Add(this.btnPreflight);
             this.Controls.Add(this.label1);
@@ -423,6 +435,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btnPreflight;
         private System.Windows.Forms.Label statusLabel;
+        private System.Windows.Forms.Button cancelButton;
     }
 }
 

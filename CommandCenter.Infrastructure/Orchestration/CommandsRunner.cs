@@ -5,6 +5,8 @@ using System.Linq;
 
 namespace CommandCenter.Infrastructure.Orchestration {
     public class CommandsRunner : BaseCommand {
+        private bool _cancelled;
+
         public readonly List<CommandReport> Reports;
 
         protected List<BaseCommand> StartedCommands = new List<BaseCommand>();
@@ -19,9 +21,14 @@ namespace CommandCenter.Infrastructure.Orchestration {
             registerCommands();
         }
 
-        public bool HasError => Commands.Any(c => WasCommandStarted(c) && !c.DidCommandSucceed);
+        public bool HasError => _cancelled || Commands.Any(c => WasCommandStarted(c) && !c.DidCommandSucceed);
+
+        public void Cancel() {
+            _cancelled = true;
+        }
 
         public bool Run() {
+            _cancelled = false;
             var timer = new Stopwatch();
             timer.Start();
 
@@ -71,6 +78,10 @@ namespace CommandCenter.Infrastructure.Orchestration {
             var commandCount = Commands.Count();
             var index = 0;
             foreach (var command in Commands) {
+                if (_cancelled) {
+                    SendReport("ABORTED remaining commands because of cancellation request", ReportType.DoneTaskWithFailure);
+                    break;
+                }
                 index++;
                 if (!command.Enabled) {
                     SendReport($"Command [{command.ShortDescription}] was not run because it is disabled", ReportType.Progress);
@@ -115,7 +126,7 @@ namespace CommandCenter.Infrastructure.Orchestration {
         }
 
         private void undoCommandsIfNeeded() {
-            if (!HasError) return;
+            if (!HasError && !_cancelled) return;
 
             while (InvokedCommandsStackForUndo.Any()) {
                 var invokedCommand = InvokedCommandsStackForUndo.Pop();

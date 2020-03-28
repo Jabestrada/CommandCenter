@@ -74,6 +74,7 @@
     <Compile Include="MockCommands\MockUndoableCommand.cs" />
     <Compile Include="MockCommands\MockUndoableCommandWithDelay.cs" />
     <Compile Include="MockCommands\MockUndoThrowingExceptionCommand.cs" />
+    <Compile Include="MockCommands\MockWaitingCommand.cs" />
     <Compile Include="MockCommands\PreFlightCheck\MockCommandHasPreflightCheckButFlagNotSet.cs" />
     <Compile Include="MockCommands\PreFlightCheck\MockCommandPreflightFailing.cs" />
     <Compile Include="MockCommands\PreFlightCheck\MockCommandPreflightSucceeding.cs" />

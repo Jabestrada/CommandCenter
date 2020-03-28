@@ -25,6 +25,11 @@ namespace CommandCenter.UI.WinForms {
                 return new List<CommandReport>();
             }
         }
+
+        public void Cancel() {
+            _commandsRunner.Cancel();
+        }
+
         public bool Run(List<CommandConfiguration> commandsConfiguration) {
             var commandsBuilder = new CommandsBuilder(commandsConfiguration);
             var commands = commandsBuilder.BuildCommands();
