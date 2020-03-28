@@ -68,7 +68,10 @@ namespace CommandCenter.Infrastructure.Orchestration {
             SendReport(command, new CommandReportArgs(args.Message, args.ReportType));
         }
         private void runCommands() {
+            var commandCount = Commands.Count();
+            var index = 0;
             foreach (var command in Commands) {
+                index++;
                 if (!command.Enabled) {
                     SendReport($"Command [{command.ShortDescription}] was not run because it is disabled", ReportType.Progress);
                     continue;
@@ -79,6 +82,7 @@ namespace CommandCenter.Infrastructure.Orchestration {
                 StartedCommands.Add(command);
                 
                 try {
+                    SendReport($"Running \"{command.ShortDescription}\" ({index} of {commandCount}) ...", ReportType.RunningCommandStatistics);
                     command.Do();
                 }
                 catch (Exception e) {

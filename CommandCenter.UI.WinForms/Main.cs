@@ -67,24 +67,35 @@ namespace CommandCenter.UI.WinForms {
             }
         }
         private void _reportReceiver(BaseCommand command, CommandReportArgs e) {
-            if (e.ReportType == ReportType.Progress) {
-                appendStatusText($"{command.ShortName} => {e.Message}");
-            }
-            else {
-                appendStatusText($"{command.ShortName}::{e.ReportType} => {e.Message}");
+            switch (e.ReportType) {
+                case ReportType.Progress:
+                    appendStatusText($"{command.ShortName} => {e.Message}");
+                    break;
+                case ReportType.RunningCommandStatistics:
+                    setText(statusLabel, e.Message);
+                    break;
+                default:
+                    appendStatusText($"{command.ShortName}::{e.ReportType} => {e.Message}");
+                    break;
             }
         }
 
         private void didChangeFormMode(FormModeEnum value) {
             var isFormReady = value == FormModeEnum.Ready;
-            var hasSelectedCommand = isAnyCommandSelected();
+            var selectedCommandCount = countSelectedCommands();
 
             setEnabled(txtConfigFile, isFormReady);
             setEnabled(btnBrowseConfig, isFormReady);
             setEnabled(btnLoadConfig, isFormReady);
             setEnabled(commandsList, isFormReady);
-            setEnabled(btnRun, isFormReady && hasSelectedCommand);
-            setEnabled(btnPreflight, isFormReady && hasSelectedCommand);
+            setEnabled(btnRun, isFormReady && selectedCommandCount > 0);
+            setEnabled(btnPreflight, isFormReady && selectedCommandCount > 0);
+
+            refreshStatusText(selectedCommandCount);
+        }
+
+        private void refreshStatusText(int selectedCommandCount) {
+            setText(statusLabel, $"{selectedCommandCount} command(s) selected");
         }
 
         delegate void EnableControlCallback(Control control, bool enabled);
@@ -98,20 +109,21 @@ namespace CommandCenter.UI.WinForms {
             }
         }
 
-        private bool isAnyCommandSelected() {
+        private int countSelectedCommands() {
+            int ctr = 0;
             foreach (TreeNode commandNode in commandsList.Nodes) {
                 if (commandNode.Checked) {
-                    return true;
+                    ctr++;
                 }
             }
-            return false;
+            return ctr;
         }
 
-        delegate void SetTextCallback(string message);
+        delegate void AppendTextCallback(string message);
 
         private void appendStatusText(string message) {
             if (this.statusWindow.InvokeRequired) {
-                SetTextCallback cb = new SetTextCallback(appendStatusText);
+                AppendTextCallback cb = new AppendTextCallback(appendStatusText);
                 this.Invoke(cb, new object[] { message });
             }
             else {
@@ -120,6 +132,17 @@ namespace CommandCenter.UI.WinForms {
             }
         }
 
+        delegate void SetTextCallback(Control control, string message);
+
+        private void setText(Control control, string text) {
+            if (control.InvokeRequired) {
+                SetTextCallback cb = new SetTextCallback(setText);
+                Invoke(cb, new object[] { control, text });
+            }
+            else {
+                control.Text = text;
+            }
+        }
 
         private void btnLoadConfig_Click(object sender, EventArgs e) {
             loadCommands();
@@ -304,7 +327,7 @@ namespace CommandCenter.UI.WinForms {
                     _controller.RunPreflight(_selectedCommandConfigurations);
                 }
                 catch (Exception exc) {
-                    MessageBox.Show($"Error occurred while attempting to run Preflight Check: {exc.Message}", 
+                    MessageBox.Show($"Error occurred while attempting to run Preflight Check: {exc.Message}",
                                     "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             });

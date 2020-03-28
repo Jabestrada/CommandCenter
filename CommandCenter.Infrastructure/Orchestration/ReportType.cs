@@ -1,5 +1,6 @@
 ﻿namespace CommandCenter.Infrastructure.Orchestration {
     public enum ReportType {
+        RunningCommandStatistics,
         Progress,
         DoneTaskWithSuccess,
         DoneTaskWithFailure,

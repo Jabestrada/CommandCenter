@@ -50,6 +50,7 @@
             this.Value = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label1 = new System.Windows.Forms.Label();
             this.btnPreflight = new System.Windows.Forms.Button();
+            this.statusLabel = new System.Windows.Forms.Label();
             this.commandsListContextMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -349,10 +350,21 @@
             this.btnPreflight.UseVisualStyleBackColor = true;
             this.btnPreflight.Click += new System.EventHandler(this.preFlight_Click);
             // 
+            // statusLabel
+            // 
+            this.statusLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.statusLabel.AutoSize = true;
+            this.statusLabel.Location = new System.Drawing.Point(34, 561);
+            this.statusLabel.Name = "statusLabel";
+            this.statusLabel.Size = new System.Drawing.Size(35, 13);
+            this.statusLabel.TabIndex = 12;
+            this.statusLabel.Text = "label2";
+            // 
             // Main
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(1101, 597);
+            this.Controls.Add(this.statusLabel);
             this.Controls.Add(this.btnPreflight);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.tabControl1);
@@ -410,6 +422,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Value;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btnPreflight;
+        private System.Windows.Forms.Label statusLabel;
     }
 }
 
