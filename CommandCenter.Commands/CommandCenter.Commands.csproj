@@ -69,6 +69,7 @@
     <Compile Include="IIS\BaseIisCommand.cs" />
     <Compile Include="MsBuild\MsCleanRebuildCommand.cs" />
     <Compile Include="MsBuild\MsPublishWebAppCommand.cs" />
+    <Compile Include="NuGet\NuGetRestoreCommand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Svn\SvnUpdateCommand.cs" />
     <Compile Include="WinForms\ConditionalPauseCommand.cs" />

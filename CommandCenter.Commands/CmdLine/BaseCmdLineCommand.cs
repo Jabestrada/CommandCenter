@@ -48,6 +48,7 @@ namespace CommandCenter.Commands.CmdLine {
 
         protected void runCommand() {
             using (CommandLineProcessRunner cmd = new CommandLineProcessRunner(Executable, ValidateExePath, string.Join(" ", CommandLineArguments), WorkingDirectory)) {
+                SendReport($"Running command {ConstructedCommand} ...", ReportType.Progress);
                 OnCommandWillRun();
                 ExitCode = cmd.Run(outputStreamReceiver, errorStreamReceiver);
                 DidCommandSucceed = ExitCode == SuccessExitCode;
