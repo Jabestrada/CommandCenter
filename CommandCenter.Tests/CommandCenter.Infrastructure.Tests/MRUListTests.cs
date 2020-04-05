@@ -1,8 +1,7 @@
 ﻿using CommandCenter.Infrastructure.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Linq;
 
-namespace CommandCenter.Tests.CommandCenter.Infrastructure.Tests {
+namespace CommandCenter.Infrastructure.Tests {
     [TestClass]
     public class MRUListTests {
         [TestMethod]
@@ -53,6 +52,12 @@ namespace CommandCenter.Tests.CommandCenter.Infrastructure.Tests {
             Assert.AreEqual("b", mruList.Items[0]);
             Assert.AreEqual("a", mruList.Items[1]);
             Assert.AreEqual("c", mruList.Items[2]);
+
+            mruList.AddItem("c");
+            Assert.AreEqual(3, mruList.Items.Count);
+            Assert.AreEqual("c", mruList.Items[0]);
+            Assert.AreEqual("b", mruList.Items[1]);
+            Assert.AreEqual("a", mruList.Items[2]);
         }
     }
 }
