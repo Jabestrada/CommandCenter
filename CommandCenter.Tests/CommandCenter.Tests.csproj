@@ -58,6 +58,7 @@
     <Compile Include="CommandCenter.Infrastructure.Tests\CommandsBuilder.Tests.cs" />
     <Compile Include="CommandCenter.Infrastructure.Tests\CommandsConfigurationXmlSource.Tests.cs" />
     <Compile Include="CommandCenter.Infrastructure.Tests\CommandsRunner.Tests.cs" />
+    <Compile Include="CommandCenter.Infrastructure.Tests\MRUListTests.cs" />
     <Compile Include="CommandCenter.Infrastructure.Tests\TokensConfiguration.Tests.cs" />
     <Compile Include="MockCommands\FileSystemCommand\FakeFileSystem.cs" />
     <Compile Include="MockCommands\FileZip\MockFileCompressionStrategy.cs" />

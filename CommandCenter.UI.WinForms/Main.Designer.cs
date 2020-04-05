@@ -52,6 +52,11 @@
             this.btnPreflight = new System.Windows.Forms.Button();
             this.statusLabel = new System.Windows.Forms.Label();
             this.cancelButton = new System.Windows.Forms.Button();
+            this.mainMenu = new System.Windows.Forms.MenuStrip();
+            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openLogFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.recentConfigFilesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.commandsListContextMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -66,13 +71,14 @@
             this.tabCommands.SuspendLayout();
             this.tabTokens.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tokensList)).BeginInit();
+            this.mainMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // txtConfigFile
             // 
             this.txtConfigFile.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtConfigFile.Location = new System.Drawing.Point(33, 37);
+            this.txtConfigFile.Location = new System.Drawing.Point(33, 55);
             this.txtConfigFile.Name = "txtConfigFile";
             this.txtConfigFile.Size = new System.Drawing.Size(908, 20);
             this.txtConfigFile.TabIndex = 1;
@@ -81,7 +87,7 @@
             // btnLoadConfig
             // 
             this.btnLoadConfig.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnLoadConfig.Location = new System.Drawing.Point(972, 34);
+            this.btnLoadConfig.Location = new System.Drawing.Point(972, 52);
             this.btnLoadConfig.Name = "btnLoadConfig";
             this.btnLoadConfig.Size = new System.Drawing.Size(97, 26);
             this.btnLoadConfig.TabIndex = 2;
@@ -99,7 +105,7 @@
             this.commandsList.Location = new System.Drawing.Point(0, 0);
             this.commandsList.Name = "commandsList";
             this.commandsList.ShowRootLines = false;
-            this.commandsList.Size = new System.Drawing.Size(547, 264);
+            this.commandsList.Size = new System.Drawing.Size(547, 267);
             this.commandsList.TabIndex = 3;
             this.commandsList.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.commandsList_AfterCheck);
             this.commandsList.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.commandsList_AfterSelect);
@@ -163,7 +169,7 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.commandParametersList);
-            this.splitContainer1.Size = new System.Drawing.Size(1035, 264);
+            this.splitContainer1.Size = new System.Drawing.Size(1035, 267);
             this.splitContainer1.SplitterDistance = 547;
             this.splitContainer1.TabIndex = 4;
             // 
@@ -184,7 +190,7 @@
             this.commandParametersList.RowHeadersWidth = 102;
             this.commandParametersList.RowTemplate.Height = 40;
             this.commandParametersList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.commandParametersList.Size = new System.Drawing.Size(484, 264);
+            this.commandParametersList.Size = new System.Drawing.Size(484, 267);
             this.commandParametersList.TabIndex = 0;
             // 
             // Column1
@@ -211,7 +217,7 @@
             this.statusWindow.Name = "statusWindow";
             this.statusWindow.ReadOnly = true;
             this.statusWindow.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.statusWindow.Size = new System.Drawing.Size(1035, 180);
+            this.statusWindow.Size = new System.Drawing.Size(1035, 177);
             this.statusWindow.TabIndex = 5;
             // 
             // splitContainer2
@@ -229,7 +235,7 @@
             // 
             this.splitContainer2.Panel2.Controls.Add(this.statusWindow);
             this.splitContainer2.Size = new System.Drawing.Size(1035, 448);
-            this.splitContainer2.SplitterDistance = 264;
+            this.splitContainer2.SplitterDistance = 267;
             this.splitContainer2.TabIndex = 6;
             // 
             // btnRun
@@ -237,7 +243,7 @@
             this.btnRun.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnRun.Enabled = false;
             this.btnRun.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnRun.Location = new System.Drawing.Point(900, 550);
+            this.btnRun.Location = new System.Drawing.Point(900, 570);
             this.btnRun.Name = "btnRun";
             this.btnRun.Size = new System.Drawing.Size(175, 39);
             this.btnRun.TabIndex = 7;
@@ -248,7 +254,7 @@
             // btnBrowseConfig
             // 
             this.btnBrowseConfig.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnBrowseConfig.Location = new System.Drawing.Point(942, 34);
+            this.btnBrowseConfig.Location = new System.Drawing.Point(942, 52);
             this.btnBrowseConfig.Name = "btnBrowseConfig";
             this.btnBrowseConfig.Size = new System.Drawing.Size(28, 26);
             this.btnBrowseConfig.TabIndex = 8;
@@ -264,7 +270,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControl1.Controls.Add(this.tabCommands);
             this.tabControl1.Controls.Add(this.tabTokens);
-            this.tabControl1.Location = new System.Drawing.Point(26, 63);
+            this.tabControl1.Location = new System.Drawing.Point(26, 83);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(1049, 480);
@@ -332,7 +338,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(31, 19);
+            this.label1.Location = new System.Drawing.Point(31, 37);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(56, 13);
             this.label1.TabIndex = 10;
@@ -343,7 +349,7 @@
             this.btnPreflight.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnPreflight.Enabled = false;
             this.btnPreflight.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnPreflight.Location = new System.Drawing.Point(719, 550);
+            this.btnPreflight.Location = new System.Drawing.Point(719, 570);
             this.btnPreflight.Name = "btnPreflight";
             this.btnPreflight.Size = new System.Drawing.Size(175, 39);
             this.btnPreflight.TabIndex = 11;
@@ -355,7 +361,7 @@
             // 
             this.statusLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.statusLabel.AutoSize = true;
-            this.statusLabel.Location = new System.Drawing.Point(34, 561);
+            this.statusLabel.Location = new System.Drawing.Point(34, 581);
             this.statusLabel.Name = "statusLabel";
             this.statusLabel.Size = new System.Drawing.Size(35, 13);
             this.statusLabel.TabIndex = 12;
@@ -364,7 +370,7 @@
             // cancelButton
             // 
             this.cancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.cancelButton.Location = new System.Drawing.Point(538, 550);
+            this.cancelButton.Location = new System.Drawing.Point(538, 570);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(175, 39);
             this.cancelButton.TabIndex = 13;
@@ -372,10 +378,51 @@
             this.cancelButton.UseVisualStyleBackColor = true;
             this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
             // 
+            // mainMenu
+            // 
+            this.mainMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fileToolStripMenuItem});
+            this.mainMenu.Location = new System.Drawing.Point(0, 0);
+            this.mainMenu.Name = "mainMenu";
+            this.mainMenu.Size = new System.Drawing.Size(1101, 24);
+            this.mainMenu.TabIndex = 14;
+            this.mainMenu.Text = "menuStrip1";
+            // 
+            // fileToolStripMenuItem
+            // 
+            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.openLogFileToolStripMenuItem,
+            this.recentConfigFilesToolStripMenuItem,
+            this.exitToolStripMenuItem});
+            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            this.fileToolStripMenuItem.Text = "File";
+            // 
+            // openLogFileToolStripMenuItem
+            // 
+            this.openLogFileToolStripMenuItem.Name = "openLogFileToolStripMenuItem";
+            this.openLogFileToolStripMenuItem.Size = new System.Drawing.Size(209, 22);
+            this.openLogFileToolStripMenuItem.Text = "&Open configuration file...";
+            this.openLogFileToolStripMenuItem.Click += new System.EventHandler(this.openLogFileToolStripMenuItem_Click);
+            // 
+            // recentConfigFilesToolStripMenuItem
+            // 
+            this.recentConfigFilesToolStripMenuItem.Name = "recentConfigFilesToolStripMenuItem";
+            this.recentConfigFilesToolStripMenuItem.Size = new System.Drawing.Size(209, 22);
+            this.recentConfigFilesToolStripMenuItem.Text = "&Recent configuration files";
+            // 
+            // exitToolStripMenuItem
+            // 
+            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(209, 22);
+            this.exitToolStripMenuItem.Text = "E&xit";
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
+            // 
             // Main
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.ClientSize = new System.Drawing.Size(1101, 597);
+            this.ClientSize = new System.Drawing.Size(1101, 618);
+            this.Controls.Add(this.mainMenu);
             this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.statusLabel);
             this.Controls.Add(this.btnPreflight);
@@ -385,6 +432,7 @@
             this.Controls.Add(this.btnRun);
             this.Controls.Add(this.btnLoadConfig);
             this.Controls.Add(this.txtConfigFile);
+            this.MainMenuStrip = this.mainMenu;
             this.Name = "Main";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Command Center";
@@ -403,6 +451,8 @@
             this.tabCommands.ResumeLayout(false);
             this.tabTokens.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.tokensList)).EndInit();
+            this.mainMenu.ResumeLayout(false);
+            this.mainMenu.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -437,6 +487,11 @@
         private System.Windows.Forms.Button btnPreflight;
         private System.Windows.Forms.Label statusLabel;
         private System.Windows.Forms.Button cancelButton;
+        private System.Windows.Forms.MenuStrip mainMenu;
+        private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem openLogFileToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem recentConfigFilesToolStripMenuItem;
     }
 }
 

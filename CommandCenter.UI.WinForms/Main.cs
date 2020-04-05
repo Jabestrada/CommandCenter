@@ -1,17 +1,49 @@
 ﻿using CommandCenter.Infrastructure;
 using CommandCenter.Infrastructure.Configuration;
 using CommandCenter.Infrastructure.Orchestration;
+using CommandCenter.UI.WinForms.Settings;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Security.Principal;
 using System.Threading;
 using System.Windows.Forms;
+using System.Xml;
 
 namespace CommandCenter.UI.WinForms {
     public partial class Main : Form {
+        private bool _wasCommandCancelled = false;
+        private CommandsControllerWinForms _controller;
+        private List<CommandConfiguration> _loadedCommandConfigurations;
+        private List<CommandConfiguration> _selectedCommandConfigurations;
+
+        private List<Token> _loadedTokens;
+        private string _lastLoadedConfig = string.Empty;
+        private AppState _appState = new AppState();
+
+        public Main() {
+            InitializeComponent();
+            _controller = new CommandsControllerWinForms(_reportReceiver);
+            //var defaultConfig = Path.Combine(Application.StartupPath, "CommandCenter.config");
+            //if (string.IsNullOrWhiteSpace(txtConfigFile.Text) && File.Exists(defaultConfig)) {
+            //    txtConfigFile.Text = defaultConfig;
+            //}
+            //loadCommands();
+            if (IsRunByAdmin()) {
+                this.Text = this.Text + " - launched as Admin";
+            }
+            else {
+                this.Text = this.Text + " - not launched as Admin";
+            }
+            cancelButton.Location = btnRun.Location;
+
+            loadAppState();
+
+            FormMode = FormModeEnum.Ready;
+        }
 
         #region FormMode and CancelStatus form props
         private enum FormModeEnum {
@@ -42,6 +74,7 @@ namespace CommandCenter.UI.WinForms {
             setEnabled(btnRun, isFormReady && selectedCommandCount > 0);
             setVisible(btnRun, value == FormModeEnum.Ready || value == FormModeEnum.RunningPreflight);
             setEnabled(btnPreflight, isFormReady && selectedCommandCount > 0);
+            setEnabled(btnLoadConfig, txtConfigFile.Text.Trim().Length > 0);
             setVisible(cancelButton, value == FormModeEnum.RunningCommands);
 
             refreshStatusText(selectedCommandCount);
@@ -79,32 +112,6 @@ namespace CommandCenter.UI.WinForms {
             _wasCommandCancelled = value == CancellationStatusEnum.Pending;
         }
         #endregion
-
-        private bool _wasCommandCancelled = false;
-        private CommandsControllerWinForms _controller;
-        private List<CommandConfiguration> _loadedCommandConfigurations;
-        private List<CommandConfiguration> _selectedCommandConfigurations;
-
-        private List<Token> _loadedTokens;
-        private string _lastLoadedConfig = string.Empty;
-        public Main() {
-            InitializeComponent();
-            _controller = new CommandsControllerWinForms(_reportReceiver);
-            //var defaultConfig = Path.Combine(Application.StartupPath, "CommandCenter.config");
-            //if (string.IsNullOrWhiteSpace(txtConfigFile.Text) && File.Exists(defaultConfig)) {
-            //    txtConfigFile.Text = defaultConfig;
-            //}
-            //loadCommands();
-            if (IsAnAdministrator()) {
-                this.Text = this.Text + " - launched as Admin";
-            }
-            else {
-                this.Text = this.Text + " - not launched as Admin";
-            }
-            cancelButton.Location = btnRun.Location;
-
-            FormMode = FormModeEnum.Ready;
-        }
 
         #region Control thread-safe delegates
         delegate void EnableControlCallback(Control control, bool enabled);
@@ -154,6 +161,10 @@ namespace CommandCenter.UI.WinForms {
         #endregion
 
         #region Browsing/loading commands from config
+        private void openLogFileToolStripMenuItem_Click(object sender, EventArgs e) {
+            browseForConfigFile();
+        }
+
         private void btnBrowseConfig_Click(object sender, EventArgs e) {
             browseForConfigFile();
         }
@@ -169,7 +180,8 @@ namespace CommandCenter.UI.WinForms {
         }
 
         private void txtConfigFile_TextChanged(object sender, EventArgs e) {
-            btnLoadConfig.Enabled = txtConfigFile.Text.Length > 0;
+            var hasConfigFileInput = txtConfigFile.Text.Trim().Length > 0;
+            btnLoadConfig.Enabled = hasConfigFileInput;
         }
         private void btnLoadConfig_Click(object sender, EventArgs e) {
             loadCommands();
@@ -190,31 +202,98 @@ namespace CommandCenter.UI.WinForms {
         }
 
         private void displayCommands() {
+            var configFile = txtConfigFile.Text.Trim();
             try {
-                _loadedCommandConfigurations = _controller.GetCommands(txtConfigFile.Text);
+                _loadedCommandConfigurations = _controller.GetCommands(configFile);
             }
             catch {
-                displayError($"File {txtConfigFile.Text} is not a valid Command Center configuration file");
+                displayError($"File {configFile} is not a valid Command Center configuration file");
                 _lastLoadedConfig = string.Empty;
                 return;
             }
 
-            _loadedTokens = _controller.GetTokens(txtConfigFile.Text);
+            _loadedTokens = _controller.GetTokens(configFile);
             tokensList.DataSource = _loadedTokens.Select(a => new { a.Key, a.Value }).ToList();
 
             foreach (var command in _loadedCommandConfigurations) {
-                var commandName = new FullTypeNameEntry(command.TypeActivationName).TypeName;
-                var commandDisplayText = commandName.Substring(commandName.LastIndexOf('.') + 1);
-                if (!string.IsNullOrWhiteSpace(command.ShortDescription)) {
-                    commandDisplayText += " - " + command.ShortDescription;
-                }
-                var cmdNode = commandsList.Nodes.Add(commandDisplayText);
-                cmdNode.Checked = true;
-                cmdNode.Tag = command;
+                commandsList.Nodes.Add(createTreeNodeFromCommand(command));
             }
-            _lastLoadedConfig = txtConfigFile.Text;
+
+            _lastLoadedConfig = configFile;
+            pushMRUItem(configFile);
+            saveAppState();
+        }
+        #endregion
+
+        #region AppState-related
+        private void saveAppState() {
+            var serializer = new DataContractSerializer(typeof(AppState));
+            string xmlString;
+            using (var sw = new StringWriter())
+            using (var writer = new XmlTextWriter(sw)) {
+                writer.Formatting = Formatting.Indented; // indent the Xml so it's human readable
+                serializer.WriteObject(writer, _appState);
+                writer.Flush();
+                xmlString = sw.ToString();
+            }
+
+            string appStateFile = getAppStateFilename();
+            using (StreamWriter sw = new StreamWriter(appStateFile)) {
+                sw.Write(xmlString);
+                sw.Flush();
+                sw.Close();
+            }
         }
 
+        private void loadAppState() {
+            string appStateFile = getAppStateFilename();
+            if (!File.Exists(appStateFile)) {
+                recentConfigFilesToolStripMenuItem.Enabled = false;
+                return;
+            }
+            using (StreamReader sw = new StreamReader(appStateFile)) {
+                var reader = new XmlTextReader(sw);
+                var deserializer = new DataContractSerializer(typeof(AppState));
+                var result = deserializer.ReadObject(reader);
+                _appState = (AppState)result;
+
+            }
+            foreach (var mruItem in _appState.MRUConfigList.Items) {
+                var mruMenuItem = createMruMenuItem(mruItem);
+                recentConfigFilesToolStripMenuItem.DropDownItems.Add(mruMenuItem);
+            }
+            recentConfigFilesToolStripMenuItem.Enabled = _appState.MRUConfigList.Items.Count > 0;
+        }
+
+        private string getAppStateFilename() {
+            return $"{Application.ExecutablePath}.state";
+        }
+
+
+        private void pushMRUItem(string item) {
+            _appState.MRUConfigList.AddItem(item);
+
+            recentConfigFilesToolStripMenuItem.DropDownItems.Clear();
+            foreach (var mruItem in _appState.MRUConfigList.Items) {
+                var menuItem = createMruMenuItem(mruItem);
+                recentConfigFilesToolStripMenuItem.DropDownItems.Add(menuItem);
+            }
+
+            if (!recentConfigFilesToolStripMenuItem.Enabled) recentConfigFilesToolStripMenuItem.Enabled = true;
+        }
+
+        private ToolStripMenuItem createMruMenuItem(KeyValuePair<int, string> i) {
+            var menuItem = new ToolStripMenuItem($"{i.Key + 1} {i.Value}");
+            menuItem.Tag = i.Value;
+            menuItem.Click += mruItem_Click;
+            return menuItem;
+        }
+
+        private void mruItem_Click(object sender, EventArgs e) {
+            var mruItem = (ToolStripMenuItem)sender;
+            txtConfigFile.Text = mruItem.Tag.ToString();
+            loadCommands();
+        }
         #endregion
 
         #region Command run/preflight/cancellation
@@ -364,7 +443,39 @@ namespace CommandCenter.UI.WinForms {
         }
         #endregion
 
-        #region commandsList Treeview events
+        #region commandsList Treeview events/helpers
+
+        private int countSelectedCommands() {
+            int ctr = 0;
+            foreach (TreeNode commandNode in commandsList.Nodes) {
+                if (commandNode.Checked) {
+                    ctr++;
+                }
+            }
+            return ctr;
+        }
+
+        private bool tryGetSelectedCommands() {
+            _selectedCommandConfigurations = getSelectedCommands();
+            if (!_selectedCommandConfigurations.Any()) {
+                MessageBox.Show("At least 1 command has to be checked", "No command selected",
+                                MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return false;
+            }
+            return true;
+        }
+
+        private TreeNode createTreeNodeFromCommand(CommandConfiguration command) {
+            var commandName = new FullTypeNameEntry(command.TypeActivationName).TypeName;
+            var commandDisplayText = commandName.Substring(commandName.LastIndexOf('.') + 1);
+            if (!string.IsNullOrWhiteSpace(command.ShortDescription)) {
+                commandDisplayText += " - " + command.ShortDescription;
+            }
+            TreeNode cmdNode = new TreeNode(commandDisplayText);
+            cmdNode.Checked = true;
+            cmdNode.Tag = command;
+            return cmdNode;
+        }
         private void commandsList_AfterSelect(object sender, TreeViewEventArgs e) {
             var selectedCommand = e.Node.Tag as CommandConfiguration;
             if (selectedCommand != null) {
@@ -417,7 +528,7 @@ namespace CommandCenter.UI.WinForms {
         private void displayError(string message) {
             MessageBox.Show(message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
-        bool IsAnAdministrator() {
+        bool IsRunByAdmin() {
             try {
                 WindowsIdentity identity = WindowsIdentity.GetCurrent();
                 WindowsPrincipal principal = new WindowsPrincipal(identity);
@@ -428,25 +539,8 @@ namespace CommandCenter.UI.WinForms {
             }
         }
 
-        private int countSelectedCommands() {
-            int ctr = 0;
-            foreach (TreeNode commandNode in commandsList.Nodes) {
-                if (commandNode.Checked) {
-                    ctr++;
-                }
-            }
-            return ctr;
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e) {
+            Application.Exit();
         }
-
-        private bool tryGetSelectedCommands() {
-            _selectedCommandConfigurations = getSelectedCommands();
-            if (!_selectedCommandConfigurations.Any()) {
-                MessageBox.Show("At least 1 command has to be checked", "No command selected",
-                                MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return false;
-            }
-            return true;
-        }
-
     }
 }
