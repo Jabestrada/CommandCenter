@@ -266,7 +266,9 @@ namespace CommandCenter.UI.WinForms {
         }
 
         private string getAppStateFilename() {
-            return $"{Application.ExecutablePath}.state";
+            var appDir = Path.GetDirectoryName(Application.ExecutablePath);
+            var datFile = $"{Path.GetFileNameWithoutExtension(Application.ExecutablePath)}.dat";
+            return Path.Combine(appDir, datFile);
         }
 
 
