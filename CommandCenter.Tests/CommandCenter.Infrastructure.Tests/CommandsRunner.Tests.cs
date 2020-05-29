@@ -65,7 +65,7 @@ namespace CommandCenter.Infrastructure.Tests {
             var result = runner.Run();
 
             Assert.IsTrue(result);
-            Assert.IsTrue(!runner.Reports.Any(r => isUndoReport(r.ReportType)));
+            Assert.IsTrue(!runner.Reports.Any(r => r.ReportType.IsUndoReport()));
         }
 
         [TestMethod]
@@ -105,12 +105,12 @@ namespace CommandCenter.Infrastructure.Tests {
             var result = runner.Run();
 
             Assert.IsFalse(result);
-            Assert.IsFalse(runner.Reports.Any(r => r.Reporter.Id == nonUndoableCommand.Id && isUndoReport(r.ReportType)));
+            Assert.IsFalse(runner.Reports.Any(r => r.Reporter.Id == nonUndoableCommand.Id && r.ReportType.IsUndoReport()));
             Assert.AreEqual(1, runner.Reports
-                                .Where(r => r.Reporter.Id == undoableCommand1.Id && isUndoReport(r.ReportType))
+                                .Where(r => r.Reporter.Id == undoableCommand1.Id && r.ReportType.IsUndoReport())
                                 .Count());
             Assert.AreEqual(1, runner.Reports
-                                .Where(r => r.Reporter.Id == failingCmd.Id && isUndoReport(r.ReportType))
+                                .Where(r => r.Reporter.Id == failingCmd.Id && r.ReportType.IsUndoReport())
                                 .Count());
         }
 
@@ -134,13 +134,13 @@ namespace CommandCenter.Infrastructure.Tests {
 
             Assert.IsFalse(result);
             Assert.AreEqual(1, runner.Reports
-                                .Where(r => r.Reporter.Id == undoableCommand1.Id && isUndoReport(r.ReportType))
+                                .Where(r => r.Reporter.Id == undoableCommand1.Id && r.ReportType.IsUndoReport())
                                 .Count());
             Assert.AreEqual(1, runner.Reports
-                                .Where(r => r.Reporter.Id == failingCmd.Id && isUndoReport(r.ReportType))
+                                .Where(r => r.Reporter.Id == failingCmd.Id && r.ReportType.IsUndoReport())
                                 .Count());
             Assert.AreEqual(0, runner.Reports
-                             .Where(r => r.Reporter.Id == undoableCommand2.Id && isUndoReport(r.ReportType))
+                             .Where(r => r.Reporter.Id == undoableCommand2.Id && r.ReportType.IsUndoReport())
                              .Count());
         }
 
@@ -181,10 +181,10 @@ namespace CommandCenter.Infrastructure.Tests {
             var result = runner.Run();
 
             Assert.IsFalse(result);
-            var firstCommandUndoReport = runner.Reports.First(r => isUndoReport(r.ReportType) &&
+            var firstCommandUndoReport = runner.Reports.First(r => r.ReportType.IsUndoReport() &&
                                                                    r.Reporter.Id == undoableCommand1.Id);
             var latestUndoReportTimestamp = runner.Reports.Max(r => r.ReportedOn);
-            var earliestUndoReport = runner.Reports.Where(r => isUndoReport(r.ReportType))
+            var earliestUndoReport = runner.Reports.Where(r => r.ReportType.IsUndoReport())
                                                  .OrderBy(r => r.ReportedOn)
                                                  .First();
 
@@ -223,7 +223,7 @@ namespace CommandCenter.Infrastructure.Tests {
 
             Assert.IsFalse(result);
 
-            Assert.AreEqual(3, runner.Reports.Where(r => isUndoReport(r.ReportType)).Count());
+            Assert.AreEqual(3, runner.Reports.Where(r => r.ReportType.IsUndoReport()).Count());
         }
 
         [TestMethod]
@@ -249,7 +249,7 @@ namespace CommandCenter.Infrastructure.Tests {
             var result = runner.Run();
 
             Assert.IsTrue(result);
-            Assert.IsTrue(runner.Reports.Any(r => isCleanupReport(r.ReportType) && r.Reporter.Id == command1.Id));
+            Assert.IsTrue(runner.Reports.Any(r => r.ReportType.IsCleanupReport() && r.Reporter.Id == command1.Id));
         }
 
         [TestMethod]
@@ -264,7 +264,7 @@ namespace CommandCenter.Infrastructure.Tests {
             var result = runner.Run();
 
             Assert.IsFalse(result);
-            Assert.IsTrue(runner.Reports.Any(r => isCleanupReport(r.ReportType) && r.Reporter.Id == command1.Id));
+            Assert.IsTrue(runner.Reports.Any(r => r.ReportType.IsCleanupReport() && r.Reporter.Id == command1.Id));
         }
 
         [TestMethod]
@@ -282,11 +282,11 @@ namespace CommandCenter.Infrastructure.Tests {
 
             Assert.IsFalse(result);
             Assert.IsTrue(runner.WasCommandStarted(command1));
-            Assert.IsTrue(runner.Reports.Any(r => isCleanupReport(r.ReportType) && r.Reporter.Id == command1.Id));
+            Assert.IsTrue(runner.Reports.Any(r => r.ReportType.IsCleanupReport() && r.Reporter.Id == command1.Id));
 
 
             Assert.IsTrue(!runner.WasCommandStarted(command3));
-            Assert.IsFalse(runner.Reports.Any(r => isCleanupReport(r.ReportType) && r.Reporter.Id == command3.Id));
+            Assert.IsFalse(runner.Reports.Any(r => r.ReportType.IsCleanupReport() && r.Reporter.Id == command3.Id));
 
 
         }
@@ -307,10 +307,10 @@ namespace CommandCenter.Infrastructure.Tests {
             var result = runner.Run();
 
             Assert.IsFalse(result);
-            var firstCommandCleanupReport = runner.Reports.First(r => isCleanupReport(r.ReportType) &&
+            var firstCommandCleanupReport = runner.Reports.First(r => r.ReportType.IsCleanupReport() &&
                                                                    r.Reporter.Id == command1.Id);
             var latestCleanupReportTimestamp = runner.Reports.Max(r => r.ReportedOn);
-            var earliestCleanupReport = runner.Reports.Where(r => isCleanupReport(r.ReportType))
+            var earliestCleanupReport = runner.Reports.Where(r => r.ReportType.IsCleanupReport())
                                                  .OrderBy(r => r.ReportedOn)
                                                  .First();
 
@@ -384,20 +384,10 @@ namespace CommandCenter.Infrastructure.Tests {
             Assert.IsFalse(result);
             Assert.IsTrue(runner.WasCommandStarted(command1));
             // Cancellation should trigger Undo
-            Assert.IsTrue(runner.Reports.Any(r => r.Reporter == command1 && isUndoReport(r.ReportType)));
+            Assert.IsTrue(runner.Reports.Any(r => r.Reporter == command1 && r.ReportType.IsUndoReport()));
             Assert.IsTrue(runner.WasCommandStarted(command2));
             // Cancellation should not run next command in the chain.
             Assert.IsFalse(runner.WasCommandStarted(command3));
         }
-
-        #region Helper methods
-        private bool isUndoReport(ReportType reportType) {
-            return reportType == ReportType.UndoneTaskWithSuccess || reportType == ReportType.UndoneTaskWithFailure;
-        }
-
-        private bool isCleanupReport(ReportType reportType) {
-            return reportType == ReportType.DoneCleanupWithFailure || reportType == ReportType.DoneCleanupWithSuccess;
-        }
-        #endregion
     }
 }

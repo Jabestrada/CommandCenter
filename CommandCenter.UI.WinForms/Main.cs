@@ -406,7 +406,7 @@ namespace CommandCenter.UI.WinForms {
         private void writeSummary() {
             appendStatusText(Environment.NewLine);
             appendStatusText("================== SUMMARY ==================");
-            var finalReports = _controller.Reports.Where(r => isDoneTaskReport(r.ReportType));
+            var finalReports = _controller.Reports.Where(r => r.ReportType.IsDoneTaskReport());
             foreach (var finalReport in finalReports) {
                 appendStatusText($"{finalReport.Reporter.ShortDescription} ({finalReport.Reporter.ShortName}): {finalReport.Message}");
             }
@@ -423,7 +423,7 @@ namespace CommandCenter.UI.WinForms {
             appendStatusText(Environment.NewLine);
             appendStatusText("================== PRE-FLIGHT CHECK SUMMARY ==================");
 
-            var finalReports = _controller.Reports.Where(r => isDonePreflightTaskReport(r.ReportType));
+            var finalReports = _controller.Reports.Where(r => r.ReportType.IsDonePreflightTaskReport());
             foreach (var finalReport in finalReports) {
                 appendStatusText($"{finalReport.Reporter.ShortDescription} ({finalReport.Reporter.ShortName}): {finalReport.Message}");
             }
@@ -436,13 +436,6 @@ namespace CommandCenter.UI.WinForms {
             setText(statusLabel, $"{selectedCommandCount} command(s) selected");
         }
 
-        private bool isDoneTaskReport(ReportType r) {
-            return r == ReportType.DoneTaskWithFailure || r == ReportType.DoneTaskWithSuccess;
-        }
-
-        private bool isDonePreflightTaskReport(ReportType r) {
-            return r == ReportType.DonePreFlightWithFailure || r == ReportType.DonePreflightWithSuccess;
-        }
         #endregion
 
         #region commandsList Treeview events/helpers
