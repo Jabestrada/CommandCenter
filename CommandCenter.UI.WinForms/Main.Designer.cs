@@ -57,6 +57,13 @@
             this.openLogFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.recentConfigFilesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.configFileContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.cutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.copyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pasteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+            this.openFileInNotepadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openContainingFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.commandsListContextMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -72,12 +79,14 @@
             this.tabTokens.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tokensList)).BeginInit();
             this.mainMenu.SuspendLayout();
+            this.configFileContextMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // txtConfigFile
             // 
             this.txtConfigFile.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtConfigFile.ContextMenuStrip = this.configFileContextMenu;
             this.txtConfigFile.Location = new System.Drawing.Point(33, 55);
             this.txtConfigFile.Name = "txtConfigFile";
             this.txtConfigFile.Size = new System.Drawing.Size(908, 20);
@@ -418,6 +427,59 @@
             this.exitToolStripMenuItem.Text = "E&xit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
+            // configFileContextMenu
+            // 
+            this.configFileContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.cutToolStripMenuItem,
+            this.copyToolStripMenuItem,
+            this.pasteToolStripMenuItem,
+            this.toolStripMenuItem1,
+            this.openFileInNotepadToolStripMenuItem,
+            this.openContainingFolderToolStripMenuItem});
+            this.configFileContextMenu.Name = "configFileContextMenu";
+            this.configFileContextMenu.Size = new System.Drawing.Size(201, 142);
+            this.configFileContextMenu.Opening += new System.ComponentModel.CancelEventHandler(this.configFileContextMenu_Opening);
+            // 
+            // cutToolStripMenuItem
+            // 
+            this.cutToolStripMenuItem.Name = "cutToolStripMenuItem";
+            this.cutToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
+            this.cutToolStripMenuItem.Text = "Cut";
+            this.cutToolStripMenuItem.Click += new System.EventHandler(this.cutToolStripMenuItem_Click);
+            // 
+            // copyToolStripMenuItem
+            // 
+            this.copyToolStripMenuItem.Name = "copyToolStripMenuItem";
+            this.copyToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
+            this.copyToolStripMenuItem.Text = "Copy";
+            this.copyToolStripMenuItem.Click += new System.EventHandler(this.copyToolStripMenuItem_Click);
+            // 
+            // pasteToolStripMenuItem
+            // 
+            this.pasteToolStripMenuItem.Name = "pasteToolStripMenuItem";
+            this.pasteToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
+            this.pasteToolStripMenuItem.Text = "Paste";
+            this.pasteToolStripMenuItem.Click += new System.EventHandler(this.pasteToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(197, 6);
+            // 
+            // openFileInNotepadToolStripMenuItem
+            // 
+            this.openFileInNotepadToolStripMenuItem.Name = "openFileInNotepadToolStripMenuItem";
+            this.openFileInNotepadToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
+            this.openFileInNotepadToolStripMenuItem.Text = "Open file in Notepad++";
+            this.openFileInNotepadToolStripMenuItem.Click += new System.EventHandler(this.openFileInNotepadToolStripMenuItem_Click);
+            // 
+            // openContainingFolderToolStripMenuItem
+            // 
+            this.openContainingFolderToolStripMenuItem.Name = "openContainingFolderToolStripMenuItem";
+            this.openContainingFolderToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
+            this.openContainingFolderToolStripMenuItem.Text = "Open containing folder";
+            this.openContainingFolderToolStripMenuItem.Click += new System.EventHandler(this.openContainingFolderToolStripMenuItem_Click);
+            // 
             // Main
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -453,6 +515,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.tokensList)).EndInit();
             this.mainMenu.ResumeLayout(false);
             this.mainMenu.PerformLayout();
+            this.configFileContextMenu.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -492,6 +555,13 @@
         private System.Windows.Forms.ToolStripMenuItem openLogFileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem recentConfigFilesToolStripMenuItem;
+        private System.Windows.Forms.ContextMenuStrip configFileContextMenu;
+        private System.Windows.Forms.ToolStripMenuItem cutToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem copyToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem pasteToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem openFileInNotepadToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem openContainingFolderToolStripMenuItem;
     }
 }
 

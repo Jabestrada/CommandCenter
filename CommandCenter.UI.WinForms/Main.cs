@@ -5,6 +5,7 @@ using CommandCenter.UI.WinForms.Settings;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -537,5 +538,37 @@ namespace CommandCenter.UI.WinForms {
         private void exitToolStripMenuItem_Click(object sender, EventArgs e) {
             Application.Exit();
         }
+
+        #region Config file context menu
+        private void cutToolStripMenuItem_Click(object sender, EventArgs e) {
+            Clipboard.SetText(txtConfigFile.Text);
+            txtConfigFile.Clear();
+        }
+
+        private void copyToolStripMenuItem_Click(object sender, EventArgs e) {
+            Clipboard.SetText(txtConfigFile.Text);
+        }
+        private void pasteToolStripMenuItem_Click(object sender, EventArgs e) {
+            txtConfigFile.Text = Clipboard.GetText();
+        }
+        private void configFileContextMenu_Opening(object sender, System.ComponentModel.CancelEventArgs e) {
+            var hasConfigFile = !string.IsNullOrWhiteSpace(txtConfigFile.Text);
+            cutToolStripMenuItem.Enabled = hasConfigFile;
+            copyToolStripMenuItem.Enabled = hasConfigFile;
+            pasteToolStripMenuItem.Enabled = !string.IsNullOrWhiteSpace(Clipboard.GetText());
+            openContainingFolderToolStripMenuItem.Enabled = hasConfigFile;
+            openFileInNotepadToolStripMenuItem.Enabled = hasConfigFile;
+        }
+
+        private void openFileInNotepadToolStripMenuItem_Click(object sender, EventArgs e) {
+            Process.Start("notepad++", txtConfigFile.Text);
+        }
+
+        private void openContainingFolderToolStripMenuItem_Click(object sender, EventArgs e) {
+            Process.Start("explorer", Path.GetDirectoryName(txtConfigFile.Text));
+        }
+        #endregion
+
+      
     }
 }
