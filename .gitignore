@@ -8,3 +8,5 @@ CommandCenter.UI.Console/obj/
 CommandCenter.UI.WinForms/bin/
 CommandCenter.UI.WinForms/obj/
 packages/
+CommandCenter.Tests/bin/
+CommandCenter.UI.Console/bin/
