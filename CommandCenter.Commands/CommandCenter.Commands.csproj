@@ -47,6 +47,7 @@
     <Compile Include="Console\ConditionalConsolePauseCommand.cs" />
     <Compile Include="Console\ConsolePassThroughCommand.cs" />
     <Compile Include="Console\ConsolePauseCommand.cs" />
+    <Compile Include="Console\ShellPassThroughCommand.cs" />
     <Compile Include="FileSystem\BaseDefinitions\BaseDirectoryCommand.cs" />
     <Compile Include="FileSystem\BaseDefinitions\BaseDirectoryDeleteCommand.cs" />
     <Compile Include="FileSystem\DirectoryCopyContentsCommand.cs" />

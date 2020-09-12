@@ -1,0 +1,12 @@
+.vs/
+CommandCenter.Commands/bin/
+CommandCenter.Commands/obj/
+CommandCenter.Infrastructure/bin/
+CommandCenter.Infrastructure/obj/
+CommandCenter.Tests/obj/
+CommandCenter.UI.Console/obj/
+CommandCenter.UI.WinForms/bin/
+CommandCenter.UI.WinForms/obj/
+packages/
+CommandCenter.Tests/bin/
+CommandCenter.UI.Console/bin/
